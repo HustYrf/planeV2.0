@@ -1,0 +1,31 @@
+ <div class="navbar">
+    <div class="navbar-inner">
+        <a  class="cms-logo" title="无人机通信巡视系统"></a>
+        <span class="brand">无人机通信巡视系统</span>
+        <ul class = "nav navbar-nav navbar-right" >
+            <li class="dropdown">
+            <a class="dropdown-toggle profile" style="height:60px;width:68px;padding-top:10px;" data-toggle="dropdown" href="${s.base}/home.html">
+              <#if Session["login_user"]?exists>
+                <img alt="头像" src='${Session["login_user"].icon}' style="width:40px;height:40px;">
+              <#else>
+                <img alt="头像" src="${s.base}/res/i/header.jpg" style="width:40px;height:40px;">
+              </#if>
+            
+            </a>
+             <ul class="dropdown-menu" style="">
+                 <li>
+                     <a href="#" target="_self">
+                          <i class="fa fa-user"></i>&nbsp;&nbsp;用户:
+                       <#if Session["login_user"]?exists>${Session["login_user"].name}</#if>
+                  </a>
+                 </li>                 
+                 <li><a href="${s.base}/admin/profile"><i class="fa fa-sun-o"></i>&nbsp;&nbsp;个人设置</a></li>
+                 <li><a href="${s.base}/admin/logout"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;注销</a></li>
+             </ul>
+            </li>
+        </ul>
+        <span class="brand" style="float:right;margin-right:5px;"><#if Session["login_user"]?exists>${Session["login_user"].name}</#if></span>
+    </div>
+</div>
+
+

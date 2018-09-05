@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>告警显示</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="css/common.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/oc.min.js"></script>
+    <link rel="icon" type="image/png" href="i/ico.png" sizes="16x16">
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
+    <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+   <script src="https://webapi.amap.com/maps?v=1.4.8&key=82f9e75505b649be9ab81a45ae34aa14&&plugin=AMap.Scale"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    
+
+</head>
+<body>
+	<#include "common/header.html" />
+    <#include "./nav.html" />
+     <div class="content">
+    <div class="container-fluid">
+
+        <div class="row-fluid">
+            <div class="block span6">
+                <div id="container"></div>
+                <script type="text/javascript"
+                        src="//webapi.amap.com/maps?v=1.4.6&key=82f9e75505b649be9ab81a45ae34aa14"></script>
+                <!-- UI组件库 1.0 -->
+                <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+                <script type="text/javascript">
+                    //创建一个地图
+                    var map = new AMap.Map('container', {
+                        resizeEnable: true,
+                        center: [107.79876, 23.06781],
+                        zoom: 13
+                    });
+
+                    map.plugin(["AMap.Scale"],function(){    //加载比例尺插件      
+             	       var scale = new AMap.Scale({
+             	        visible: true,
+             			position:'LB',
+             			}); 
+             	        map.addControl(scale);  
+             	        scale.show();
+             		 });
+                    //路由显示
+                    var colors = ['#1ef22a', '#260cff', '#eb0aff'];
+                    var routeStatusCode = ['一干路由', '二干路由', '混合路由'];
+                    routeList = ${routeList};
+                    
+                    function showrouteList(RouteList) {
+                        for (var i = 0; i < routeList.length; i++) {
+                            var polyline = new AMap.Polyline({
+                                map: map,
+                                path: RouteList[i].routePath, //设置线覆盖物路径
+                                strokeColor: colors[Number(RouteList[i].type)], //线颜色
+                                strokeOpacity: 1, //线透明度
+                                strokeWeight: 5, //线宽
+                                strokeStyle: "solid", //线样式
+                                strokeDasharray: [10, 5] //补充线样式
+                            });
+                        }
+                    }
+                    if(routeList.length>0){
+                    	 showrouteList(routeList);
+                    }
+                   
+                  //自定义infoWindow
+                    var infoWindow = new AMap.InfoWindow({
+                        isCustom: true,
+                        offset: new AMap.Pixel(20, -35)
+                    });
+                    //构建自定义信息窗体
+                    function createInfoWindow(title, content) {
+                        var info = document.createElement("div");
+                        info.className = "info";
+
+                        //可以通过下面的方式修改自定义窗体的宽高
+                        //info.style.width = "400px";
+                        // 定义顶部标题
+                        var top = document.createElement("div");
+                        var titleD = document.createElement("div");
+                        var closeX = document.createElement("img");
+                        top.className = "info-top";
+                        titleD.innerHTML = title;
+                        closeX.src = "res/i/close2.gif";
+                        closeX.onclick = closeInfoWindow;
+
+                        top.appendChild(titleD);
+                        top.appendChild(closeX);
+                        info.appendChild(top);
+
+                        // 定义中部内容
+                        var middle = document.createElement("div");
+                        middle.className = "info-middle";
+                        middle.style.backgroundColor = 'white';
+                        middle.innerHTML = content;
+                        info.appendChild(middle);
+                        return info;
+                    }
+                    //打开信息窗体
+                    function markerClick(e) {
+                        infoWindow.setContent(e.target.content);
+                        infoWindow.open(map, e.target.getPosition());
+                    }
+                    //关闭信息窗体
+                    function closeInfoWindow() {
+                        map.clearInfoWindow();
+                    }
+
+                    //闪烁点
+                    var colors = ['#0cc2f2','#4fd2b1','#90e36f','#ffe700','#ff9e00','#ff6700','#ff1800'];
+                                       
+                    //标注点
+                    alarmList =${alarmList};
+                    
+                    if(alarmList.length>0){
+                    	 AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
+                             for (var i = 0; i < alarmList.length; i++) {
+                                 //启动页面
+                                 var dangerPoint = new SimpleMarker({
+                                     //前景文字
+                                     iconLabel: {
+                                         innerHTML: '<i>危</i>', //设置文字内容
+                                         style: {
+                                             color: 'white' //设置文字颜色
+                                         }
+                                     },
+                                     //图标主题
+                                     iconTheme: 'default',
+                                     //背景图标样式
+                                     iconStyle: 'red',
+                                     //...其他Marker选项...，不包括content
+                                     map: map,
+                                     position: alarmList[i].positionList
+                                 });
+
+                                 var title = '告警点编号：<span>' + alarmList[i].alarmid + '</span>';
+                                 var content = [];
+                                 content.push("<img src='"+alarmList[i].image+"' class='alarmImg'>");
+
+                                 content.push("描述：" + alarmList[i].descripte);
+                                 content.push("创建时间：" + alarmList[i].createTime);
+
+
+                                 dangerPoint.content = createInfoWindow(title, content.join("<br/>"));
+                                 dangerPoint.on('click', markerClick);
+
+                             }
+                         });
+                         
+                         AMapUI.load(['ui/misc/PointSimplifier', 'lib/$'], function (PointSimplifier, $) {
+
+                             if (!PointSimplifier.supportCanvas) {
+                                 alert('当前环境不支持 Canvas！');
+                                 return;
+                             }
+
+                             var pointSimplifierIns = new PointSimplifier({
+                                 zIndex: 115,
+                                 autoSetFitView: false,
+                                 map: map, //所属的地图实例
+
+                                 getPosition: function (item) {
+                                     if (!item) {
+                                         return null;
+                                     }
+
+                                     var parts = item.split(',');
+
+                                     return [parseFloat(parts[0]), parseFloat(parts[1])];
+                                 },
+                                 getHoverTitle: function (dataItem, idx) {
+                                     return '序号: ' + idx;
+                                 },
+                                 //使用GroupStyleRender
+                                 renderConstructor: PointSimplifier.Render.Canvas.GroupStyleRender,
+                                 renderOptions: {
+                                     eventSupport: false, //禁止事件,对性能更友好
+                                     //点的样式
+                                     pointStyle: {
+                                         fillStyle: null,
+                                         width: 5,
+                                         height: 5
+                                     },
+                                     topNAreaStyle: null,
+                                     getGroupId: function (item, idx) {
+
+                                         //随机返回一个组ID
+                                         return Math.ceil(colors.length * Math.random());
+                                     },
+                                     groupStyleOptions: function (gid) {
+
+                                         //随机设置大小
+                                         var radius = 10 + 10 * Math.random();
+
+                                         return {
+
+                                             pointStyle: radius > 0 ? {
+                                                 content: function (ctx, x, y, width, height) {
+
+                                                     var p = {
+                                                         x: x + width / 2,
+                                                         y: y + height / 2,
+                                                         radius: radius
+                                                     };
+
+                                                     ctx.beginPath();
+                                                     var gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius);
+                                                     gradient.addColorStop(0, "rgba(255,0,0,1)");
+                                                     gradient.addColorStop(1, "rgba(255,0,0,0.1)");
+                                                     ctx.fillStyle = gradient;
+                                                     ctx.arc(p.x, p.y, p.radius, Math.PI * 2, false);
+                                                     ctx.fill();
+
+                                                 },
+
+                                                 //fillStyle: colors[gid % colors.length],
+                                                 width: radius * 2,
+                                                 height: radius * 2
+                                             } : null,
+                                             pointHardcoreStyle: {
+                                                 width: radius * 2 + 3,
+                                                 height: radius * 2 + 3
+                                             }
+                                         };
+                                     }
+
+                                 }
+                             });
+                             //重复render
+                             setInterval(function () {
+                                 pointSimplifierIns.render();
+                             }, 500)
+
+                             var data = new Array();
+                             for(var i=0;i<alarmList.length;i++){
+                                 data[i] = alarmList[i].alongda;
+                             }
+                             pointSimplifierIns.setData(data);
+                             $('#loadingTip').remove();
+                         });
+                    	
+                    }
+                   
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

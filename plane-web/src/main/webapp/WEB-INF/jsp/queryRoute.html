@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>查询路由</title>
+    <link href="${s.base}/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="${s.base}/css/style.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="${s.base}/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="${s.base}/js/jquery.form.js"></script>
+    <script type="text/javascript" src="${s.base}/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${s.base}/js/oc.min.js"></script>
+    <link rel="icon" type="image/png" href="${s.base}/i/ico.png" sizes="16x16">
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+    <script src="http://webapi.amap.com/maps?v=1.4.6&key=82f9e75505b649be9ab81a45ae34aa14"></script>
+    <link href="${s.base}/css/common.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+</head>
+<body>
+<!-- top 导航 -->
+<#include "common/header.html" />
+<#include "./nav.html" />
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row-fluid">
+            <div class="block span6">
+                <div id="container"></div>
+                <!-- UI组件库 1.0 -->
+                <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+                <script type="text/javascript">
+                    //闪烁点
+                    //just some colors
+                    var colors = ['#1ef22a', '#260cff', '#eb0aff'];
+                    var routeStatusCode = ['一干路由', '二干路由', '混合路由'];
+                    
+                    function showrouteList(RouteList) {
+                        for (var i = 0; i < routeList.length; i++) {
+                            var polyline = new AMap.Polyline({
+                                map: map,
+                                path: RouteList[i].routePath, //设置线覆盖物路径
+                                strokeColor: colors[Number(RouteList[i].type)], //线颜色
+                                strokeOpacity: 1, //线透明度
+                                strokeWeight: 5, //线宽
+                                strokeStyle: "solid", //线样式
+                                strokeDasharray: [10, 5] //补充线样式
+                            });
+                        }
+                    }
+                    
+                    
+                    routeList = ${routeList};
+                    
+                    
+                    if(routeList==null || routeList.length==0){
+                    	 var map = new AMap.Map('container', {
+                             resizeEnable: true,
+                             center: [107.79962, 23.06691],
+                             zoom: 13
+                         });
+                    }else{
+                    	//创建一个地图
+                        var map = new AMap.Map('container', {
+                            resizeEnable: true,
+                            center: routeList[0].routePath[0],
+                            zoom: 13
+                        }); 
+                    	
+                        showrouteList(routeList);
+                        AMapUI.loadUI(['overlay/SimpleMarker'], function (SimpleMarker) {
+
+                            for (var i = 0; i < routeList.length; i++) {
+                                //启动页面
+                                var lineColor = null;
+                                var pointFont = null;
+                                if (routeList[i].type == '0') {
+                                    pointFont = '<i>一干</i>';
+                                    lineColor = 'green';
+                                } else if (routeList[i].type == '1') {
+                                    pointFont = '<i>二干</i>';
+                                    lineColor = 'darkblue';
+                                } else {
+                                    pointFont = '<i>混合</i>';
+                                    lineColor = 'purple';
+                                }
+                                var Onestart = new SimpleMarker({
+                                    //前景文字
+                                    map: map,
+                                    iconLabel: {
+                                        innerHTML: pointFont, //设置文字内容
+                                        style: {
+                                            color: 'white' //设置文字颜色
+                                        }
+                                    },
+                                    iconTheme: 'fresh',
+                                    //背景图标样式
+                                    iconStyle: lineColor,
+                                    position: routeList[i].routePath[0],
+                                });
+
+                                //实例化信息窗体
+
+                                var title = '路由编号：<span>' + routeList[i].routeId + '</span>';
+                                var content = [];
+                                content.push("类型：" + routeStatusCode[Number(routeList[i].type)]);
+                                content.push("描述：" + routeList[i].descripte);
+                                content.push("创建时间：" + routeList[i].createTime);
+
+                                Onestart.content = createInfoWindow(title, content.join("<br/>"));
+                                Onestart.on('click', markerClick);
+                            }
+                        });
+                  	
+                    }
+                    
+                    /* AMapUI.loadUI(['control/BasicControl'], function (BasicControl) {
+                        //缩放控件，显示Zoom值
+                        map.addControl(new BasicControl.Zoom({
+                            position: 'lt',
+                            showZoomNum: true,
+                        }));
+                    }); */
+                    var infoWindow = new AMap.InfoWindow({
+                        isCustom: true,
+                        offset: new AMap.Pixel(20, -35)
+                    });
+                                     
+                    //构建自定义信息窗体
+                    function createInfoWindow(title, content) {
+                        var info = document.createElement("div");
+                        info.className = "info";
+
+                        //可以通过下面的方式修改自定义窗体的宽高
+                        //info.style.width = "400px";
+                        // 定义顶部标题
+                        var top = document.createElement("div");
+                        var titleD = document.createElement("div");
+                        var closeX = document.createElement("img");
+                        top.className = "info-top";
+                        titleD.innerHTML = title;
+                        closeX.src = "${s.base}/i/close2.gif";
+                        closeX.onclick = closeInfoWindow;
+
+                        top.appendChild(titleD);
+                        top.appendChild(closeX);
+                        info.appendChild(top);
+
+                        // 定义中部内容
+                        var middle = document.createElement("div");
+                        middle.className = "info-middle";
+                        middle.style.backgroundColor = 'white';
+                        middle.innerHTML = content;
+                        info.appendChild(middle);
+                        return info;
+                    }
+
+                    //打开信息窗体
+                    function markerClick(e) {
+                        infoWindow.setContent(e.target.content);
+                        infoWindow.open(map, e.target.getPosition());
+                    }
+
+                    //关闭信息窗体
+                    function closeInfoWindow() {
+                        map.clearInfoWindow();
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

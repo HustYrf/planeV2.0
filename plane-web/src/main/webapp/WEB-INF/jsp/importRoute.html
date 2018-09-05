@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>路由导入</title>
+    
+  	<#include "common/res.html" />
+</head>
+<body onload=showModel()>
+	<#include "common/header.html" />
+    <#include "./nav.html" />
+     <div class="content">
+        <div class="container-fluid">
+		       <div class="modal" id="lineModal" tabindex="-1" role="dialog"  aria-hidden="true">
+				<div class="modal_wapper">
+					<div class="modal-dialog w-8" >
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+								<h4 class="modal-title" >导入路由</h4>
+							</div>
+							
+							<div class="modal-body">
+								<form role="form" id="importCourseSectionForm" method="post" action="${s.base}/oneFileImport.action"  enctype="multipart/form-data">
+									 <div class="form-group clearfix">
+                               			 <label class="control-label"  style="white-space:nowrap" >路由编号：</label>
+                                			<div class="col-sm-8">
+                                    		<input type="text" class="form-control" name="name" id="routeid" placeholder="请输入路由编号">
+                                			</div>
+                            			</div>
+									 <div class="form-group clearfix">
+                                		<label class="control-label"  style="white-space:nowrap">路由描述：</label>
+                                			<div class="col-sm-8">
+                                    		<input type="text clearfix" class="form-control" name="description" id="descripte" placeholder="请输入路由描述" >
+                                			</div>
+                            		</div>
+									<div class="form-group clearfix">
+                                		<label class="control-label"  style="white-space:nowrap" >路由类型：</label>
+                                			<div class="col-sm-8">
+                                    		<select id="status" name="type" class="form-control" type="select" >
+												<option value="2">混合路由</option>
+												<option value="0">一干路由</option>
+												<option value="1">二干路由</option>	
+											</select>
+                                			</div>
+                            		</div>
+									<div class="form-group clearfix"> 
+										<label class="control-label" style="width:120px;white-space:nowrap;" >路由文件(.xls/.xls)： <span id="imgErrSpan" style="color:red;font-weight:normal;"></span> </label> 
+										<div class="col-sm-6 ">
+												<input type="file" id="routePathExcel" name="routePathExcel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+										</div>
+									</div>
+									
+								</form>
+								<!-- tip提示-start -->
+								<div id="ocAlertTip" class="alert alert-success f-16" style="display:none;"><span id="al_info">请选择 .xlsx或.xls 格式的文件</span>
+								<button type="button" class="close"  onclick="closeAlert()">
+									<span aria-hidden="true">×</span>
+								</button></div>
+								<!-- tip提示-end -->
+							</div>
+							
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary" onclick="doSave();">导入</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 查询路由章节弹出层 -end -->
+        </div>
+     </div>
+       <!-- 弹出层 alert 信息 -->
+		<div class="modal" id="_ocDialogModal" tabindex="-1" aria-hidden="true">
+		    <div class="modal_wapper small">
+		        <div class="modal-dialog w-4" >
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <div class="modal-title f-16" >提示信息</div>
+		                </div>
+		                <div class="modal-body">
+		                    <div><span class="color-oc f-16 oc-content"></span></div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	<!-- 弹出层 alert 信息 -->
+      <script type="text/javascript">
+      	function showModel()
+      	{
+      		$('#lineModal').modal('show');
+      	}
+      	function closeAlert(){
+      		$('#ocAlertTip').css('display','none');
+      	}
+		function doSave(){
+			
+			var routeId = $('#routeid').val();
+			var descripte = $("#descripte").val();
+			var routePathExcel = $("#routePathExcel").val();
+			
+			if(routeId==''){
+				
+				$('#al_info').html("请输入路由编号！");
+				$('#ocAlertTip').css('display','block');
+				
+			}else if(descripte==''){
+				
+				$('#al_info').html("请输入路由描述！");
+				$('#ocAlertTip').css('display','block');
+				
+			} else if(routePathExcel==""){
+				
+				$('#al_info').html("请输入路由文件！");
+				$('#ocAlertTip').css('display','block'); 
+				}  else{
+				
+					$('#importCourseSectionForm').ajaxSubmit({
+						type: 'POST',
+						datatype : 'json',
+						success : function(resp) {
+							
+							window.location.href="${s.base}/routeList.action";
+							/* var resp = $.parseJSON(resp);
+							if (resp.errcode == 0) {
+								$('#myModal').modal('hide');
+								window.location.reload();//刷新
+							} else {
+								Modal.tipFailure(resp.message);//失败提示 
+							} */
+						},
+						error: function(){
+							Modal.tipFailure('导入失败');
+		                    //alert(arguments[0].responseText);
+		                }
+					});
+			}	
+		}
+		</script>
+	</body>
+</html>

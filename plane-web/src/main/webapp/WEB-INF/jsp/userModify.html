@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>用户列表</title>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <#include "common/res.html" />
+</head>
+<body>
+<#include "common/header.html" />
+<#include "./nav.html" />
+<!-- 用户信息删除成功弹出层 -start -->
+<div class="modal" id="successDelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal_wapper small">
+        <div class="modal-dialog w-4" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title f-16" >提示信息</div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                    <div><span class="color-oc f-16 oc-content" style="font-size: 2rem;color:#260cff">该用户删除成功!</span></div>
+                    <div><span class="color-oc f-16 oc-content"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 用户信息删除成功弹出层 -end -->
+<!-- 用户信息删除失败弹出层 -start -->
+<div class="modal" id="failDelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal_wapper small">
+        <div class="modal-dialog w-4" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title f-16" >提示信息</div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                    <div><span class="color-oc f-16 oc-content" style="font-size: 2rem;color: #c7254e" id="failMsg"></span></div>
+                    <div><span class="color-oc f-16 oc-content"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 用户信息删除失败弹出层 -end -->
+<!-- 用户信息删除弹出层 -start -->
+<div class="modal" id="deleteUserModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal_wapper small">
+        <div class="modal-dialog w-4">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body" style="text-align: center;color: indigo">
+                     <span style="font-size:2rem;"><b>确定删除该用户？</b></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="ensureDelUser">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 用户信息删除弹出层 -end -->
+<!-- 用户信息修改弹出层 -start -->
+<div class="modal" id="modifyUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal_wapper">
+        <div class="modal-dialog w-6">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">用户修改</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="userModify" method="post">
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">编号：</label>
+                            <div class="col-sm-11">
+                                <input type="text" id="modifyUserId" name="modify_userid" class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group clearfix">
+                            <label class="control-label"  style="white-space:nowrap">名称：</label>
+                            <div class="col-sm-11">
+                                <input type="text" id="modifyUsername" name="modify_username" class="form-control"  readonly="readonly">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">角色：</label>
+                            <div class="col-sm-11">
+                                <select id="userType" name="userType" class="form-control" type="select">
+                                    <option value="0" selected="selected">管理员</option>
+                                    <option value="1">巡检员</option>
+                                    <option value="2">巡检员</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">描述：</label>
+                            <div class="col-sm-11">
+                                <input type="text" id="description" name="description" class="form-control"
+                                       placeholder="请输入对用户的描述">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="alertDiv"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" name="modifyUser" id="modify">修改</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 用户信息修改弹出层 -end -->
+<!-- 新增用户弹出层 -start -->
+<div class="modal" id="addUserModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal_wapper">
+        <div class="modal-dialog w-8">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">新建用户</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="addUserForm" method="post" enctype="multipart/form-data">
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">编号：</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="addUserId" id="addUserId"
+                                       placeholder="请输入用户编号">
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">名称：</label>
+                            <div class="col-sm-8">
+                                <input type="text clearfix" class="form-control" name="addUsername" id="addUsername"
+                                       placeholder="请输入用户名">
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">密码：</label>
+                            <div class="col-sm-8">
+                                <input type="text clearfix" class="form-control" name="addUserPaw" id="addUserPaw"
+                                       placeholder="请输入用户密码">
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">角色：</label>
+                            <div class="col-sm-8">
+                                <select id="addUserRole" name="addUserRole" class="form-control" type="select">
+                                    <option value="0" selected="selected">管理员</option>
+                                    <option value="1">巡检员</option>
+                                    <option value="2">巡检员</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">描述：</label>
+                            <div class="col-sm-8">
+                                <input type="text clearfix" class="form-control" name="addUserDescripte"
+                                       id="addUserDescripte" placeholder="请输入对该用户的描述">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="alertDiv1"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="addUserButton">创建</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 新增用户弹出层 -end -->
+
+<div class="content">
+    <div class="container-fluid">
+        <form id="queryPageForm" class="mt-15">
+            <div class="block span6">
+                <a class="block-heading f-14" data-toggle="collapse">用户列表</a>
+                <div class="block-body collapse in">
+                    <p>
+                        <select name="role" class="search-select">
+                            <option value="-1">全部</option>
+                            <option value="0" <#if (selectStatus)?? && selectStatus =="0">selected="selected"</#if>>管理员</option>
+                            <option value="1"<#if (selectStatus)?? && selectStatus =="1">selected="selected"</#if>>巡检员</option>
+                           
+                        </select>
+                    </p>
+                    <p>
+                        <input name="userid" type="text" class="search-text" value="" placeholder="请输入用户序号">
+                    </p>
+                    <p>
+                        <input type="submit" class="search-btn"  value="搜索">
+                        <button type="button" class="search-btn" onclick="addUser()">新增</button>
+                    </p>
+                   
+                </div>
+
+                <div class="row-fluid">
+                    <div class="block span6">
+                        <div id="tablewidget" class="block-body collapse in">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>用户名</th>
+                                    <th>描述</th>
+                                    <th>创建时间</th>
+                                    <th>最近修改时间</th>
+                                    <th>角色</th>
+                                    <th>管理</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <#if (page.items)??>
+                                <#list page.items as user>
+                                <tr>
+                                <td>${user.userid}</td>
+                                <td>${user.username}</td>
+                                <td><#if user.descripte??>${user.descripte}</#if></td>
+                                <td><#if user.createtime??>${user.createtime?datetime!}</#if></td>
+                                <td><#if user.updatetime??>${user.updatetime?datetime!}</#if></td>
+                                <td>
+                                    <#if user.role??>
+                                    <#if user.role == "0">
+                                    <span class="label label-primary">管理员</span>
+                                    <#elseif user.role == "1">
+                                    <span class="label label-info">巡检员</span>
+                                    <#else>
+                                    <span class="label label-warning">浏览者</span>
+                                </#if>
+                                <#else>
+                                <span class="label label-danger">待确认</span>
+                                </#if>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser('${user.userid}','${user.username}')">修改</button>
+                                    <button type="button" class="btn btn-danger"  style="background-color:#d9534f" onclick="delUser('${user.userid}')">删除</button>
+                                </td>
+                                </tr>
+                            </#list>
+                        </#if>
+                        </tbody>
+                        </table>
+                            <p><#include "common/tailPage.html"/></p>
+                        </div>
+                   </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function showAlert(message) {
+        var alertitem = document.getElementById("alertDiv");
+        var innHTMl = '<div class="alert alert-danger alert-dismissable" id="alerth">' + message + '</div>';
+        alertitem.innerHTML = innHTMl;
+        alertitem.style.display = "block";
+    }
+
+    function showAlert1(message) {
+        var alertitem1 = document.getElementById("alertDiv1");
+        var innHTMl = '<div class="alert alert-danger alert-dismissable" id="alerth1">' + message + '</div>';
+        alertitem1.innerHTML = innHTMl;
+        alertitem1.style.display = "block";
+    }
+
+    function showUserList()
+    {
+        window.location.reload();
+    }
+    var userID = null;
+    function delUser(uid){
+        userID=uid;
+        Modal.show('deleteUserModal');
+    }
+
+    function modUser(uid,uname){
+        $("#modifyUserId").attr("placeholder",uid);
+        $("#modifyUsername").attr("placeholder",uname);
+        Modal.show('modifyUserModal');
+    }
+
+    $("#ensureDelUser").click(function () {
+        $.ajax({
+            type:"POST",
+            url:"${s.base}/deleteUser.action",
+            data:{
+                "userid":userID
+            },
+            success:function(result){
+                if (result.errcode == 0 && result.message == "SUCCESS") {
+                        Modal.show('successDelModal');
+                        setTimeout(showUserList,2000);
+                }else{
+                       $("#failMsg").html(result.message);
+                       Modal.show('failDelModal');
+                       setTimeout(showUserList,2000);
+                }
+            }
+        });
+    })
+
+
+    $("#modify").click(function () {
+        var id = $("#modifyUserId").attr('placeholder');
+        var type = $("#userType").val();
+        var text = $("#description").val();
+        $.ajax({
+            url: "${s.base}/modifyUser.action",
+            type: "POST",
+            data: {
+                userid:id,
+                role: type,
+                descripte: text
+            },
+            async: true,
+            success: function (result) {
+                if (result.errcode == 0 && result.message == "SUCCESS") {
+                    showAlert("用户信息修改成功!");
+                    setTimeout(showUserList,2000);
+                } else {
+                    showAlert(result.message);
+                }
+            }
+        });
+    })
+
+    function addUser() {
+        Modal.show('addUserModal');
+    }
+
+    $("#addUserButton").click(function () {
+        $.ajax({
+            url: "${s.base}/addUser.action",
+            type: "POST",
+            data: $("#addUserForm").serialize(),
+            async:true,
+            success:function(result){
+                if (result.errcode == 0 && result.message == "SUCCESS") {
+                    showAlert1("添加用户成功!");
+                    setTimeout(showUserList,2000);
+                } else {
+                    showAlert1(result.message);
+                }
+            }
+        });
+    })
+</script>
+</body>
+</html>

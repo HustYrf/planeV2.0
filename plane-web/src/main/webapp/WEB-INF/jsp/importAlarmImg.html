@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>告警图片导入</title>
+  	<#include "common/res.html" />
+</head>
+<body onload=showModel()>
+	<#include "common/header.html" />
+    <#include "./nav.html" />
+     <div class="content">
+        <div class="container-fluid">
+		       <div class="modal" id="alarmImportModal" tabindex="-1" role="dialog"  aria-hidden="true">
+				<div class="modal_wapper">
+					<div class="modal-dialog w-8" >
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+								<h4 class="modal-title" >导入告警图片</h4>
+							</div>
+
+							<div class="modal-body">
+								<form role="form" id="importAlarmForm" method="post" action="${s.base}/importAlarmImg.action" enctype="multipart/form-data">
+									 <div class="form-group clearfix">
+                               			 <label class="control-label"  style="white-space:nowrap" >无人机编号：</label>
+                                			<div class="col-sm-8">
+                                    		<select id="status" name="planeid" class="form-control" type="select" >
+												<#if planelist??>
+													<#list planelist as plane>
+													    <option value="${plane.planeid!}">${plane.planename!}</option>
+													</#list>
+												</#if>
+											</select>
+                                			</div>
+                            		</div>
+									 <div class="form-group clearfix">
+                               			 <label class="control-label"  style="white-space:nowrap" >任务编号：</label>
+                                			<div class="col-sm-8">
+                                    		<select id="status" name="taskid" class="form-control" type="select" >
+												<#if (tasklist)??>
+													<#list tasklist as task>
+													    <option value="${task.taskid!}">${task.taskid!}</option>
+													</#list>
+												</#if>
+											</select>
+                                			</div>
+                            		</div>
+                            		<div class="form-group clearfix">
+                               			 <label class="control-label"  style="white-space:nowrap" >选择告警图片：</label>
+                                			<div class="col-sm-8">
+                                    		<input  type="file" name="AlarmImgs" multiple="multiple"  accept="image/jpeg, image/png, image/jpg" />
+                                			</div>
+                            		</div>
+								</form>
+
+								<div id="ocAlertTip" class="alert alert-success f-16" style="display:none;"><span id="al_info"></span>
+								<button type="button" class="close"  onclick="closeAlert()">
+									<span aria-hidden="true">×</span>
+								</button></div>
+								<!-- tip提示-end -->
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary" onclick="doSave();">导入</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 查询路由章节弹出层 -end -->
+        </div>
+     </div>
+
+      <script type="text/javascript">
+      	function showModel()
+      	{
+      		$('#alarmImportModal').modal('show');
+      	}
+      	function closeAlert(){
+      		$('#ocAlertTip').css('display','none');
+      	}
+		function doSave(){
+			//${s.base}/importAlarm
+			var planeId = $('#plane_Id').val();
+			if(planeId==''){
+				$('#al_info').html("请输入无人机编号！");
+				$('#ocAlertTip').css('display','block');
+			}else{
+				    $('#importAlarmForm').ajaxSubmit({				
+						type: 'POST',						
+						datatype : 'json',
+						success : function(result) {
+						//result = JSON.parse(result);
+						var textstr =result.replace(/<[^>]*>|/g,"");	//提取文字				
+						//if(result.errcode == 0){
+                                $('#al_info').html(textstr);
+                                $('#ocAlertTip').css('display','block');
+						//}
+						},
+						error: function(){
+							Modal.tipFailure('导入失败');
+		                }
+					});
+			}
+		}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>后台管理</title>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <!-- 引入资源文件 -->
+ 	<#include "common/res.html" />
+</head>
+
+<body>
+
+	<#include "common/header.html" />
+    <#include "./nav.html" />
+
+    <div class="content">
+        <div class="container-fluid">
+	          <form id="queryPageForm" class="mt-15">
+	            <div class="block span6">
+	                <a class="block-heading f-14" data-toggle="collapse">任务管理</a>
+	                <div class="block-body collapse in">
+	                	<p>
+								<select  name="finishstatus" class="search-select">
+									<option value="-1">全部</option>
+									<option value="1" <#if (selectStatus)?? && selectStatus =="1">selected="selected"</#if> >已完成</option>
+									<option value="0" <#if (selectStatus)?? && selectStatus =="0">selected="selected"</#if> >未完成</option>
+								</select>
+							</p>
+	                    <p>
+	                        <input name="taskid" type="text" value="" class="search-text" value="" placeholder="请输入任务编号">
+	                    </p>
+	                    <p>
+	                        <input type="submit" class="search-btn" value="搜索">
+	                    </p>
+	                </div>
+	            </div>
+	
+	            <div class="row-fluid">
+	                <div class="block span6">
+	                    <div id="tablewidget" class="block-body collapse in">
+	                        <table class="table table-hover">
+	                            <thead>
+	                            <tr>
+	                                <th>任务编号</th>
+	                                <th>操作者</th>
+		                            <th>操作编号</th>
+		                            <th>放飞者</th>
+		                            <th>放飞编号</th>
+		                            <th>接收者</th>
+		                            <th>接收编号</th>
+		                            <th>无人机编号</th>
+		                            <th>飞行路线</th>
+		                            <th>计划时间</th>
+		                            <th>任务状态</th>
+		                            <th>操作</th>
+	                            </tr>
+	                            </thead>
+	                            <tbody>
+									 
+                            <#if (page.items)??>
+                                <#list page.items as taskpojo>
+                                	<tr>
+                                	<td>${taskpojo.task.taskid!}</td>
+                                	<td>${taskpojo.userAName!}</td>
+                                	<td>${taskpojo.task.useraid!}</td>
+                                	<td>${taskpojo.userBName!}</td>
+                                	<td>${taskpojo.task.userbid!}</td>
+                                	<td>${taskpojo.userCName!}</td>
+                                	<td>${taskpojo.task.usercid!}</td>
+                                	<td>${taskpojo.task.planeid!}</td>
+                                	<td>${taskpojo.task.planepathid!}</td>
+                                	<td>${(taskpojo.task.plantime?datetime)!}</td>
+                                	<td>
+                                	<#if taskpojo.task.status?? && taskpojo.task.status!="">                               	
+                               	    <#if  taskpojo.task.status == '-1'><span class="label label-danger">故障</span>
+                               	    <#elseif taskpojo.task.status =='0'><span class="label label-warning">任务退回</span>
+                               	    <#elseif taskpojo.task.status =='1'><span class="label label-primary">已派发</span>
+                               	    <#elseif taskpojo.task.status =='2'><span class="label label-primary">放飞者已确认</span>
+                               	    <#elseif taskpojo.task.status =='3'><span class="label label-primary">接收者已确认</span>
+                               	    <#elseif taskpojo.task.status =='4'><span class="label label-info">开始执行</span>
+                               	    <#elseif taskpojo.task.status =='5'><span class="label label-info">自检中</span>
+                               	    <#elseif taskpojo.task.status =='6'><span class="label label-success">自检完成</span>
+                               	    <#elseif taskpojo.task.status =='7'><span class="label label-primary">待放飞</span>
+                               	    <#elseif taskpojo.task.status =='8'><span class="label label-info">飞行中</span>
+                               	    <#elseif taskpojo.task.status =='9'><span class="label label-success">飞行完成</span>
+                               	    <#elseif taskpojo.task.status =='10'><span class="label label-success">巡检完成</span>
+                               	    </#if>
+                               	    </#if>
+                                	</td>
+                                	<td>
+                                		<#if taskpojo.task.status=='6'> 
+                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureFly('${taskpojo.task.taskid!}')">允许放飞</button>
+                                		<#elseif taskpojo.task.status=='9'>  
+                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureTaskOver('${taskpojo.task.taskid!}')">巡视完成确认</button>
+                                		<#elseif taskpojo.task.status=='10'>
+                                		 <a href="${s.base}/taskReport.action?taskid=${taskpojo.task.taskid!}" style="cursor:pointer; ">生成飞行报告</a>
+                                		</#if>
+                                	</td>
+                                	</tr>
+                                </#list>
+                             </#if>   	                         
+	                           </tbody>
+	                        </table>
+	                        <p><#include "common/tailPage.html"/></p>
+	                    </div>
+	                </div>
+	            </div>
+	        </form>
+	    </div>
+    </div>
+    	<div class="modal" id="_ocDialogModal" tabindex="-1" aria-hidden="true">
+	    <div class="modal_wapper small">
+	        <div class="modal-dialog w-4" >
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <div class="modal-title f-16" >提示信息</div>
+	                </div>
+	                <div class="modal-body">
+	                    <div><span class="color-oc f-16 oc-content" id="resText">任务完成，打印报告</span></div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+<script type="text/javascript">
+    //允许放飞
+	function onsureFly(taskid){
+		$.ajax({
+            type: "post",
+            url: "${s.base}/onsureFly.action",
+            data: {
+                'taskid': taskid,
+            },
+            success: function (result) {
+            	
+            	 if (result.errcode == 1 ){
+            		 $("#resText").text(result.message);
+                  	Modal.show('_ocDialogModal');
+                  	setTimeout("document.location.reload();",1000);
+                  	
+            	 }
+            	
+            }
+        });
+		
+	}
+    function onsureTaskOver(taskid){
+    	$.ajax({
+            type: "post",
+            url: "${s.base}/onsureTaskOver.action",
+            data: {
+                'taskid': taskid,
+            },
+            success: function (result) {
+            	 if (result.errcode == 1 ){
+            		 $("#resText").text(result.message);
+                  	Modal.show('_ocDialogModal');
+                  	setTimeout("document.location.reload();",1000);
+                  	
+            	 }
+            	
+            }
+        });
+    	
+    	
+    }
+  
+</script>
+</body>
+</html>

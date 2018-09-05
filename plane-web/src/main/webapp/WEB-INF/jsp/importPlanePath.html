@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>飞行路径导出</title>
+  	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<link href="css/style.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+	<script type="text/javascript" src="js/jquery.form.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/oc.min.js"></script>
+	<link rel="icon" type="image/png" href="i/ico.png" sizes="16x16">
+</head>
+<body onload=showModel()>
+	<#include "common/header.html" />
+    <#include "./nav.html" />
+     <div class="content">
+        <div class="container-fluid">
+		       <div class="modal" id="lineModal" tabindex="-1" role="dialog"  aria-hidden="true">
+				<div class="modal_wapper">
+					<div class="modal-dialog w-8" >
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+								<h4 class="modal-title" >导出飞行路径</h4>
+							</div>
+							
+							<div class="modal-body">
+								<form role="form" id="importPlanePathForm" method="post" action="${s.base}/importPlanePath.action"  enctype="multipart/form-data">
+									 <div class="form-group clearfix">
+                               			 <label class="control-label"  style="white-space:nowrap" >飞行路径编号：</label>
+                                			<div class="col-sm-8">
+                                    		<input type="text" class="form-control" name="planepathid" id="planepathid" placeholder="请输入飞行路径编号" required="required">
+                                			</div>
+                            			</div>
+								</form>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary" onclick="doSave();">导出</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 导出飞行路径弹出层 -end -->
+        </div>
+     </div>
+       <!-- 弹出层 alert 信息 -->
+		<div class="modal" id="_ocDialogModal" tabindex="-1" aria-hidden="true">
+		    <div class="modal_wapper small">
+		        <div class="modal-dialog w-4" >
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <div class="modal-title f-16" >提示信息</div>
+		                </div>
+		                <div class="modal-body">
+		                    <div><span class="color-oc f-16 oc-content">导出成功</span></div>
+		                </div>
+		               	
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	<!-- 弹出层 alert 信息 -->
+      <script type="text/javascript">
+	      function showAlarmModel()
+	  	{
+	  		window.location.reload();
+	  	}
+  	
+      	function showModel()
+      	{
+      		$('#lineModal').modal('show');
+      	}
+      	function closeAlert(){
+      		$('#ocAlertTip').css('display','none');
+      	}
+		function doSave(){
+			
+			var planepathid = $('#planepathid').val();
+			$('#ocAlertTip').css('display','block');
+			
+			if(!routeId){
+				$('#al_info').html("请输入飞行路径编号！");
+				$('#ocAlertTip').css('display','');
+				
+			}else{
+			
+					$('#importPlanePathForm').ajaxSubmit({
+						type: 'POST',
+						datatype : 'json',
+						success : function(resp) {
+							var resp = $.parseJSON(resp);
+							if (resp.errcode == 0) {
+								//$('#lineModal').modal('hide');
+								Modal.show('_ocDialogModal');
+								setTimeout(showAlarmModel,1000)
+								//window.location.reload();
+							} else {
+								Modal.tipFailure(resp.message);//失败提示 
+							}
+						},
+						error: function(){
+							Modal.tipFailure('保存失败');
+		                    //alert(arguments[0].responseText);
+		                }
+					});
+			}	
+		}
+		</script>
+  
+	</body>
+</html>
