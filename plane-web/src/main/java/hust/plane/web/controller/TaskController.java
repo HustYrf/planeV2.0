@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import hust.plane.constant.WebConst;
 import hust.plane.utils.DateKit;
 import hust.plane.utils.pojo.TipException;
-import hust.plane.web.controller.admin.UserController;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +42,8 @@ import hust.plane.web.controller.vo.AlarmVO;
 import hust.plane.web.controller.webUtils.WordUtils;
 
 @Controller
-public class taskController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(taskController.class);
+public class TaskController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskController.class);
     @Autowired
     private TaskService taskServiceImpl;
     @Autowired
@@ -132,17 +130,7 @@ public class taskController {
 
         User userCreator = PlaneUtils.getLoginUser(request);
         task.setUsercreator(userCreator.getId());
-        
-        /* if (task.getId()==null) {
-            task.setTaskid(task.getId());
-        } else {
-            task.setTaskid(null);
-        }*/
-
-        if (task.getFinishstatus() == -1) {
-            // 查询全部
-            task.setFinishstatus(null);
-        }
+    
         page = taskServiceImpl.queryPage(task, page);
         
         model.addAttribute("selectStatus", task.getFinishstatus());

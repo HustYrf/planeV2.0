@@ -8,13 +8,13 @@ import hust.plane.utils.page.TailPage;
 
 public interface FlyingPathMapper {
 	
-	 FlyingPath selectByFlyingPathVO(FlyingPath flyingPath);
+	FlyingPath selectByFlyingPathVO(FlyingPath flyingPath);
 
 	 //void insertFlyingPath();
 
-	 void insertFlyingPath(FlyingPath flyingPath);
+	int insertFlyingPath(FlyingPath flyingPath);
 
-	 FlyingPath selectByFlyingPathId(FlyingPath flyingPath);
+	FlyingPath selectByFlyingPathId(FlyingPath flyingPath);
 
 	int flyingPathCount(FlyingPath flyingPath);
 
@@ -22,5 +22,5 @@ public interface FlyingPathMapper {
 
 	List<FlyingPath> findAllFlyingPath();
 
-	void deleteFlyingPath(FlyingPath flyingPath); 
+	int deleteFlyingPath(FlyingPath flyingPath); 
 }

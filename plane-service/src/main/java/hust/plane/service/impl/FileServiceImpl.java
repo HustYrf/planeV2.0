@@ -14,31 +14,36 @@ import hust.plane.service.interFace.FileService;
 import hust.plane.utils.ExcelUtil;
 import hust.plane.utils.LineUtil;
 import hust.plane.utils.pojo.RouteExcel;
+
 @Service
 public class FileServiceImpl implements FileService {
-	
 
-	@Value("${ROOT_FILE}")   
+	@Value("${ROOT_FILE}")
 	private String ROOT_FILE;
 
 	@Autowired
 	private RouteMapper routeMapper;
-	//插入路由数据
+
+	// 插入路由数据
 	@Override
-	public void insertRoute(File file,Route route) {
-		//修改
-		//String filepath = ROOT_FILE + path;
+	public boolean insertRoute(File file, Route route) {
+		// 修改
+		// String filepath = ROOT_FILE + path;
 		List<RouteExcel> readExcel = ExcelUtil.readExcel(file);
+
+		// 构成经纬度序列
+		String s = LineUtil.ListToString(readExcel);
+		route.setRoutepathdata(s);
 		
-		//构成经纬度序列
-		String s=LineUtil.ListToString(readExcel);
-		route.setRoutepathdata(s);;
-		//设置创建时间
-		Date date=new Date();
+		// 设置创建时间
+		Date date = new Date();
 		route.setCreatetime(date);
-		
-		routeMapper.insert(route);
-		
+
+		if (routeMapper.insert(route) == 1)
+			return true;
+		else
+			return false;
+
 	}
 
 }

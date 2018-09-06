@@ -15,13 +15,13 @@ public interface AlarmService {
 
     Alarm selectAlarmById(int id);
 
-    void updateAlarmStatus(int alarmid);
+    boolean updateAlarmStatus(int alarmid);
 
-    int insertAlarmById(String planeId);
+    boolean insertAlarmById(String planeId);
 
-    int updateAlarmDesc(int alarmid, String description);
+    boolean updateAlarmDesc(int alarmid, String description);
 
 	List<Alarm> getAlarmsByTaskId(int taskid);
 	
-	int insertAlarmByAlarms(Alarm alarm);
+	boolean insertAlarmByAlarms(Alarm alarm);
 }

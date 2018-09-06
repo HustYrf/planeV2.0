@@ -14,7 +14,7 @@ public interface UserService {
 
     User queryUserById(int id);
 
-    void modifyPwd(HttpServletRequest request, String oldpassword, String password);
+    boolean modifyPwd(HttpServletRequest request, String oldpassword, String password);
 
 //	List<User> findByUserRole(User userExmple);
 
@@ -28,9 +28,9 @@ public interface UserService {
 
 //    TailPage<User> getUserByRoleOrIdWithPage(String searchUserStatus, String searchUserId, TailPage<User> page);
 
-	void updataTasknumByUser(User user);
+    boolean updataTasknumByUser(User user);
 
-	void reduceTasknumByUser(User user);
+    boolean reduceTasknumByUser(User user);
 
 	User getUserById(Integer userbid);
 

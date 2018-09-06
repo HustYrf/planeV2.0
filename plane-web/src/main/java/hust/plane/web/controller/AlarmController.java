@@ -201,8 +201,8 @@ public class AlarmController {
     @ResponseBody
     public String doModify(@RequestParam(value="alarmid")int alarmid,@RequestParam(value="description")String description){
         try {
-            int count = alarmService.updateAlarmDesc(alarmid, description);
-            if (count != 1) {
+            boolean flag = alarmService.updateAlarmDesc(alarmid, description);
+            if (flag == false) {
                 throw new TipException("告警点描述信息插入失败");
             }
         }catch (Exception e){

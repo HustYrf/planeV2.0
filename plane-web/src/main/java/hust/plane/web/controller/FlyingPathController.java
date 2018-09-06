@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.thoughtworks.xstream.mapper.Mapper.Null;
-
 import hust.plane.mapper.pojo.FlyingPath;
 import hust.plane.mapper.pojo.Route;
 import hust.plane.service.interFace.FlyingPathService;
@@ -108,7 +106,7 @@ public class FlyingPathController {
 		FlyingPathVO flyingPathVO = new FlyingPathVO(flyingPath);
 		
 		model.addAttribute("PlanePath",JsonUtils.objectToJson(flyingPathVO));
-		return "showPlanePath";
+		return "showFlyingPath";
 	}
 	
 	//删除飞行路径

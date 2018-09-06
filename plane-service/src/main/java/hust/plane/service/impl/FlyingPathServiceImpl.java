@@ -38,6 +38,7 @@ public class FlyingPathServiceImpl implements FlyingPathService {
 
 		// 然后在下面进行插入数据
 		flyingPathMapper.insertFlyingPath(flyingPath);
+		
 		return true;
 	}
 

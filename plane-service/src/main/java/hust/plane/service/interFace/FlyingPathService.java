@@ -7,7 +7,7 @@ import hust.plane.utils.page.TailPage;
 
 public interface FlyingPathService {
 
-    void importFlyingPath(FlyingPath flyingPath, String filePath);
+	void importFlyingPath(FlyingPath flyingPath, String filePath);
 
     boolean insertFlyingPath(FlyingPath flyingPath);
 

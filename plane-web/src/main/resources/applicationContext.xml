@@ -20,7 +20,7 @@
         </property>
     </bean>
 
-	<!-- 配置组件扫描器，使用注解方式开发,不用配置dao和service -->
+	<!-- 配置组件扫描器，使用注解方式开发,不用配置dao和service 把Controller注解的类排除-->
 	<context:component-scan base-package="hust.plane">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />

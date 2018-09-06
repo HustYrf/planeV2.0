@@ -14,13 +14,13 @@ public interface TaskService {
 
     TailPage<TaskPojo> queryPage(Task task, TailPage<TaskPojo> page);
 
-    void saveTask(Task task);
+    boolean saveTask(Task task);
 
-	void setStatusTaskByTask(Task task, int status);
+    boolean setStatusTaskByTask(Task task, int status);
 
 	String getStatusByTask(Task task);
 
-	void setFinishStatusTaskByTask(Task task, int finishstatus);
+	boolean setFinishStatusTaskByTask(Task task, int finishstatus);
 
 	Task getTaskByTask(Task task);
 

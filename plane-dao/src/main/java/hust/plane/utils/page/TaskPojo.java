@@ -5,34 +5,45 @@ import hust.plane.mapper.pojo.Task;
 public class TaskPojo {
 	
 	private Task task;
+	
+	private String userCreatorName;
+	
 	private String userAName;
-	private String userBName;
-	private String userCName;
+	
+	private String userZName;
+
 	public Task getTask() {
 		return task;
 	}
+
 	public void setTask(Task task) {
 		this.task = task;
 	}
+
+	public String getUserCreatorName() {
+		return userCreatorName;
+	}
+
+	public void setUserCreatorName(String userCreatorName) {
+		this.userCreatorName = userCreatorName;
+	}
+
 	public String getUserAName() {
 		return userAName;
 	}
+
 	public void setUserAName(String userAName) {
 		this.userAName = userAName;
 	}
-	public String getUserBName() {
-		return userBName;
+
+	public String getUserZName() {
+		return userZName;
 	}
-	public void setUserBName(String userBName) {
-		this.userBName = userBName;
+
+	public void setUserZName(String userZName) {
+		this.userZName = userZName;
 	}
-	public String getUserCName() {
-		return userCName;
-	}
-	public void setUserCName(String userCName) {
-		this.userCName = userCName;
-	}
-	
+
 	
 
 }

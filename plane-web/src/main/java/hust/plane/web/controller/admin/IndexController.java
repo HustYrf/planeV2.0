@@ -43,7 +43,6 @@ public class IndexController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginView() {
-    	System.out.println("------------------登陆-----------------");
         return "login";
     }
 
@@ -57,14 +56,20 @@ public class IndexController {
      * @param response
      * @return
      */
+    //用户登陆Ajax请求
     @RequestMapping(value = "/login", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String doLogin(@RequestParam String name, @RequestParam String password, @RequestParam(required = false) String remeber_me,
                           HttpServletRequest request, HttpServletResponse response) {
+    	//得到缓存中登陆失败的次数
         Integer error_count = cache.get("login_error_count");
+        
         try {
             User user = userService.login(name, password);
+            
+            //把用户保存在session中
             request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
+            
             if (StringUtils.isNotBlank(remeber_me)){
                 PlaneUtils.setCookie(response, user.getId());
             }

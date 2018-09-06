@@ -16,8 +16,8 @@ public interface AlarmMapper {
 	int alarmCount(Alarm alarm);
 	List<Alarm> queryAlarmPage(Alarm alarm, TailPage<AlarmPojo> page);
     Alarm selectInfoById(Integer id);
-	void updateByAlarmId(Integer id);
+	int updateByAlarmId(Integer id);
     int insertAlarmSelective(Alarm alarm);
-	void updateDesByAlarmId(Integer alarmid, String description);
+	int updateDesByAlarmId(Integer alarmid, String description);
 	List<Alarm> getAlarmsByTaskId(@Param("taskId") Integer taskId);
 }

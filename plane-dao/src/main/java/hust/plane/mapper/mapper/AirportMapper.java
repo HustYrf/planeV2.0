@@ -8,6 +8,6 @@ public interface AirportMapper {
 
 	List<Airport> getAllAirport();
 	
-	void insertAirport(Airport airport);
+	int insertAirport(Airport airport);
 	
 }

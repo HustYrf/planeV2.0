@@ -20,13 +20,17 @@ public class Task {
 	private Integer uavId;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date ceatetime;
+	private Date createtime;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date planstarttime;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date planendtime;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date executestarttime;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date executeendtime;
 
@@ -94,12 +98,12 @@ public class Task {
 		this.uavId = uavId;
 	}
 
-	public Date getCeatetime() {
-		return ceatetime;
+	public Date getCreatetime() {
+		return createtime;
 	}
 
-	public void setCeatetime(Date ceatetime) {
-		this.ceatetime = ceatetime;
+	public void setCeatetime(Date createtime) {
+		this.createtime = createtime;
 	}
 
 	public Date getPlanstarttime() {

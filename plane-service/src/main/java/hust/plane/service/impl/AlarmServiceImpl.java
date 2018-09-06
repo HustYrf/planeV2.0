@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import freemarker.core._RegexBuiltins.replace_reBI;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -53,13 +55,17 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 
 	@Override
-	public void updateAlarmStatus(int alarmid) {
-		alarmMapper.updateByAlarmId(alarmid);
+	public boolean updateAlarmStatus(int alarmid) {
+
+		if (alarmMapper.updateByAlarmId(alarmid) == 1)
+			return true;
+		else
+			return false;
 
 	}
 
 	@Override
-	public int insertAlarmById(String planeId) {
+	public boolean insertAlarmById(String planeId) {
 		/*
 		 * try { if (StringUtils.isBlank(planeId)) { logger.error("输入的无人机编号为空"); throw
 		 * new TipException("输入的无人机编号为空"); } if (StringUtils.isBlank(taskid)) {
@@ -71,20 +77,23 @@ public class AlarmServiceImpl implements AlarmService {
 		 * (count < 1) { logger.error("告警点插入错误"); throw new TipException("告警点插入错误"); } }
 		 * } catch (Exception e) { e.printStackTrace(); }
 		 */
-		return 1;
+		return true;
 	}
 
 	@Override
-	public int updateAlarmDesc(int alarmid, String description) {
+	public boolean updateAlarmDesc(int alarmid, String description) {
 		if (alarmid != 0 || StringUtils.isBlank(description)) {
 			throw new TipException("描述信息为空");
 		}
 		try {
-			alarmMapper.updateDesByAlarmId(alarmid, description);
+			if (alarmMapper.updateDesByAlarmId(alarmid, description) == 1)
+				return true;
+			else
+				return false;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
-		return 1;
+		return false;
 	}
 
 	@Override
@@ -93,15 +102,15 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 
 	@Override
-	public int insertAlarmByAlarms(Alarm alarm) {
+	public boolean insertAlarmByAlarms(Alarm alarm) {
 
 		if (alarm.getId() != 0) {
-
-			alarmMapper.insertAlarmSelective(alarm);
-
-			return 1;
+			if (alarmMapper.insertAlarmSelective(alarm) == 1)
+				return true;
+			else
+				return false;
 		}
-		return 0;
+		return false;
 	}
 
 }
