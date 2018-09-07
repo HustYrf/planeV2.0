@@ -133,21 +133,21 @@
                             <#if (page.items)?? && ((page.items)?size gt 0)>
                             <#list page.items as alarm>
                             <tr>
-                            <td>${alarm.id！}</td>
-                            <td>${alarm.taskId！}</td>
-                            <td>${alarm.position！}</td>
-                            <td>${alarm.createtime?datetime!}</td>
-                            <td>${alarm.updatetime?datetime!}</td>
+                            <td>${alarm.id!}</td>
+                            <td>${alarm.taskId!}</td>
+                            <td>${alarm.position!}</td>
+                            <td>${alarm.createtime!}</td>
+                            <td>${alarm.updatetime!}</td>
                             <td>
-                                <#if alarm.status =="0">
+                                <#if alarm.status ==0>
                                 <span class="label label-success">已处理告警 </span>
                                 <#else>
-                                <button type="button" class="label label-danger" onclick="dealsAlarm('${alarm.alarmid}')">
+                                <button type="button" class="label label-danger" onclick="dealsAlarm('${alarm.id}')">
                                                                                         未处理告警  </button>
                                 </#if>
                             </td>
-                            <td><a class="pointer" onclick="showDetail('${alarm.alarmid}')">详细信息</a></td>
-                            <td><a class="pointer" onclick="modifyDes('${alarm.alarmid}')">修改告警描述</a></td>
+                            <td><a class="pointer" onclick="showDetail('${alarm.id}')">详细信息</a></td>
+                            <td><a class="pointer" onclick="modifyDes('${alarm.id}')">修改告警描述</a></td>
                              </tr>
                             </#list>
                         </#if>
