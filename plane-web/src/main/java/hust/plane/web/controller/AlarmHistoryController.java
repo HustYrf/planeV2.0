@@ -36,8 +36,8 @@ public class AlarmHistoryController {
 
     @RequestMapping(value = "dealWithAlarm")
     @ResponseBody
-    public String dealWithAlarm(int alarmid) {
-        alarmService.updateAlarmStatus(alarmid);
+    public String dealWithAlarm(int id) {
+        alarmService.updateAlarmStatus(id);
         return new JsonView(0).toString();
     }
 }
