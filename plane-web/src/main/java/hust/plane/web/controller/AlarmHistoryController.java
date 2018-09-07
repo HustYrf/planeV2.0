@@ -22,26 +22,24 @@ public class AlarmHistoryController {
 
     @RequestMapping(value = "alarmHistory")
     public String alarmHistoryQueryPage(Alarm alarm, TailPage<AlarmPojo> page, Model model) {
-    	if(alarm.getStatus() == -1)
-    	{
-    		alarm.setStatus(null);
-    	}
-    	/*if(alarm.getId() == 0)
-    	{
-    		alarm.setId(null);
-    	}*/
-        page = alarmService.queryAlarmWithPage(alarm,page);
+
+        if (alarm.getStatus() != null && alarm.getStatus() == -1) {
+            alarm.setStatus(null);
+        }
+        if (alarm.getId() != null && alarm.getId() == 0) {
+            alarm.setId(null);
+        }
+        page = alarmService.queryAlarmWithPage(alarm, page);
         model.addAttribute("selectStatus", alarm.getStatus());
-        model.addAttribute("page",page);
+        model.addAttribute("page", page);
         model.addAttribute("curNav", "alarmhistory");
         return "alarmHistory";
     }
-    
+
     @RequestMapping(value = "dealWithAlarm")
     @ResponseBody
-    public String dealWithAlarm(int alarmid)
-    {
-    	alarmService.updateAlarmStatus(alarmid);
-    	return  new JsonView(0).toString();
+    public String dealWithAlarm(int id) {
+        alarmService.updateAlarmStatus(id);
+        return new JsonView(0).toString();
     }
 }

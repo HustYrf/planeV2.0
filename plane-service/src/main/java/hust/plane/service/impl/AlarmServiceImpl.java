@@ -3,6 +3,8 @@ package hust.plane.service.impl;
 import hust.plane.mapper.mapper.AlarmMapper;
 import hust.plane.mapper.pojo.Alarm;
 import hust.plane.service.interFace.AlarmService;
+import hust.plane.utils.PlaneUtils;
+import hust.plane.utils.ToolUntils;
 import hust.plane.utils.page.AlarmPojo;
 import hust.plane.utils.page.TailPage;
 import hust.plane.utils.pojo.TipException;
@@ -11,6 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import freemarker.core._RegexBuiltins.replace_reBI;
+import javax.tools.Tool;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -82,14 +87,11 @@ public class AlarmServiceImpl implements AlarmService {
 
 	@Override
 	public boolean updateAlarmDesc(int alarmid, String description) {
-		if (alarmid != 0 || StringUtils.isBlank(description)) {
+		if (alarmid<0 || StringUtils.isBlank(description)) {
 			throw new TipException("描述信息为空");
 		}
 		try {
-			if (alarmMapper.updateDesByAlarmId(alarmid, description) == 1)
-				return true;
-			else
-				return false;
+			return alarmMapper.updateDesByAlarmId(Integer.valueOf(alarmid), description) == 1?true:false;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}

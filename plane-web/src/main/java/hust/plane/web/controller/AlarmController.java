@@ -85,7 +85,7 @@ public class AlarmController {
      */
     @RequestMapping(value = "alarmInfo", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String getAlarmInfo(@RequestParam(value = "alarmId") int id) {
+    public String getAlarmInfo(@RequestParam(value = "id") int id) {
         Alarm alarm = alarmService.selectAlarmById(id);
         InfoTplData info = new InfoTplData();
         info.setImg(alarm.getImageurl());
@@ -107,8 +107,6 @@ public class AlarmController {
     	User aUser = PlaneUtils.getLoginUser(request);
     	List<Task> tasklist = taskServiceImpl.getTasklistByAuser(aUser);
     	List<Uav> uavlist = planeServiceImpl.getAllPlane();
-    	
-    	
     	model.addAttribute("planelist",uavlist);
     	model.addAttribute("tasklist",tasklist);
         model.addAttribute("curNav", "alarmImport");
@@ -199,7 +197,7 @@ public class AlarmController {
     //修改告警信息
     @RequestMapping(value = "modifyAlarmDes",produces = "application/json;charset=utf-8",method = RequestMethod.POST)
     @ResponseBody
-    public String doModify(@RequestParam(value="alarmid")int alarmid,@RequestParam(value="description")String description){
+    public String doModify(@RequestParam(value="id")int alarmid,@RequestParam(value="description")String description){
         try {
             boolean flag = alarmService.updateAlarmDesc(alarmid, description);
             if (flag == false) {

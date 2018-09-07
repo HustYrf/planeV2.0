@@ -18,6 +18,6 @@ public interface AlarmMapper {
     Alarm selectInfoById(Integer id);
 	int updateByAlarmId(Integer id);
     int insertAlarmSelective(Alarm alarm);
-	int updateDesByAlarmId(Integer alarmid, String description);
+	int updateDesByAlarmId(Integer id, String description);
 	List<Alarm> getAlarmsByTaskId(@Param("taskId") Integer taskId);
 }

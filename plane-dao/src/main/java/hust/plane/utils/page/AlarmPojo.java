@@ -1,6 +1,7 @@
 package hust.plane.utils.page;
 
 import hust.plane.mapper.pojo.Alarm;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,35 +9,41 @@ import java.util.Date;
 import java.util.List;
 
 public class AlarmPojo  {
-    private Integer alarmid;
-    private String image;
-    private String planeid;
-    private String descripte;
-    private String createTime;
-    private String updateTime;
-    private String alongda;
-    private List<Double> positionList;
+    private Integer id;
+    private Integer taskId;
+    private String imageurl;
+    private String position;
+    private String description;
+    private String createtime;
+    private String updatetime;
     private Integer status;
+    private String infoname;
+    private Integer routeId;
+    private List<Double> positionList;
+
 
     public AlarmPojo(Alarm alarm) {
 
-        this.alarmid = alarm.getId();
+        this.id = alarm.getId();
+        if(alarm.getTaskId()!=null){
+            this.taskId=alarm.getTaskId();
+        }
         if (alarm.getImageurl() != null) {
-            this.image = alarm.getImageurl();
+            this.imageurl = alarm.getImageurl();
         }
         if (alarm.getDescription() != null) {
-            this.descripte = alarm.getDescription();
+            this.description = alarm.getDescription();
         }
         if (alarm.getCreatetime() != null) {
-            this.createTime =dateFormat(alarm.getCreatetime(),"yyyy/MM/dd HH:mm:ss");
+            this.createtime =dateFormat(alarm.getCreatetime(),"yyyy/MM/dd HH:mm:ss");
         }
         if (alarm.getUpdatetime() != null) {
-            this.updateTime = dateFormat(alarm.getUpdatetime(),"yyyy/MM/dd HH:mm:ss");
+            this.updatetime = dateFormat(alarm.getUpdatetime(),"yyyy/MM/dd HH:mm:ss");
 
         }
         if(alarm.getPosition()!=null) {
             this.positionList = StringPointToList(alarm.getPosition());
-            this.alongda = pointToString(StringPointToList(alarm.getPosition()));
+            this.position = pointToString(StringPointToList(alarm.getPosition()));
         }
         if(alarm.getStatus()!=null)
         {
@@ -44,54 +51,86 @@ public class AlarmPojo  {
         }
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(String createtime) {
+        this.createtime = createtime;
+    }
+
+    public String getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(String updatetime) {
+        this.updatetime = updatetime;
+    }
+
     public Integer getStatus() {
-		return status;
-	}
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-	public Integer getAlarmid() {
-        return alarmid;
+        return status;
     }
-    public void setAlarmid(Integer alarmid) {
-        this.alarmid = alarmid;
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
-    public String getImage() {
-        return image;
+
+    public String getInfoname() {
+        return infoname;
     }
-    public void setImage(String image) {
-        this.image = image;
+
+    public void setInfoname(String infoname) {
+        this.infoname = infoname;
     }
-    public String getPlaneid() {
-        return planeid;
+
+    public Integer getRouteId() {
+        return routeId;
     }
-    public void setPlaneid(String planeid) {
-        this.planeid = planeid;
+
+    public void setRouteId(Integer routeId) {
+        this.routeId = routeId;
     }
-    public String getDescripte() {
-        return descripte;
-    }
-    public void setDescripte(String descripte) {
-        this.descripte = descripte;
-    }
-    public String getCreateTime() {
-        return createTime;
-    }
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-    public String getUpdateTime() {
-        return updateTime;
-    }
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
-    public String getAlongda() {
-        return alongda;
-    }
-    public void setAlongda(String alongda) {
-        this.alongda = alongda;
-    }
+
     public List<Double> getPositionList() {
         return positionList;
     }
