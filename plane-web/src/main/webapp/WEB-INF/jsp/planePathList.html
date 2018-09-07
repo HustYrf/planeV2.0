@@ -39,27 +39,29 @@
 	                            <thead>
 	                            <tr>
 	                                <th>飞行路径编号</th>
+	                                <th>飞行路径名称</th>
 	                                <th>描述</th>	                                
 	                                <th>创建时间</th>
                                     <th>更新时间</th>
                                     <th>地理位置</th>
-                                    <th>创建任务</th>
+                                    <th>操作</th>
                                                                                          
 	                            </tr>
 	                            </thead>
 	                            <tbody>                              
-	                            <#if (page.items)??>
+	                            <#if (page.items)?? && ((page.items)?size gt 0)>
 	                            <#list page.items as planepath>
 	                            	<tr>
-		                            <td>${planepath.planepathid}</td>
-		                            <td>${planepath.descripte}</td>
-		                            <td>${planepath.createtime?date}</td> 
-		                            <td>${planepath.updatetime?date}</td>                           
-		                            <td><a href="${s.base}/showPlanePath.action?planepathid=${planepath.planepathid}" target="_blank">详细信息</a></td>
+	                            	<td>${planepath.id}</td>
+		                            <td>${planepath.name}</td>
+		                            <td>${planepath.description}</td>
+		                            <td>${planepath.createtime?datetime}</td> 
+		                            <td>${planepath.updatetime?datetime}</td>                           
+		                            <td><a href="${s.base}/showPlanePath.action?id=${planepath.id}" target="_blank">详细信息</a></td>
 		                            <td>
-		                            <a href="${s.base}/toTaskCreate?planepathid=${planepath.planepathid}" class="btn btn-primary btn-sm">创建任务</a>
-		                            <a class="btn btn-primary btn-sm" onclick='deletePlanePath("${planepath.planepathid!}")'>删除路径</a>
-		                            <a class="btn btn-primary btn-sm" onclick='importPlanePath("${planepath.planepathid!}",${planepath.height!})' style="cursor: pointer;">导出路径</a></td>
+		                            <a href="${s.base}/toTaskCreate?id=${planepath.id}" class="btn btn-primary btn-sm">创建任务</a>
+		                            <a class="btn btn-primary btn-sm" onclick='deletePlanePath("${planepath.id!}")'>删除路径</a>
+		                            <a class="btn btn-primary btn-sm" onclick='exportPlanePath(${planepath.id!},${planepath.heightdata!})' style="cursor: pointer;">导出路径</a></td>
 		                            </tr> 	                      
                                 </#list>
                         		</#if>                                                         
@@ -112,7 +114,7 @@
 		<input type="text" id="planepathid" style="display:none" />
 	<!-- 信息删除确认 -->  
  <script>
- 	function importPlanePath(id,heigth){
+ 	function exportPlanePath(id,heigth){
  		if(heigth==null || height==""){
  			Modal.show('_ocDialogModal');
  			document.getElementById("msg").innerHTML="缺少高度数据，无法导出";
@@ -129,7 +131,7 @@
             type: "post",
             url: "${s.base}/deletePlanePath.action",
             data: {
-            	'planepathid':$('#planepathid').val(),
+            	'id':$('#planepathid').val(),
             },
             success: function (result) {
             	console.log(result);
@@ -143,9 +145,9 @@
         });				
  	}  
  	
- 	function deletePlanePath(planepathid){
+ 	function deletePlanePath(id){
  		 
- 		$('#planepathid').val(planepathid);
+ 		$('#planepathid').val(id);
  		$('#deleltconfirmModel').modal();
  				
  	}

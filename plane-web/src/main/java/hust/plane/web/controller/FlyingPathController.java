@@ -70,6 +70,7 @@ public class FlyingPathController {
 	@RequestMapping("/doSetFlyPath")
 	@ResponseBody
 	public String doSetFlyPath(FlyingPath flyingPath) {
+		
 		//System.out.println(route.getRoutePath());
 		
 		if(flyingPathServiceImpl.insertFlyingPath(flyingPath)==true)
@@ -83,10 +84,10 @@ public class FlyingPathController {
 	@RequestMapping("/doGetFlyPathList")
 	public String doGetFlyPathListQueryPage(FlyingPath flyingPath, String status,TailPage<FlyingPath> page, Model model) {
 		
-    	if(flyingPath.getId()==null)
+    	/*if(flyingPath.getId()==null)
     	{
     		flyingPath.setId(0);
-    	}
+    	}*/
         model.addAttribute("selectStatus",status);
         page = flyingPathServiceImpl.queryFlyingPathWithPage(flyingPath,page);
         model.addAttribute("page",page);

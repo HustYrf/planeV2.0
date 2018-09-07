@@ -23,7 +23,7 @@ public class FlyingPathServiceImpl implements FlyingPathService {
 
 	public void importFlyingPath(FlyingPath flyingPath, String filePath) {
 		FlyingPath planePathList = flyingPathMapper.selectByFlyingPathVO(flyingPath);
-		List<PlanePathVo> plist = KMLUtil.textToList(planePathList.getPathdata(),planePathList.getHeightdata());
+		List<PlanePathVo> plist = KMLUtil.textToList(planePathList.getPathdata(), planePathList.getHeightdata());
 		KMLUtil.importKML(filePath, plist);
 	}
 
@@ -35,11 +35,12 @@ public class FlyingPathServiceImpl implements FlyingPathService {
 		Date date = new Date();
 		flyingPath.setCreatetime(date);
 		flyingPath.setUpdatetime(date);
-
-		// 然后在下面进行插入数据
-		flyingPathMapper.insertFlyingPath(flyingPath);
 		
-		return true;
+		// 然后在下面进行插入数据
+		if (flyingPathMapper.insertFlyingPath(flyingPath) == 1)
+			return true;
+		else
+			return false;
 	}
 
 	@Override
@@ -51,25 +52,25 @@ public class FlyingPathServiceImpl implements FlyingPathService {
 
 	@Override
 	public TailPage<FlyingPath> queryFlyingPathWithPage(FlyingPath flyingPath, TailPage<FlyingPath> page) {
-		
+
 		int count = flyingPathMapper.flyingPathCount(flyingPath);
-        page.setItemsTotalCount(count);
-        List<FlyingPath> flyingPaths = flyingPathMapper.queryFlyingPathPage(flyingPath, page);
-      
-        page.setItems(flyingPaths);
-        return page;
+		page.setItemsTotalCount(count);
+		List<FlyingPath> flyingPaths = flyingPathMapper.queryFlyingPathPage(flyingPath, page);
+
+		page.setItems(flyingPaths);
+		return page;
 	}
 
 	@Override
 	public List<FlyingPath> findAllFlyingPath() {
-		
+
 		List<FlyingPath> planePaths = flyingPathMapper.findAllFlyingPath();
 		return planePaths;
 	}
 
 	@Override
 	public boolean deleteFlyingPath(FlyingPath flyingPath) {
-		
+
 		flyingPathMapper.deleteFlyingPath(flyingPath);
 		return true;
 	}

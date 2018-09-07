@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>设定飞行路径</title>
     <#include "common/res.html" />
-    <script type="text/javascript" src="${s.base}/js/route.js"></script>    
     <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
     <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
     <script src="https://webapi.amap.com/maps?v=1.4.8&key=82f9e75505b649be9ab81a45ae34aa14&&plugin=AMap.Scale"></script>
@@ -224,11 +223,11 @@
                                 var index = PointList[i][1];
                                 if (PointList[i][2] == 'start') {
 
-                                    for (var j = 0; j < routeList[index].routePath.length; j++)
-                                        PlanePath.push(routeList[index].routePath[j]);
+                                    for (var j = 0; j < routeList[index].routepathdata.length; j++)
+                                        PlanePath.push(routeList[index].routepathdata[j]);
                                 } else {
-                                    for (var j = routeList[index].routePath.length - 1; j >= 0; j--)
-                                        PlanePath.push(routeList[index].routePath[j]);
+                                    for (var j = routeList[index].routepathdata.length - 1; j >= 0; j--)
+                                        PlanePath.push(routeList[index].routepathdata[j]);
                                 }
                             }
                             PlanePathStr = getString(PlanePath);
@@ -310,7 +309,7 @@
                                         type: 'POST',
                                         async: true, //或false,是否异步
                                         data: {
-                                            'id':planepathid,
+                                            'name':planepathid,
                                             'pathdata':PlanePathStr,
                                             'description':descripte,
                                         },

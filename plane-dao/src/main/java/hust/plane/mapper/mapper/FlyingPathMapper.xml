@@ -31,10 +31,11 @@
 
 	<insert id="insertFlyingPath" parameterType="hust.plane.mapper.pojo.FlyingPath">
 		insert into
-		K_FlyingPath(Name,PathData,Description,CreateTime,UpdateTime)
+		K_FlyingPath(Name,Description,CreateTime,UpdateTime,PathData)
 		values
-		(#{name,jdbcType=VARCHAR},GeomFromText(#{pathdata,jdbcType=VARCHAR}),
-		#{description,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
+		(#{name,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},#{createtime,jdbcType=TIMESTAMP},
+		#{updatetime,jdbcType=TIMESTAMP},GeomFromText(#{pathdata,jdbcType=VARCHAR}))
 	</insert>
 
 	<select id="selectByFlyingPathId" parameterType="hust.plane.mapper.pojo.FlyingPath"
@@ -49,7 +50,7 @@
 		parameterType="hust.plane.mapper.pojo.FlyingPath">
 		select count(1) from K_FlyingPath
 		WHERE 1=1
-		<if test="planepathid != null">
+		<if test="id != null">
 			AND id = #{id}
 		</if>
 	</select>
