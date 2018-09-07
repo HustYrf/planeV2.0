@@ -180,15 +180,15 @@
         window.location.reload();
     }
 
-    function modifyAlarmDes(alarmid) {
-        $("#alarmDesId").attr("placeholder",alarmid);
+    function modifyAlarmDes(id) {
+        $("#alarmDesId").attr("placeholder",id);
         $("#modifyAlaDes").click(function () {
             var descript = $("#alarmDes").val();
             $.ajax({
                 url: "modifyAlarmDes",
                 type: "POST",
                 data: {
-                    alarmid: alarmid,
+                    id: id,
                     description: descript
                 },
                 success: function (result) {

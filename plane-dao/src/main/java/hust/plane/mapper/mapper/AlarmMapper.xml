@@ -77,6 +77,10 @@
     	update K_Alarm set Status=0 where id=#{id}
     </update>
 
+    <update id="updateDesByAlarmId">
+        update K_Alarm set DESCRIPTOR = #{param2} where id = #{param1}
+    </update>
+
     <insert id="insertAlarmSelective" parameterType="hust.plane.mapper.pojo.Alarm">
         insert into K_Alarm
         <trim prefix="(" suffix=")" suffixOverrides=",">
