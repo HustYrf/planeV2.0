@@ -76,7 +76,7 @@
 	                                	<td>${taskpojo.task.uavId!}</td>
 	                                	<td>${(taskpojo.task.plantime?datetime)!}</td>
 	                                	<td>
-	                                	<#if taskpojo.task.status?? && taskpojo.task.status!="">                               	
+	                                	<#if taskpojo.task.status??>                               	
 		                               	    <#if  taskpojo.task.status == -1><span class="label label-danger">故障或异常</span>
 		                               	    <#elseif taskpojo.task.status == 0><span class="label label-warning">任务创建中</span>
 		                               	    <#elseif taskpojo.task.status == 1><span class="label label-primary">任务已提交</span>
@@ -97,11 +97,11 @@
 	                               	    </#if>
 	                                	</td>
 	                                	<td>
-	                                		<#if taskpojo.task.status=='6'> 
+	                                		<#if taskpojo.task.status==6> 
 	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureFly('${taskpojo.task.taskid!}')">允许放飞</button>
-	                                		<#elseif taskpojo.task.status=='9'>  
+	                                		<#elseif taskpojo.task.status==9>  
 	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureTaskOver('${taskpojo.task.taskid!}')">巡视完成确认</button>
-	                                		<#elseif taskpojo.task.status=='10'>
+	                                		<#elseif taskpojo.task.status==10>
 	                                		 <a href="${s.base}/taskReport.action?taskid=${taskpojo.task.taskid!}" style="cursor:pointer; ">生成飞行报告</a>
 	                                		</#if>
 	                                	</td>

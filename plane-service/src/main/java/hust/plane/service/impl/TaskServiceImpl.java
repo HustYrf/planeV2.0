@@ -76,9 +76,9 @@ public class TaskServiceImpl implements TaskService {
 			for (Task task1 : taskList) {
 				TaskPojo taskPojo = new TaskPojo();
 				// 查询姓名
-				User user1 = userMapper.selectByPrimaryKey(task.getUsercreator());
-				User user2 = userMapper.selectByPrimaryKey(task.getUserA());
-				User user3 = userMapper.selectByPrimaryKey(task.getUserZ());
+				User user1 = userMapper.selectByPrimaryKey(task1.getUsercreator());
+				User user2 = userMapper.selectByPrimaryKey(task1.getUserA());
+				User user3 = userMapper.selectByPrimaryKey(task1.getUserZ());
 				taskPojo.setTask(task1);
 				taskPojo.setUserCreatorName(user1.getName());
 				taskPojo.setUserAName(user2.getName());
