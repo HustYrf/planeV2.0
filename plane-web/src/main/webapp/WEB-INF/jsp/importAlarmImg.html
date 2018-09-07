@@ -26,10 +26,10 @@
 									 <div class="form-group clearfix">
                                			 <label class="control-label"  style="white-space:nowrap" >无人机编号：</label>
                                 			<div class="col-sm-8">
-                                    		<select id="status" name="planeid" class="form-control" type="select" >
+                                    		<select id="status" name="id" class="form-control" type="select" >
 												<#if planelist??>
 													<#list planelist as plane>
-													    <option value="${plane.planeid!}">${plane.planename!}</option>
+													    <option value="${plane.id!}">${plane.name!}</option>
 													</#list>
 												</#if>
 											</select>
@@ -41,7 +41,7 @@
                                     		<select id="status" name="taskid" class="form-control" type="select" >
 												<#if (tasklist)??>
 													<#list tasklist as task>
-													    <option value="${task.taskid!}">${task.taskid!}</option>
+													    <option value="${task.id!}">${task.name!}</option>
 													</#list>
 												</#if>
 											</select>

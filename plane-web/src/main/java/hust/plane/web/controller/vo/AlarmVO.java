@@ -8,10 +8,7 @@ import sun.misc.BASE64Encoder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 public class AlarmVO {
 	
@@ -35,6 +32,8 @@ public class AlarmVO {
 	private String alongda;
 	private List<Double> positionList;
 
+	
+	
 	public AlarmVO(Alarm alarm) {
 
 		this.id = alarm.getId();

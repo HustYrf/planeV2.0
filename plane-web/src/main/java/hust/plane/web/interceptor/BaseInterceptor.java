@@ -35,8 +35,8 @@ public class BaseInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String contextPath = httpServletRequest.getContextPath();
         String uri = httpServletRequest.getRequestURI();
-        LOGGER.info("UserAget:{}", httpServletRequest.getHeader(USER_AGENT));
-        LOGGER.info("用户访问地址：{}，来路地址：{}", uri, IPKIT.getIpAddrByRequest(httpServletRequest));
+        //LOGGER.info("UserAget:{}", httpServletRequest.getHeader(USER_AGENT));
+        //LOGGER.info("用户访问地址：{}，来路地址：{}", uri, IPKIT.getIpAddrByRequest(httpServletRequest));
 
         //请求拦截器
         User user = PlaneUtils.getLoginUser(httpServletRequest);

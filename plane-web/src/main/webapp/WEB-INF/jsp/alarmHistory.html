@@ -75,15 +75,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group" style="width:100%">
-                        告警点描述：<span id="descripte"></span>
+                                                       告警点描述：<span id="descripte"></span>
                     </div>
                     <img id="infoImg" src="" style="width:100%;">
-
                 </div>
                 <!--
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                    </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  </div>
                 -->
             </div>
         </div>
@@ -146,8 +145,8 @@
                                                                                         未处理告警  </button>
                                 </#if>
                             </td>
-                            <td><a class="pointer" onclick="showDetail('${alarm.alarmid}')">详细信息</a></td>
-                            <td><a class="pointer" onclick="modifyDes('${alarm.alarmid}')">修改告警描述</a></td>
+                            <td><a class="pointer" onclick="showDetail('${alarm.id}')">详细信息</a></td>
+                            <td><a class="pointer" onclick="modifyDes('${alarm.id}')">修改告警描述</a></td>
                              </tr>
                             </#list>
                         </#if>
@@ -188,7 +187,7 @@
                 url: "modifyAlarmDes",
                 type: "POST",
                 data: {
-                    alarmid: alarmid,
+                    id: alarmid,
                     description: descript
                 },
                 success: function (result) {

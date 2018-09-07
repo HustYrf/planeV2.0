@@ -6,17 +6,18 @@ import hust.plane.utils.page.AlarmPojo;
 import hust.plane.utils.page.TailPage;
 import hust.plane.utils.pojo.JsonView;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 
 
 @Controller
 public class AlarmHistoryController {
-    @Resource
+	
+    @Autowired
     private AlarmService alarmService;
 
     @RequestMapping(value = "alarmHistory")
@@ -25,16 +26,17 @@ public class AlarmHistoryController {
     	{
     		alarm.setStatus(null);
     	}
-    	if(alarm.getId() == 0)
+    	/*if(alarm.getId() == 0)
     	{
     		alarm.setId(null);
-    	}
+    	}*/
         page = alarmService.queryAlarmWithPage(alarm,page);
         model.addAttribute("selectStatus", alarm.getStatus());
         model.addAttribute("page",page);
         model.addAttribute("curNav", "alarmhistory");
         return "alarmHistory";
     }
+    
     @RequestMapping(value = "dealWithAlarm")
     @ResponseBody
     public String dealWithAlarm(int alarmid)

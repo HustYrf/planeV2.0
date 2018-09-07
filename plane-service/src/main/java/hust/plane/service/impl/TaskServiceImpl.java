@@ -94,11 +94,13 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public boolean saveTask(Task task) {
 		Date date = new Date();
-		task.setCeatetime(date);
+		// 初始状态为1归档
+        task.setStatus(1);
+		//task.setCeatetime(date);
 		task.setFinishstatus(0);
 		// 设置状态未完成
 
-		if (taskMapper.insert(task) == 1)
+		if (taskMapper.insertSelective(task) == 1)
 			return true;
 		else
 			return false;

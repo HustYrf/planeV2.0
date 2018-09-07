@@ -55,7 +55,7 @@ public class Task {
 	}
 
 	public void setName(String name) {
-		this.name = name == null ? null : name.trim();
+		this.name = name;
 	}
 
 	public Integer getUsercreator() {
@@ -102,7 +102,7 @@ public class Task {
 		return createtime;
 	}
 
-	public void setCeatetime(Date createtime) {
+	public void setCreatetime(Date createtime) {
 		this.createtime = createtime;
 	}
 
@@ -169,4 +169,5 @@ public class Task {
 	public void setReporturl(String reporturl) {
 		this.reporturl = reporturl == null ? null : reporturl.trim();
 	}
+
 }

@@ -91,10 +91,10 @@ public class TaskController {
 
         List<FlyingPath> planePaths = flyingPathServiceImpl.findAllFlyingPath();
 
-        model.addAttribute("aUser", aUser);
+        model.addAttribute("usercreator", aUser);
        /* model.addAttribute("bUsers", bUsers);
         model.addAttribute("cUsers", cUsers);*/
-        model.addAttribute("planes", uavs);
+        model.addAttribute("uavs", uavs);
         model.addAttribute("planePaths", planePaths);
 
         task.setPlanstarttime(DateKit.get2HoursLater());
@@ -105,23 +105,23 @@ public class TaskController {
     }
 
     // 创建任务
-    @RequestMapping("/taskCreate")
+    @RequestMapping(value = "taskCreate", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @ResponseBody
     public String createTask(Task task, HttpServletRequest request) {
-        // 初始状态为1归档
-        task.setStatus(1);
-        User aUser = PlaneUtils.getLoginUser(request);
+      
+        
+        // 保存新建的任务
+        if(taskServiceImpl.saveTask(task)) {
+        	User userA = new User();
+            User userZ = new User();
+            userA.setId(task.getUserA());
+            userZ.setId(task.getUserZ());
+            userServiceImpl.updataTasknumByUser(userA);
+            userServiceImpl.updataTasknumByUser(userZ); // 并且把操作员的任务数量+1
+            return JsonView.render(0, WebConst.SUCCESS_RESULT);
+        }
 
-        task.setUsercreator(aUser.getId());
-        taskServiceImpl.saveTask(task); // 保存新建的任务
-
-        User userA = new User();
-        User userZ = new User();
-        userA.setId(task.getUserA());
-        userZ.setId(task.getUserZ());
-        userServiceImpl.updataTasknumByUser(userA);
-        userServiceImpl.updataTasknumByUser(userZ); // 并且把操作员的任务数量+1
-
-        return "redirect:/taskPageList";
+        return JsonView.render(1, WebConst.SUCCESS_RESULT);     
     }
 
     // 分页查询
@@ -229,7 +229,7 @@ public class TaskController {
         try {
             List<User> bUserList = userServiceImpl.fuzzySearchWithUser(queryString);
             for(User user:bUserList){
-                userNameList.add(user.getName());
+                userNameList.add(user.getName()+":"+user.getId());
             }
         } catch (Exception e) {
             String msg = "用户模糊搜素失败";

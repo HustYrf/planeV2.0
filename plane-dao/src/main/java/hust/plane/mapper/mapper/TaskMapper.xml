@@ -149,7 +149,7 @@
       <if test="uavId != null" >
         Uav_id,
       </if>
-      <if test="CreateTime != null" >
+      <if test="createtime != null" >
         CreateTime,
       </if>
       <if test="planstarttime != null" >
@@ -199,7 +199,7 @@
       <if test="uavId != null" >
         #{uavId,jdbcType=INTEGER},
       </if>
-      <if test="CreateTime != null" >
+      <if test="createtime != null" >
         #{CreateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="planstarttime != null" >

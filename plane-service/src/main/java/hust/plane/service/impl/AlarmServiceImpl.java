@@ -11,9 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import freemarker.core._RegexBuiltins.replace_reBI;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,15 +30,18 @@ public class AlarmServiceImpl implements AlarmService {
 
 	@Override
 	public TailPage<AlarmPojo> queryAlarmWithPage(Alarm alarm, TailPage<AlarmPojo> page) {
+		
 		int count = alarmMapper.alarmCount(alarm);
-		page.setItemsTotalCount(count);
-		List<Alarm> alarmList = alarmMapper.queryAlarmPage(alarm, page);
 		List<AlarmPojo> alarmPojos = new ArrayList<>();
-		Iterator<Alarm> iterator = alarmList.iterator();
-		while (iterator.hasNext()) {
-			alarm = iterator.next();
-			alarmPojos.add(new AlarmPojo(alarm));
+		if (count <= 0) {
+			List<Alarm> alarmList = alarmMapper.queryAlarmPage(alarm, page);
+			Iterator<Alarm> iterator = alarmList.iterator();
+			while (iterator.hasNext()) {
+				alarm = iterator.next();
+				alarmPojos.add(new AlarmPojo(alarm));
+			}
 		}
+		page.setItemsTotalCount(count);
 		page.setItems(alarmPojos);
 		return page;
 	}
