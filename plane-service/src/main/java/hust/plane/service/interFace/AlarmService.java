@@ -21,7 +21,7 @@ public interface AlarmService {
 
     boolean updateAlarmDesc(int alarmid, String description);
 
-	List<Alarm> getAlarmsByTaskId(int taskid);
+	List<Alarm> getAlarmsByTaskId(Integer taskid);
 	
 	boolean insertAlarmByAlarms(Alarm alarm);
 }

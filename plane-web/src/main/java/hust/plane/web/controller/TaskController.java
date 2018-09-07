@@ -2,18 +2,18 @@ package hust.plane.web.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import hust.plane.constant.WebConst;
+import hust.plane.mapper.pojo.*;
+import hust.plane.service.interFace.*;
 import hust.plane.utils.DateKit;
+import hust.plane.utils.JsonUtils;
 import hust.plane.utils.pojo.TipException;
+import hust.plane.web.controller.vo.RouteVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import hust.plane.mapper.pojo.Alarm;
-import hust.plane.mapper.pojo.FlyingPath;
-import hust.plane.mapper.pojo.Task;
-import hust.plane.mapper.pojo.Uav;
-import hust.plane.mapper.pojo.User;
-import hust.plane.service.interFace.AlarmService;
-import hust.plane.service.interFace.FlyingPathService;
-import hust.plane.service.interFace.UavService;
-import hust.plane.service.interFace.TaskService;
-import hust.plane.service.interFace.UserService;
 import hust.plane.utils.PlaneUtils;
 import hust.plane.utils.page.TailPage;
 import hust.plane.utils.page.TaskPojo;
@@ -54,7 +44,10 @@ public class TaskController {
     private UavService uavServiceImpl;
     @Autowired
     private AlarmService alarmserviceImpl;
-
+    @Autowired
+    private AlarmService alarmService;
+    @Autowired
+    private RouteService routeServiceImpl;
 
     @RequestMapping("/task")
     public String gettestTask() {
@@ -241,6 +234,29 @@ public class TaskController {
             return JsonView.render(1, msg);
         }
         return JsonView.render(0, WebConst.SUCCESS_RESULT, userNameList);
+    }
+    //获取任务的告警信息
+    @RequestMapping(value = "alarmWithId", method = RequestMethod.GET)
+    public String getAlarmWithId(@RequestParam(value = "id") int id,Model model) {
+        List<Alarm> alarmWitIdList = alarmService.getAlarmsByTaskId(Integer.valueOf(id));
+        List<AlarmVO> alarmList = new ArrayList<AlarmVO>();
+        Iterator<Alarm> iterator = alarmWitIdList.iterator();
+        while (iterator.hasNext()) {
+            Alarm alarm = iterator.next();
+            AlarmVO alarmVo = new AlarmVO(alarm);
+            alarmList.add(alarmVo);
+        }
+        //告警点路由显示
+        List<Route> allRoute = routeServiceImpl.getAllRoute();
+        List<RouteVO> routeList = new ArrayList<RouteVO>();
+        for (int i = 0; i < allRoute.size(); i++) {
+            RouteVO routeVo = new RouteVO(allRoute.get(i));
+            routeList.add(routeVo);
+        }
+        model.addAttribute("routeList", JsonUtils.objectToJson(routeList));
+        model.addAttribute("alarmList", JsonUtils.objectToJson(alarmList));
+        model.addAttribute("curNav", "taskAllList");
+        return "alarmListWithTaskId";
     }
 
 }
