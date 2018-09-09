@@ -95,7 +95,9 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 
 	@Override
-	public List<Alarm> getAlarmsByTaskId(int taskid) {
+	public List<Alarm> getAlarmsByTaskId(Integer taskid) {
+		if(taskid ==null)
+			throw new TipException("任务编号获取失败");
 		return alarmMapper.getAlarmsByTaskId(taskid);
 	}
 
