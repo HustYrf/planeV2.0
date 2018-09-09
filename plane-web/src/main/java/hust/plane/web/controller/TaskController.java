@@ -132,6 +132,21 @@ public class TaskController {
         return "taskList";
     }
 
+    //时间逆序查询
+    @RequestMapping(value = "timeReverseView",method = RequestMethod.GET)
+    public String timeReverseView(Task task, TailPage<TaskPojo> page, Model model, HttpServletRequest request) {
+
+        User userCreator = PlaneUtils.getLoginUser(request);
+        task.setUsercreator(userCreator.getId());
+
+        page = taskServiceImpl.queryPageWithTime(task, page);
+
+        model.addAttribute("selectStatus", task.getFinishstatus());
+        model.addAttribute("page", page);
+        model.addAttribute("curNav", "taskAllList");
+        return "taskList";
+    }
+
     @RequestMapping(value = "onsureFly", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String onsureFly(Task task) {

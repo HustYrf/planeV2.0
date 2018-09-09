@@ -26,4 +26,5 @@ public interface TaskService {
 
 	List<Task> getTasklistByAuser(User aUser);
 
+    TailPage<TaskPojo> queryPageWithTime(Task task, TailPage<TaskPojo> page);
 }

@@ -24,9 +24,9 @@
 	                <div class="block-body collapse in">
 	                	<p>
 								<select  name="finishstatus" class="search-select">
-									<option value="-1">全部</option>
-									<option value="1" <#if (selectStatus)?? && selectStatus =="1">selected="selected"</#if> >已完成</option>
-									<option value="0" <#if (selectStatus)?? && selectStatus =="0">selected="selected"</#if> >未完成</option>
+									<option value="-1" >全部</option>
+									<option value="1" <#if (selectStatus)?? && selectStatus ==1>selected="selected"</#if> >已完成</option>
+									<option value="0" <#if (selectStatus)?? && selectStatus ==0>selected="selected"</#if> >未完成</option>
 								</select>
 							</p>
 	                    <p>
@@ -34,7 +34,11 @@
 	                    </p>
 	                    <p>
 	                        <input type="submit" class="search-btn" value="搜索">
+							<button type="button" id="timeReverseView" class="btn btn-success" style="float:right">时间逆序查看</button>
 	                    </p>
+
+
+
 	                </div>
 	            </div>
 	
@@ -181,14 +185,14 @@
             		 $("#resText").text(result.message);
                   	Modal.show('_ocDialogModal');
                   	setTimeout("document.location.reload();",1000);
-                  	
             	 }
-            	
             }
         });
-    	
-    	
     }
+
+    $("#timeReverseView").click(function(){
+        $(location).attr('href', '${s.base}/timeReverseView.action');
+	})
   
 </script>
 </body>

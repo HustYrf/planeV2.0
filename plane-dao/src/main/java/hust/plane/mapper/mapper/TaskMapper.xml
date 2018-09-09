@@ -380,7 +380,7 @@
       FinishStatus = #{finishstatus,jdbcType=INTEGER},
       ImgFolder = #{imgfolder,jdbcType=VARCHAR},
       ReportUrl = #{reporturl,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+      where id = #{id,jdbcType=INTEGER}
   </update>
   
   <select id="queryPage" resultMap="BaseResultMap">
@@ -397,6 +397,7 @@
 		<if test="param1.finishstatus != null">
 		AND FinishStatus = #{param1.finishstatus}
 		</if>
+        ORDER BY CreateTime DESC
 		LIMIT #{param2.startIndex, jdbcType=INTEGER} , #{param2.pageSize, jdbcType=INTEGER} 
 	</select>
 	<select id="getStatusByTask" parameterType="hust.plane.mapper.pojo.Task" resultType="java.lang.Integer">
@@ -412,4 +413,20 @@
 		WHERE 
 		UserCreator = #{usercreator,jdbcType=INTEGER}
 	</select>
+  <select id="queryPageWithTime" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM K_Task
+    WHERE 1=1
+    <if test="param1.usercreator != null" >
+      AND UserCreator = #{param1.usercreator}
+    </if>
+    <if test="param1.name != null">
+      AND Name = #{param1.name}
+    </if>
+    <if test="param1.finishstatus != null">
+      AND FinishStatus = #{param1.finishstatus}
+    </if>
+    LIMIT #{param2.startIndex, jdbcType=INTEGER} , #{param2.pageSize, jdbcType=INTEGER}
+  </select>
 </mapper>

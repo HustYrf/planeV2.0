@@ -29,6 +29,7 @@ public class TaskServiceImpl implements TaskService {
 	public List<TaskPojo> getALLTask() {
 		TaskExample example = new TaskExample();
 		// 得到所有的任务
+		example.setOrderByClause("CreateTime desc");
 		List<Task> taskList = taskMapper.selectByExample(example);
 		List<TaskPojo> list = null;
 		// 得到每个人的名称
@@ -54,11 +55,10 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public TailPage<TaskPojo> queryPage(Task task, TailPage<TaskPojo> page) {
 		TaskExample example = new TaskExample();
+		example.setOrderByClause("CreateTime desc");
 		Criteria createCriteria = example.createCriteria();
-		if (task.getFinishstatus() == null) {
-			//这句话没什么用
+		if (task.getFinishstatus()==null||task.getFinishstatus() == -1) {
 			task.setFinishstatus(null);
-			
 		} else {
 			createCriteria.andFinishstatusEqualTo(task.getFinishstatus());
 		}
@@ -150,4 +150,41 @@ public class TaskServiceImpl implements TaskService {
 		return taskMapper.getTasklistByUserCreator(aUser.getId());
 	}
 
+	@Override
+	public TailPage<TaskPojo> queryPageWithTime(Task task, TailPage<TaskPojo> page) {
+		TaskExample example = new TaskExample();
+		Criteria createCriteria = example.createCriteria();
+		if (task.getFinishstatus()==null||task.getFinishstatus() == -1) {
+			task.setFinishstatus(null);
+		} else {
+			createCriteria.andFinishstatusEqualTo(task.getFinishstatus());
+		}
+		if (task.getUsercreator() != null) {
+			createCriteria.andUsercreatorEqualTo(task.getUsercreator());
+		}
+		int itemsTotalCount = taskMapper.countByExample(example);
+
+		// 包装数据
+		List<TaskPojo> items = null;
+
+		if (itemsTotalCount > 0) {
+			List<Task> taskList = taskMapper.queryPageWithTime(task, page);
+			items = new ArrayList<TaskPojo>();
+			for (Task task1 : taskList) {
+				TaskPojo taskPojo = new TaskPojo();
+				// 查询姓名
+				User user1 = userMapper.selectByPrimaryKey(task1.getUsercreator());
+				User user2 = userMapper.selectByPrimaryKey(task1.getUserA());
+				User user3 = userMapper.selectByPrimaryKey(task1.getUserZ());
+				taskPojo.setTask(task1);
+				taskPojo.setUserCreatorName(user1.getName());
+				taskPojo.setUserAName(user2.getName());
+				taskPojo.setUserZName(user3.getName());
+				items.add(taskPojo);
+			}
+		}
+		page.setItemsTotalCount(itemsTotalCount);
+		page.setItems(items);
+		return page;
+	}
 }
