@@ -431,13 +431,13 @@
 
     <update id="userAddTasknum" parameterType="hust.plane.mapper.pojo.User">
     update K_User
-    set tasknum = tasknum + 1
+    set TaskNum = TaskNum + 1
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
     <update id="userReduceTasknum" parameterType="hust.plane.mapper.pojo.User">
     update K_User
-    set tasknum = tasknum - 1
+    set TaskNum = TaskNum - 1
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

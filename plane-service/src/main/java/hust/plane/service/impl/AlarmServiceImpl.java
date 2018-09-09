@@ -66,7 +66,7 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 
 	@Override
-	public boolean insertAlarmById(String planeId) {
+	public boolean insertAlarmById(int planeId) {
 		/*
 		 * try { if (StringUtils.isBlank(planeId)) { logger.error("输入的无人机编号为空"); throw
 		 * new TipException("输入的无人机编号为空"); } if (StringUtils.isBlank(taskid)) {

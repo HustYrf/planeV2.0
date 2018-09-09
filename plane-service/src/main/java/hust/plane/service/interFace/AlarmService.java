@@ -17,7 +17,7 @@ public interface AlarmService {
 
     boolean updateAlarmStatus(int alarmid);
 
-    boolean insertAlarmById(String planeId);
+    boolean insertAlarmById(int planeId);
 
     boolean updateAlarmDesc(int alarmid, String description);
 

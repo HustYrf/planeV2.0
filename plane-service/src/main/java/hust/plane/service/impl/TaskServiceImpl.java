@@ -96,7 +96,7 @@ public class TaskServiceImpl implements TaskService {
 		Date date = new Date();
 		// 初始状态为1归档
         task.setStatus(1);
-		//task.setCeatetime(date);
+		task.setCreatetime(date);
 		task.setFinishstatus(0);
 		// 设置状态未完成
 

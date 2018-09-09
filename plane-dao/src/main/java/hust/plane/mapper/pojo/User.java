@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class User {
 	
-    private Integer id=0;
+    private Integer id;
 
     private String name;
 

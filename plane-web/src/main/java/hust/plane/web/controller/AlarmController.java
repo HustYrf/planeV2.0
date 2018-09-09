@@ -116,8 +116,8 @@ public class AlarmController {
 
     @RequestMapping(value = "importAlarm", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String doImportAlarm(@RequestParam(value = "planeId") String planeId, HttpServletRequest request) {
-        try {
+    public String doImportAlarm(@RequestParam(value = "planeId") int planeId, HttpServletRequest request) {
+        try{
             alarmService.insertAlarmById(planeId);
         } catch (Exception e) {
             String msg = "插入告警点失败";
