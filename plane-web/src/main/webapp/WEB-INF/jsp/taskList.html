@@ -23,12 +23,12 @@
 	                <a class="block-heading f-14" data-toggle="collapse">任务管理</a>
 	                <div class="block-body collapse in">
 	                	<p>
-								<select  name="finishstatus" class="search-select">
-									<option value="-1">全部</option>
-									<option value="1" <#if (selectStatus)?? && selectStatus =="1">selected="selected"</#if> >已完成</option>
-									<option value="0" <#if (selectStatus)?? && selectStatus =="0">selected="selected"</#if> >未完成</option>
-								</select>
-							</p>
+						<select  name="finishstatus" class="search-select">
+							<option value=-1>全部</option>
+							<option value=1 <#if (selectStatus)?? && selectStatus ==1>selected="selected"</#if> >已完成</option>
+							<option value=0 <#if (selectStatus)?? && selectStatus ==0>selected="selected"</#if> >未完成</option>
+						</select>
+						</p>
 	                    <p>
 	                        <input name="taskid" type="text" value="" class="search-text" value="" placeholder="请输入任务编号">
 	                    </p>
@@ -98,11 +98,11 @@
 	                                	</td>
 	                                	<td>
 	                                		<#if taskpojo.task.status==6> 
-	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureFly('${taskpojo.task.taskid!}')">允许放飞</button>
+	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureFly(${taskpojo.task.id!})">允许放飞</button>
 	                                		<#elseif taskpojo.task.status==9>  
-	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureTaskOver('${taskpojo.task.taskid!}')">巡视完成确认</button>
+	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureTaskOver(${taskpojo.task.id!})">巡视完成确认</button>
 	                                		<#elseif taskpojo.task.status==10>
-	                                		 <a href="${s.base}/taskReport.action?taskid=${taskpojo.task.taskid!}" style="cursor:pointer; ">生成飞行报告</a>
+	                                		 <a href="${s.base}/taskReport.action?taskid=${taskpojo.task.id!}" style="cursor:pointer; ">生成飞行报告</a>
 	                                		</#if>
 	                                	</td>
 	                                	</tr>

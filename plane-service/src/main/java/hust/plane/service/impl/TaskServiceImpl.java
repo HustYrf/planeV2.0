@@ -55,8 +55,8 @@ public class TaskServiceImpl implements TaskService {
 	public TailPage<TaskPojo> queryPage(Task task, TailPage<TaskPojo> page) {
 		TaskExample example = new TaskExample();
 		Criteria createCriteria = example.createCriteria();
-		if (task.getFinishstatus() == null) {
-			//这句话没什么用
+		if (task.getFinishstatus() == -1) {
+			
 			task.setFinishstatus(null);
 			
 		} else {
@@ -96,7 +96,7 @@ public class TaskServiceImpl implements TaskService {
 		Date date = new Date();
 		// 初始状态为1归档
         task.setStatus(1);
-		//task.setCeatetime(date);
+		task.setCreatetime(date);
 		task.setFinishstatus(0);
 		// 设置状态未完成
 
