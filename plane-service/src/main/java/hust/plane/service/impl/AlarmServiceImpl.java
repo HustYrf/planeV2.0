@@ -34,7 +34,7 @@ public class AlarmServiceImpl implements AlarmService {
 		
 		int count = alarmMapper.alarmCount(alarm);
 		List<AlarmPojo> alarmPojos = new ArrayList<>();
-		if (count <= 0) {
+		if (count >= 0) {
 			List<Alarm> alarmList = alarmMapper.queryAlarmPage(alarm, page);
 			Iterator<Alarm> iterator = alarmList.iterator();
 			while (iterator.hasNext()) {

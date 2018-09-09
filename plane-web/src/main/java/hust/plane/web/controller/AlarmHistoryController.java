@@ -23,7 +23,7 @@ public class AlarmHistoryController {
     @RequestMapping(value = "alarmHistory")
     public String alarmHistoryQueryPage(Alarm alarm, TailPage<AlarmPojo> page, Model model) {
 
-        if (alarm.getStatus() != null && alarm.getStatus() == -1) {
+        if (alarm.getStatus() == null || alarm.getStatus() == -1) {
             alarm.setStatus(null);
         }
         if (alarm.getId() != null && alarm.getId() == 0) {
