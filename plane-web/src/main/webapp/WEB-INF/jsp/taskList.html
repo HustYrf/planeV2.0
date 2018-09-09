@@ -34,6 +34,7 @@
 	                    </p>
 	                    <p>
 	                        <input type="submit" class="search-btn" value="搜索">
+							<button type="button" id="timeReverseView" class="btn btn-success" style="float:right">时间逆序查看</button>
 	                    </p>
 	                </div>
 	            </div>
@@ -98,13 +99,15 @@
 	                                	</td>
 	                                	<td>
 	                                		<#if taskpojo.task.status==6> 
-	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureFly(${taskpojo.task.id!})">允许放飞</button>
+	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureFly('${taskpojo.task.taskid!}')">允许放飞</button>
 	                                		<#elseif taskpojo.task.status==9>  
+
 	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureTaskOver(${taskpojo.task.id!})">巡视完成确认</button>
 	                                		<#elseif taskpojo.task.status==12 || taskpojo.task.status==13>
 	                                		<a class="label label-danger" href="${s.base}/alarmWithId.action?id=${taskpojo.task.id!}" style="cursor:pointer; ">任务告警</a>
 	                                		<#elseif taskpojo.task.status=14>
 	                                		 <a href="${s.base}/taskReport.action?taskid=${taskpojo.task.id!}" style="cursor:pointer; ">打印报告</a>
+
 	                                		</#if>
 	                                	</td>
 	                                	</tr>
@@ -182,14 +185,14 @@
             		 $("#resText").text(result.message);
                   	Modal.show('_ocDialogModal');
                   	setTimeout("document.location.reload();",1000);
-                  	
             	 }
-            	
             }
         });
-    	
-    	
     }
+
+    $("#timeReverseView").click(function(){
+        $(location).attr('href', '${s.base}/timeReverseView.action');
+	})
   
 </script>
 </body>

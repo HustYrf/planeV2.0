@@ -38,4 +38,6 @@ public interface TaskMapper {
 	String getStatusByTask(Task task);
 
 	List<Task> getTasklistByUserCreator(int userCreator);
+
+    List<Task> queryPageWithTime(Task task, TailPage<TaskPojo> page);
 }

@@ -5,7 +5,6 @@ import hust.plane.service.interFace.AlarmService;
 import hust.plane.utils.page.AlarmPojo;
 import hust.plane.utils.page.TailPage;
 import hust.plane.utils.pojo.JsonView;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

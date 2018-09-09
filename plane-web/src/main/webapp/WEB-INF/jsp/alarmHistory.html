@@ -97,9 +97,9 @@
                 <div class="block-body collapse in">
                     <p>
                         <select name="status" class="search-select">
-                            <option value="-1">全部</option>
-                            <option value="0" <#if (selectStatus)?? && selectStatus =="0">selected="selected"</#if>>已处理告警</option>
-                            <option value="1" <#if (selectStatus)?? && selectStatus =="1">selected="selected"</#if>>未处理告警</option>
+                            <option value=-1>全部</option>
+                            <option value=0 <#if (selectStatus)?? && selectStatus ==0>selected="selected"</#if>>已处理告警</option>
+                            <option value=1 <#if (selectStatus)?? && selectStatus ==1>selected="selected"</#if>>未处理告警</option>
                         </select>
                     </p>
                     <p>
