@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,6 +49,8 @@ public class TaskController {
     private AlarmService alarmService;
     @Autowired
     private RouteService routeServiceImpl;
+    @Resource
+    private UserGroupService userGroupService;
 
     @RequestMapping("/task")
     public String gettestTask() {
@@ -101,11 +104,11 @@ public class TaskController {
     @RequestMapping(value = "taskCreate", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String createTask(Task task, HttpServletRequest request) {
-      
-        
+
+
         // 保存新建的任务
-        if(taskServiceImpl.saveTask(task)) {
-        	User userA = new User();
+        if (taskServiceImpl.saveTask(task)) {
+            User userA = new User();
             User userZ = new User();
             userA.setId(task.getUserA());
             userZ.setId(task.getUserZ());
@@ -114,7 +117,7 @@ public class TaskController {
             return JsonView.render(0, WebConst.SUCCESS_RESULT);
         }
 
-        return JsonView.render(1, WebConst.SUCCESS_RESULT);     
+        return JsonView.render(1, WebConst.SUCCESS_RESULT);
     }
 
     // 分页查询
@@ -122,10 +125,14 @@ public class TaskController {
     public String queryPage(Task task, TailPage<TaskPojo> page, Model model, HttpServletRequest request) {
 
         User userCreator = PlaneUtils.getLoginUser(request);
-        task.setUsercreator(userCreator.getId());
-    
+        List<Integer> groupIdList = userGroupService.selectGroupIdWithUserId(userCreator.getId());
+        if (groupIdList.contains(Integer.valueOf(1))) {
+            task.setUsercreator(null);
+        } else {
+            task.setUsercreator(userCreator.getId());
+        }
         page = taskServiceImpl.queryPage(task, page);
-        
+
         model.addAttribute("selectStatus", task.getFinishstatus());
         model.addAttribute("page", page);
         model.addAttribute("curNav", "taskAllList");
@@ -133,14 +140,17 @@ public class TaskController {
     }
 
     //时间逆序查询
-    @RequestMapping(value = "timeReverseView",method = RequestMethod.GET)
+    @RequestMapping(value = "timeReverseView", method = RequestMethod.GET)
     public String timeReverseView(Task task, TailPage<TaskPojo> page, Model model, HttpServletRequest request) {
 
         User userCreator = PlaneUtils.getLoginUser(request);
-        task.setUsercreator(userCreator.getId());
-
+        List<Integer> groupIdList = userGroupService.selectGroupIdWithUserId(userCreator.getId());
+        if (groupIdList.contains(Integer.valueOf(1))) {
+            task.setUsercreator(null);
+        } else {
+            task.setUsercreator(userCreator.getId());
+        }
         page = taskServiceImpl.queryPageWithTime(task, page);
-
         model.addAttribute("selectStatus", task.getFinishstatus());
         model.addAttribute("page", page);
         model.addAttribute("curNav", "taskAllList");
@@ -166,7 +176,7 @@ public class TaskController {
         User userA = userServiceImpl.getUserById(task2.getUserA());
         User userZ = userServiceImpl.getUserById(task2.getUserZ());
 
-        if (status==9) {
+        if (status == 9) {
             taskServiceImpl.setStatusTaskByTask(task, 10); // 设置任务完成
             taskServiceImpl.setFinishStatusTaskByTask(task, 1);
 
@@ -236,8 +246,8 @@ public class TaskController {
         List<String> userNameList = new ArrayList<>();
         try {
             List<User> bUserList = userServiceImpl.fuzzySearchWithUser(queryString);
-            for(User user:bUserList){
-                userNameList.add(user.getName()+":"+user.getId());
+            for (User user : bUserList) {
+                userNameList.add(user.getName() + ":" + user.getId());
             }
         } catch (Exception e) {
             String msg = "用户模糊搜素失败";
@@ -250,9 +260,10 @@ public class TaskController {
         }
         return JsonView.render(0, WebConst.SUCCESS_RESULT, userNameList);
     }
+
     //获取任务的告警信息
     @RequestMapping(value = "alarmWithId", method = RequestMethod.GET)
-    public String getAlarmWithId(@RequestParam(value = "id") int id,Model model) {
+    public String getAlarmWithId(@RequestParam(value = "id") int id, Model model) {
         List<Alarm> alarmWitIdList = alarmService.getAlarmsByTaskId(Integer.valueOf(id));
         List<AlarmVO> alarmList = new ArrayList<AlarmVO>();
         Iterator<Alarm> iterator = alarmWitIdList.iterator();
