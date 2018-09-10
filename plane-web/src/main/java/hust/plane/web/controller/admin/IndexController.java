@@ -3,6 +3,7 @@ package hust.plane.web.controller.admin;
 
 import hust.plane.constant.WebConst;
 import hust.plane.mapper.pojo.User;
+import hust.plane.service.interFace.UserGroupService;
 import hust.plane.service.interFace.UserService;
 import hust.plane.utils.PlaneUtils;
 import hust.plane.utils.pojo.JsonView;
@@ -19,22 +20,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @Controller("adminIndexController")
 @RequestMapping(value = "/admin")
 public class IndexController {
-	
+
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
 
     private MapCache cache = MapCache.single();
-    
+
     @Autowired
     private UserService userService;
+    @Resource
+    private UserGroupService userGroupService;
 
     /**
      * 登陆Get请求
@@ -61,16 +66,19 @@ public class IndexController {
     @ResponseBody
     public String doLogin(@RequestParam String name, @RequestParam String password, @RequestParam(required = false) String remeber_me,
                           HttpServletRequest request, HttpServletResponse response) {
-    	//得到缓存中登陆失败的次数
+        //得到缓存中登陆失败的次数
         Integer error_count = cache.get("login_error_count");
-        
+
         try {
             User user = userService.login(name, password);
-            
+
             //把用户保存在session中
             request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
-            
-            if (StringUtils.isNotBlank(remeber_me)){
+            List<Integer> groupIdList = userGroupService.selectGroupIdWithUserId(user.getId());
+            if(groupIdList.contains(Integer.valueOf(1))){
+                request.getSession().setAttribute(WebConst.SUPER_ADMINISTRATOR_VIEW,user);
+            }
+            if (StringUtils.isNotBlank(remeber_me)) {
                 PlaneUtils.setCookie(response, user.getId());
             }
         } catch (Exception e) {
@@ -103,7 +111,7 @@ public class IndexController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String doRegister(@RequestParam String name, @RequestParam String password,HttpServletRequest request, HttpSession session){
+    public String doRegister(@RequestParam String name, @RequestParam String password, HttpServletRequest request, HttpSession session) {
         try {
             int count = userService.register(name, password);
             if (count < 0) {
@@ -153,8 +161,8 @@ public class IndexController {
      */
     @RequestMapping(value = "/profile")
     public String doEditPwd(Model mv) {
-      
-    	mv.addAttribute("curNav","editInfo");   
+
+        mv.addAttribute("curNav", "editInfo");
         return "profileEdit";
     }
 

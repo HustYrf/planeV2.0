@@ -16,12 +16,14 @@
         	<li <#if curNav?? && curNav =="routeList"> class="active"</#if>>
                 <a href="${s.base}/routeList.action">路由分布</a>
             </li>
+            <#if !Session["super_administrator"]?exists>
          	<li <#if curNav?? && curNav =="routeImport"> class="active" </#if>>
                 <a href="${s.base}/routeImport.action">路由导入</a>
             </li>
             <li>
                 <a onclick="findlines();" >路由查询</a>
-            </li>         
+            </li>
+            </#if>
         </ul>
 
 
@@ -36,11 +38,12 @@
         	</#if>
         </#if> 
            	<li <#if curNav?? && curNav =="flyPathList"> class="active" </#if>><a href="${s.base}/doGetFlyPathList.action">飞行路径列表</a></li>
+            <#if !Session["super_administrator"]?exists>
             <li <#if curNav?? && curNav =="setFlyPath"> class="active" </#if>><a href="${s.base}/setFlyPath.action">飞行路径设定</a></li>
             <li <#if curNav?? && curNav =="#"> class="active" </#if>><a href="#">飞行路径导入</a></li>
             <li <#if curNav?? && curNav =="importPlanePath"> class="active" </#if>><a href="${s.base}/toImportPlanePath.action">飞行路径导出</a></li>
             <li <#if curNav?? && curNav =="#"> class="active" </#if>><a href="#">飞行路径下发</a></li>
-
+            </#if>
         </ul>
         <a href="#accounts-menu4" class="nav-header" data-toggle="collapse">
             <span style="font-weight: bold;font-size: 16px;">飞行任务调度</span>
@@ -51,11 +54,13 @@
         	 <#else>
         	 	<ul id="accounts-menu4" class="nav nav-list collapse">
         	</#if>
-        </#if>       
+        </#if>
+            <#if !Session["super_administrator"]?exists>
             <li <#if curNav?? && curNav =="createTask"> class="active" </#if>> <a href="${s.base}/toTaskCreate.action">任务创建</a></li>
+            </#if>
             <li <#if curNav?? && curNav =="taskAllList"> class="active" </#if>><a href="${s.base}/taskPageList.action">任务列表</a></li>
         </ul>
-
+        <#if !Session["super_administrator"]?exists>
         <a href="#accounts-menu2" class="nav-header" data-toggle="collapse">
             <span style="font-weight: bold;font-size: 16px;">无人机图层</span>
         </a>
@@ -70,8 +75,8 @@
             <li <#if curNav?? && curNav =="planeAllList"> class="active" </#if>><a href="${s.base}/planeList.action">无人机显示</a></li>
             <li <#if curNav?? && curNav =="planeFind"> class="active" </#if>><a onclick="findplane()">过滤查询</a></li>
         </ul>
-
-        <a href="#accounts-menu1" class="nav-header" data-toggle="collapse">
+        </#if>
+  <a href="#accounts-menu1" class="nav-header" data-toggle="collapse">
             <span style="font-weight: bold;font-size: 16px;">告警显示</span>
         </a>
         
@@ -84,9 +89,11 @@
         </#if>   
             <li <#if curNav?? && curNav =="alarmList" > class="active"</#if>><a href="${s.base}/alarmList.action">告警显示</a></li>
             <li <#if curNav?? && curNav =="alarmhistory"> class="active" </#if>><a href="${s.base}/alarmHistory.action">历史高警</a></li>
+            <#if !Session["super_administrator"]?exists>
             <li <#if curNav?? && curNav =="alarmImport" > class="active"</#if>><a href="${s.base}/alarmImport.action">告警导入</a></li>
+            </#if>
         </ul>
-
+        <#if !Session["super_administrator"]?exists>
         <a href="#accounts-menu5" class="nav-header" data-toggle="collapse">
             <span style="font-weight: bold;font-size: 16px;">用户管理</span>
         </a>
@@ -117,7 +124,7 @@
             <li <#if curNav?? && curNav =="editPwd"> class="active" </#if>><a href="${s.base}/admin/editPwd">修改密码</a></li>
             <li <#if curNav?? && curNav =="logout"> class="active" </#if>><a href="${s.base}/admin/logout">退出</a></li>
         </ul>
-       
+        </#if>
     </div>
 
     <!-- 查询路由弹出层 -start -->

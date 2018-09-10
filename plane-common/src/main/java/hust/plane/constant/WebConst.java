@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class WebConst {
+    public static final String SUPER_ADMINISTRATOR_VIEW = "super_administrator";
+
     public static String LOGIN_SESSION_KEY = "login_user";
 
     public static final String USER_IN_COOKIE = "S_L_ID";
