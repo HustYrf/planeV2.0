@@ -140,6 +140,7 @@ public class IndexController {
     @RequestMapping(value = "/logout")
     public void doLogout(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         session.removeAttribute(WebConst.LOGIN_SESSION_KEY);
+        session.removeAttribute(WebConst.SUPER_ADMINISTRATOR_VIEW);
         Cookie cookie = new Cookie(WebConst.USER_IN_COOKIE, "");
         cookie.setValue(null);
         cookie.setMaxAge(0);
