@@ -45,6 +45,9 @@ public class FlyingPathVO {
 		if (flyingPath.getUpdatetime() != null) {
 			this.updatetime = DateKit.dateFormat(flyingPath.getUpdatetime(), "yyyy/MM/dd HH:mm:ss");
 		}
+		if(flyingPath.getName()!=null) {
+			this.name = flyingPath.getName();
+		}
 
 	}
 

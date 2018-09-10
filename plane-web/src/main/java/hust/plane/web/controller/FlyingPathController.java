@@ -99,7 +99,7 @@ public class FlyingPathController {
 	
 	//返回一条飞行路径，包括所有信息，在这里使用包装类，用于画图
 	@RequestMapping(value="/showPlanePath",method=RequestMethod.GET)
-	public String showPlanePath(@RequestParam("planepathid") int id,Model model) {
+	public String showPlanePath(@RequestParam("id") int id,Model model) {
 			
 		FlyingPath flyingPath= new FlyingPath();
 		flyingPath.setId(id);

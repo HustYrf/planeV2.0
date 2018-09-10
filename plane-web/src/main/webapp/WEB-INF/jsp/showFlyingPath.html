@@ -48,7 +48,7 @@
                         //创建一个地图
                         var map = new AMap.Map('container', {
                             resizeEnable: true,
-                            center: planePath.plongda[0],
+                            center: planePath.pathdata[0],
                             zoom: 15
                         });
                         map.plugin(["AMap.Scale"],function(){    //加载比例尺插件      
@@ -66,7 +66,7 @@
 
                         var polyline = new AMap.Polyline({
                             map: map,
-                            path: planePath.plongda, //设置线覆盖物路径
+                            path: planePath.pathdata, //设置线覆盖物路径
                             strokeColor: '#ff6700', //线颜色
                             strokeOpacity: 1, //线透明度
                             strokeWeight: 3, //线宽
@@ -91,20 +91,20 @@
                                     iconTheme: 'fresh',
                                     //背景图标样式
                                     iconStyle: 'darkblue',
-                                    position: planePath.plongda[0],
+                                    position: planePath.pathdata[0],
                                     animation: 'AMAP_ANIMATION_DROP',
                                 });                    
-                                var title = '飞行路径编号：<span>' + planePath.planepathid + '</span>';
+                                var title = '飞行路径编号：<span>' + planePath.id + '</span>';
                                 var content = [];
-                                content.push("编号：" + planePath.planepathid );
-                                content.push("描述：" + planePath.descripte );
+                                content.push("名称：" + planePath.name );
+                                content.push("描述：" + planePath.description );
                                 content.push("创建时间：" + planePath.createtime );
                                 content.push("更新时间：" + planePath.updatetime );
                                 start.content = createInfoWindow(title, content.join("<br/>"));
                                 start.on('click', markerClick);
 
-                            
-                                var pos = planePath.plongda.length - 1;
+                                console.log(planePath.name);
+                                var pos = planePath.pathdata.length - 1;
                                 var end = new SimpleMarker({
                                     //前景文字
                                     map: map,
@@ -117,13 +117,13 @@
                                     iconTheme: 'fresh',
                                     //背景图标样式
                                     iconStyle: 'orange',
-                                    position: planePath.plongda[pos],
+                                    position: planePath.pathdata[pos],
                                     animation: 'AMAP_ANIMATION_DROP',
                                 });
-                                var title = '飞行路径编号：<span>' + planePath.planepathid + '</span>';
+                                var title = '飞行路径编号：<span>' + planePath.id + '</span>';
                                 var content = [];
-                                content.push("编号：" + planePath.planepathid );
-                                content.push("描述：" + planePath.descripte );
+                                content.push("名称：" + planePath.name );
+                                content.push("描述：" + planePath.description );
                                 content.push("创建时间：" + planePath.createtime );
                                 content.push("更新时间：" + planePath.updatetime );
                                 end.content = createInfoWindow(title, content.join("<br/>"));
