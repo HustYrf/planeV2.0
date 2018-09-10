@@ -116,7 +116,6 @@
                     <div id="tablewidget" class="block-body collapse in">
                         <table class="table table-hover">
                             <thead>
-                            <tr>
                                 <th>告警编号</th>
                                 <th>任务编号</th>
                                 <th>告警坐标</th>
@@ -124,14 +123,15 @@
                                 <th>更新时间</th>
                                 <th>状态</th>
                                 <th>告警详情</th>
+                                <#if !Session["super_administrator"]?exists>
                                 <th>操作</th>
+                                </#if>
                             </tr>
                             </thead>
                             <tbody>
                          
                             <#if (page.items)?? && ((page.items)?size gt 0)>
                             <#list page.items as alarm>
-                            <tr>
                             <td>${alarm.id!}</td>
                             <td>${alarm.taskId!}</td>
                             <td>${alarm.position!}</td>
@@ -147,8 +147,9 @@
                             </td>
 
                             <td><a class="pointer" onclick="showDetail(${alarm.id})">详细信息</a></td>
+                            <#if !Session["super_administrator"]?exists>
                             <td><a class="pointer" onclick="modifyDes(${alarm.id})">修改告警描述</a></td>
-
+                            </#if>
                              </tr>
                             </#list>
                         </#if>

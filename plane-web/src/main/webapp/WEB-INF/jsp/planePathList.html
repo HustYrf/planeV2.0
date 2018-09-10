@@ -37,31 +37,32 @@
 	                    <div id="tablewidget" class="block-body collapse in">
 	                        <table class="table table-hover">
 	                            <thead>
-	                            <tr>
 	                                <th>飞行路径编号</th>
 	                                <th>飞行路径名称</th>
 	                                <th>描述</th>	                                
 	                                <th>创建时间</th>
                                     <th>更新时间</th>
                                     <th>地理位置</th>
+									<#if !Session["super_administrator"]?exists>
                                     <th>操作</th>
-                                                                                         
+								    </#if>
 	                            </tr>
 	                            </thead>
 	                            <tbody>                              
 	                            <#if (page.items)?? && ((page.items)?size gt 0)>
 	                            <#list page.items as planepath>
-	                            	<tr>
 	                            	<td>${planepath.id}</td>
 		                            <td>${planepath.name}</td>
 		                            <td>${planepath.description}</td>
 		                            <td>${planepath.createtime?datetime}</td> 
 		                            <td>${planepath.updatetime?datetime}</td>                           
 		                            <td><a href="${s.base}/showPlanePath.action?id=${planepath.id}" target="_blank">详细信息</a></td>
+									<#if !Session["super_administrator"]?exists>
 		                            <td>
 		                            <a href="${s.base}/toTaskCreate?id=${planepath.id}" class="btn btn-primary btn-sm">创建任务</a>
 		                            <a class="btn btn-primary btn-sm" onclick='deletePlanePath("${planepath.id!}")'>删除路径</a>
 		                            <a class="btn btn-primary btn-sm" onclick='exportPlanePath(${planepath.id!},${planepath.heightdata!})' style="cursor: pointer;">导出路径</a></td>
+									</#if>
 		                            </tr> 	                      
                                 </#list>
                         		</#if>                                                         
