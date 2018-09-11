@@ -225,43 +225,35 @@
                                 <thead>
                                 <tr>
                                     <th>序号</th>
-                                    <th>用户名</th>
-                                    <th>描述</th>
-                                    <th>创建时间</th>
-                                    <th>最近修改时间</th>
-                                    <th>角色</th>
-                                    <th>管理</th>
+                                    <th>工号</th>
+                                    <th>姓名</th>
+                                    <th>部门</th>
+                                    <th>职位</th>
+                                    <th>电话号码</th>
+                                    <th>电子邮箱</th>
+                                    <th>最后登陆时间</th>
+                                    <th>编辑</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <#if (page.items)??>
                                 <#list page.items as user>
                                 <tr>
-                                <td>${user.userid}</td>
-                                <td>${user.username}</td>
-                                <td><#if user.descripte??>${user.descripte}</#if></td>
-                                <td><#if user.createtime??>${user.createtime?datetime!}</#if></td>
-                                <td><#if user.updatetime??>${user.updatetime?datetime!}</#if></td>
-                                <td>
-                                    <#if user.role??>
-                                    <#if user.role == "0">
-                                    <span class="label label-primary">管理员</span>
-                                    <#elseif user.role == "1">
-                                    <span class="label label-info">巡检员</span>
-                                    <#else>
-                                    <span class="label label-warning">浏览者</span>
-                                </#if>
-                                <#else>
-                                <span class="label label-danger">待确认</span>
-                                </#if>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser('${user.userid}','${user.username}')">修改</button>
-                                    <button type="button" class="btn btn-danger"  style="background-color:#d9534f" onclick="delUser('${user.userid}')">删除</button>
-                                </td>
+                                    <td><#if user.id??>${user.id}</#if></td>
+                                    <td><#if user.worknumber??>${user.worknumber}</#if></td>
+                                    <td>${user.name!}</td>
+                                    <td><#if user.departmentName??>${user.departmentName}</#if></td>
+                                    <td><#if user.position??>${user.position}</#if></td>
+                                    <td><#if user.phoneone??>${user.phoneone}</#if></td>
+                                    <td><#if user.email??>${user.email}</#if></td>
+                                    <td><#if user.updatetime??>${user.updatetime}</#if></td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser(${user.id},'${user.name}')">修改</button>
+                                        <button type="button" class="btn btn-danger"  style="background-color:#d9534f" onclick="delUser(${user.id})">删除</button>
+                                    </td>
                                 </tr>
-                            </#list>
-                        </#if>
+                                </#list>
+                            </#if>
                         </tbody>
                         </table>
                             <p><#include "common/tailPage.html"/></p>

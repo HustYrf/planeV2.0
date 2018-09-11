@@ -242,7 +242,7 @@
     select count(1) from K_User
     </select>
 
-    <select id="selectAllUser" resultMap="BaseResultMap">
+    <select id="selectAllUser" resultMap="BaseResultMap" >
         select
         <include refid="Base_Column_List"/>
         from K_User

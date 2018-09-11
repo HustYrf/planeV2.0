@@ -6,6 +6,7 @@ import hust.plane.mapper.pojo.UserExample;
 import java.util.List;
 
 import hust.plane.utils.page.TailPage;
+import hust.plane.utils.page.UserPojo;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
@@ -41,7 +42,7 @@ public interface UserMapper {
 
     int selectUserCount();
 
-    List<User> selectAllUser(@Param("page") TailPage<User> page);
+    List<User> selectAllUser(@Param("page") TailPage<UserPojo> page);
 
 //    int selectCountWithRole(@Param("Role") String searchUserStatus);
 

@@ -2,6 +2,7 @@ package hust.plane.service.interFace;
 
 import hust.plane.mapper.pojo.User;
 import hust.plane.utils.page.TailPage;
+import hust.plane.utils.page.UserPojo;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface UserService {
 
 //	List<User> findByUserRole(User userExmple);
 
-    TailPage<User> getAllUserWithPage(TailPage<User> page);
+    TailPage<UserPojo> getAllUserWithPage(TailPage<UserPojo> page);
 
     int delUserById(Integer userid);
 
