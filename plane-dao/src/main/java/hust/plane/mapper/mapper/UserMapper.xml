@@ -440,4 +440,10 @@
     set TaskNum = TaskNum - 1
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+    <update id="updateLastTime" parameterType="java.lang.String">
+        update K_User
+        set UpdateTime = NOW()
+        where Name=#{param1}
+    </update>
 </mapper>

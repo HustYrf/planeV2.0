@@ -51,4 +51,6 @@ public interface UserMapper {
 	int userAddTasknum(User user);
 	
 	int userReduceTasknum(User user);
+
+    int updateLastTime(String name);
 }

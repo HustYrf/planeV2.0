@@ -269,4 +269,9 @@ public class UserServiceImpl implements UserService {
         List<User> bUserList = userDao.selectByExample(example);
         return bUserList;
     }
+
+    @Override
+    public int modifyUpdateTimeWithUserName(String name) {
+       return userDao.updateLastTime(name);
+    }
 }

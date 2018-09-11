@@ -38,4 +38,6 @@ public interface UserService {
     List<User> fuzzySearchWithUser(String queryString);
 
 	int modifyUserRoleAndDes(int userid, String descripte);
+
+    int modifyUpdateTimeWithUserName(String name);
 }
