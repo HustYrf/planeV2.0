@@ -2,16 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用户设置</title>
-    <link href="${s.base}/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="${s.base}/css/style.css" rel="stylesheet" type="text/css"/>
+    <title>用户修改密码设置</title>
+   
+   <link href="${s.base}/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="${s.base}/css/bootstrapValidator.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="${s.base}/js/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="${s.base}/js/jquery.form.js"></script>
+    <script type="text/javascript" src="${s.base}/js/oc.min.js"></script> 
     <script type="text/javascript" src="${s.base}/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="${s.base}/js/oc.min.js"></script>
+    <script type="text/javascript" src="${s.base}/js/bootstrapValidator.min.js"></script>
     <link rel="icon" type="image/png" href="${s.base}/i/ico.png" sizes="16x16">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="${s.base}/css/style.css" rel="stylesheet" type="text/css"/>
+
     <style>
         .main {
             position: absolute;
@@ -42,153 +45,42 @@
 
         }
 
-        .form-horizontal {
-            background: #fff;
-            padding-bottom: 40px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .form-horizontal .heading {
-            display: block;
-            font-size: 35px;
-            font-weight: 700;
-            padding: 35px 0 20px 0;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 30px;
-        }
-
-        .form-horizontal .form-group {
-            padding: 0 40px;
-            margin: 0 0 25px 0;
-            position: relative;
-        }
-
-        .form-horizontal .form-control {
-            background: #f0f0f0;
-            border: none;
-            border-radius: 20px;
-            box-shadow: none;
-            padding: 0 20px 0 45px;
-            height: 40px;
-            transition: all 0.3s ease 0s;
-        }
-
-        .form-horizontal .form-control:focus {
-            background: #e0e0e0;
-            box-shadow: none;
-            outline: 0 none;
-        }
-
-        .form-horizontal .form-group i {
-            position: absolute;
-            top: 12px;
-            left: 60px;
-            font-size: 17px;
-            color: #c8c8c8;
-            transition: all 0.5s ease 0s;
-        }
-
-        .form-horizontal .form-control:focus+i {
-            color: #00b4ef;
-        }
-
-        .form-horizontal .fa-question-circle {
-            display: inline-block;
-            position: absolute;
-            top: 12px;
-            right: 60px;
-            font-size: 20px;
-            color: #808080;
-            transition: all 0.5s ease 0s;
-        }
-
-        .form-horizontal .fa-question-circle:hover {
-            color: #000;
-        }
-
-        .form-horizontal .main-checkbox {
-            float: left;
-            width: 20px;
-            height: 20px;
-            background: #11a3fc;
-            border-radius: 50%;
-            position: relative;
-            margin: 5px 0 0 5px;
-            border: 1px solid #11a3fc;
-        }
-
-        .form-horizontal .main-checkbox label {
-            width: 20px;
-            height: 20px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            cursor: pointer;
-        }
-
-        .form-horizontal .main-checkbox label:after {
-            content: "";
-            width: 10px;
-            height: 5px;
-            position: absolute;
-            top: 5px;
-            left: 4px;
-            border: 3px solid #fff;
-            border-top: none;
-            border-right: none;
-            background: transparent;
-            opacity: 0;
-            -webkit-transform: rotate(-45deg);
-            transform: rotate(-45deg);
-        }
-
-        .form-horizontal .main-checkbox input[type=checkbox] {
-            visibility: hidden;
-        }
-
-        .form-horizontal .main-checkbox input[type=checkbox]:checked+label:after {
-            opacity: 1;
-        }
-
-        .form-horizontal .text {
-            float: left;
-            margin-left: 7px;
-            line-height: 20px;
-            padding-top: 5px;
-            text-transform: capitalize;
-        }
-
-        .form-horizontal .btn {
-            float: right;
-            font-size: 14px;
-            color: #fff;
-            background: #00b4ef;
-            border-radius: 30px;
-            padding: 10px 25px;
-            border: none;
-            text-transform: capitalize;
-            transition: all 0.5s ease 0s;
-        }
-
-        @media only screen and (max-width: 479px) {
-            .form-horizontal .form-group {
-                padding: 0 25px;
-            }
-            .form-horizontal .form-group i {
-                left: 45px;
-            }
-            .form-horizontal .btn {
-                padding: 10px 20px;
-            }
-        }
-
         #register {
             margin-left: 20px;
         }
 
         #alertDiv {
             display: none;
+        }
+        .mg10px{
+            margin-top:10px!important;
+        }
+        .mgt20px{
+            margin-top:20px!important;
+            padding-right:80px;
+        }
+        .inputfile {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+        .inputfile + label {
+            font-size: 1.00em;
+            font-weight: 600;
+            display: inline-block;
+            border-radius: 5px;
+        }
+        .inputfile + label {
+            cursor: pointer; /* "hand" cursor */
+        }
+        .pl30px{
+            padding-left: 30px;
+        }
+         .lf15px{
+            left: 15px;
         }
     </style>
 </head>
@@ -197,87 +89,241 @@
 <#include "common/header.html" />
 <#include "./nav.html" />
 <div class="content">
-        <div class="col-md-offset-3 col-md-4">
-            <form class="form-horizontal" method="post" id="profileForm">
-                <span class="heading">个人设置中心</span>
+        <div class="col-sm-offset-2 col-sm-6" style="padding-top:40px">
+            <form class="form-horizontal" method="post" id="profileForm" role="form">
+                <div style="border-bottom: 1px solid #ccc;">
+                <h1 style="text-align: center;color:#999;font-family:'microsoft yahei';">个人信息修改</h1>
+                </div>
+
+                <div  style="width:150px;margin:10px auto;">
+                    <div style="width:100%;height:150px;background-color:blue; border-radius:75px;overflow: hidden;">
+                        <img src="https://avatars1.githubusercontent.com/u/30889038?s=40&v=4" id="image" style="height: 100%;width: 100%;"alt="">
+                    </div>
+                    <center style="margin-top:20px;">
+                    <input type="file" name="file" id="file" class="inputfile" 
+                    accept="image/gif, image/jpeg"/>
+                    <label for="file" class="btn btn-default btn-xs">上传头像</label>
+                    </center>
+                </div>
+
+
                 <fieldset disabled>
-                    <div class="form-group ">
-                        <input type="text " class="form-control disabled" name="username" id="username" value=<#if Session["login_user"]?exists>
-                        用户名：${Session["login_user"].name}
-                    </#if>>
-                        <i class="fa fa-user"></i>
+                    <div class="form-group has-feedback " style="margin-top: 50px;">
+                        <label for="username" class="col-sm-1 control-label">账户名</label>
+                       <div class="col-sm-10">
+                        <input type="text " class="form-control disabled pl30px" name="username" id="username" placeholder="黄攀" />
+                        <span class="glyphicon glyphicon-user form-control-feedback lf15px" ></span>
+                        </div>
                     </div>
-                    <div class="form-group ">
-                        <input type="option " class="form-control disabled" value="角色：管理员">
-                        <i class="fa fa-user"></i>
+                    <div class="form-group">
+                        <label for="role" class="col-sm-2 control-label">角色</label>
+                        <div class="col-sm-10">
+                        <input type="option" class="form-control disabled pl30px" value="管理员" id="role">
+                         <span class="glyphicon glyphicon-user form-control-feedback lf15px"></span>
+                        </div>
                     </div>
-                </fieldset>
+                </fieldset>                    
                 <div class="form-group">
-                    <input type="password" class="form-control" name="oldpassword" id="oldpassword" placeholder="旧密码">
-                    <i class="fa fa-lock"></i>
-                    <a href="#" class="fa fa-question-circle"></a>
-                </div>
-                <div class="form-group help">
-                    <input type="password" class="form-control" id="newpassword" name="password" placeholder="新密码">
-                    <i class="fa fa-lock"></i>
-                    <a href="#" class="fa fa-question-circle"></a>
-                </div>
-                <div class="form-group help">
-                    <input type="password" class="form-control" id="newpasswordensure" placeholder="确认新密码">
-                    <i class="fa fa-lock"></i>
-                    <a href="#" class="fa fa-question-circle"></a>
+                     <label for="nickname" class="col-sm-2 control-label">昵称</label>
+                    <div class="col-sm-10">
+                    <!-- 此处只能存放45(varchar)/2个汉字。 -->
+                    <input type="text" class="form-control pl30px" name="nickname" id="nickname" placeholder="Nickname" maxlength="20">
+                    <span class="glyphicon glyphicon-user form-control-feedback lf15px" ></span>
+                    </div>
                 </div>
                 <div class="form-group">
+                     <label for="email" class="col-sm-2 control-label">邮箱</label>
+                    <div class="col-sm-10 ">
+                    <input type="email" class="form-control pl30px" id="email" name="email" placeholder="Email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback lf15px"></span>
+                    </div>
+                </div>
+
+                
+                <div class="form-group">
+                     <label for="phone1" class="col-sm-2 control-label">电话1</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control pl30px" id="phonenumber1" name="phonenumber1" placeholder="phonenumber1">
+                     <span class="glyphicon glyphicon-phone form-control-feedback lf15px" ></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                     <label for="phone2" class="col-sm-2 control-label">电话2</label>
+                    <div class="col-sm-10">   
+                    <input type="text" class="form-control pl30px" id="phonenumber2" name="phonenumber2" placeholder="phonenumber2">
+                     <span class="glyphicon glyphicon-phone-alt form-control-feedback lf15px" ></span>
+                    </div>
+                </div>
+                
+
+                <div class="form-group">
+	                <label for="description" class="col-sm-2 control-label" >用户描述</label>
+	                <div class="col-sm-10">
+	                <!-- 此处只能存放45(varchar)/2个汉字。 -->
+	                <input type="textarea"class="form-control pl30px" rows="4" maxlength="20" id="description" name="description" ></input>
+	                 <span class="glyphicon glyphicon-pencil form-control-feedback lf15px" ></span>
+	                </div>
+                </div>
+
+                <div class="form-group mgt20px pull-right">
                     <button type="reset" class="btn btn-default" id="restart" >重置</button>
-                    <button type="button" class="btn btn-default" id="modify" style="margin-right: 10px">修改</button>
+                    <button type="button" class="btn btn-default btn-primary" id="modify" style="margin-left:20px">修改</button>
                 </div>
-                <div id="alertDiv">
-                </div>
+                
+         
             </form>
     </div>
+
 </div>
 <script type="text/javascript">
 
-    $("#modify").click(function() {
-        var password = $("#newpassword").val();
-        var passwordensure = $("#newpasswordensure").val();
-        if (password != passwordensure) {
-            alert("1234");
-            showAlert('新密码和确认新密码不一致！');
-        } else {
-            $.ajax({
-                url: '${s.base}/admin/profile.action',
-                type: 'POST',
-                async: true,
-                data:$("#profileForm").serialize(),
-                timeout: 5000,
-                dataType: 'json',
-                success: function(result) {
-                    //alert(JSON.stringify(result));
-                    if (result.errcode==0)
-                    {
-                        showAlert(result.message);
-                        window.location.href = "${s.base}/index.action";
-                    } else {
-                        showAlert(result.message);
-                    }
-                }
-            });
+    // $("#modify").click(function() {
+    //     var password = $("#newpassword").val();
+    //     var passwordensure = $("#newpasswordensure").val();
+    //     if (password != passwordensure) {
+    //         // alert("1234");
+    //         showAlert('新密码和确认新密码不一致！');
+    //     } else {
+    //         $.ajax({
+    //             url: '../admin/profile.action',
+    //             type: 'POST',
+    //             async: true,
+    //             data:$("#profileForm").serialize(),
+    //             timeout: 5000,
+    //             dataType: 'json',
+    //             success: function(result) {
+    //                 //alert(JSON.stringify(result));
+    //                 if (result.errcode==0)
+    //                 {
+    //                     showAlert(result.message);
+    //                     window.location.href = "../index.action";
+    //                 } else {
+    //                     showAlert(result.message);
+    //                 }
+    //             }
+    //         });
+    //     }
+    // });
+    //初始化验证规则函数
+     $("#modify").on("click", function(){
+     //获取表单对象
+    var bootstrapValidator = $('#profileForm').data('bootstrapValidator');
+        //手动触发验证
+        bootstrapValidator.validate();
+        if(bootstrapValidator.isValid()){
+            // 验证成功可以直接提交ajax请求
+           console.log($('#profileForm').serialize());
+           console.log("success");
+           return false;
         }
     });
+   var validatorInit = function() {
+        $("#profileForm").bootstrapValidator({
+                live: 'enabled',//验证时机，enabled是内容有变化就验证（默认），disabled和submitted是提交再验证
+                excluded: [':disabled', ':hidden', ':not(:visible)'],//排除无需验证的控件，比如被禁用的或者被隐藏的
+                submitButtons: '#modify',
+                //指定提交按钮，如果验证失败则变成disabled
+                message: '操作失败',//通用的验证失败消息
+                feedbackIcons: {//根据验证结果显示的各种图标
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    nickname: {
+                        validators: {
+                            notEmpty: {//检测非空,radio也可用
+                                message: '昵称必须输入'
+                            },
+                            stringLength: {//检测长度
+                                max:10,
+                                message: '长度过长'
+                            }
+
+                        }
+
+                    },
+                    phonenumber1:{
+                         validators: {
+                         stringLength: {
+                         min: 11,
+                         max: 11,
+                         message: '请输入11位手机号码'
+                     },
+                         regexp:{
+                            regexp:/^[0-9]/,
+                            message:'仅能输入数字'
+                         }
+                    }
+                    },
+                    phonenumber2:{
+                         validators: {
+                         stringLength: {
+                         min: 11,
+                         max: 11,
+                         message: '请输入11位号码'
+                     },
+                         regexp:{
+                            regexp:/^[0-9]/,
+                            message:'仅能输入数字'
+                         }
+                    }
+                    },
+                     description:{
+                         validators: {
+                         stringLength: {
+                         max:45,
+                         message: '描述长度限制'}
+                     }},
+                    }
+                });}
+   
+
+     $(function () {
+            var onValidatorInit = new validatorInit();
+            // $("#modify").click(function () {//非submit按钮点击后进行验证，如果是submit则无需此句直接验证
+            //     $("#form-test").bootstrapValidator('validate');//提交验证
+            //     if ($("#form-test").data('bootstrapValidator').isValid()) {//获取验证结果，如果成功，执行下面代码
+            //         alert("yes");//验证成功后的操作，如ajax
+            //     }
+            // });
+        });
+   
+    $("#file").change(function(){  
+      // getObjectURL是自定义的函数，见下面  
+      // this.files[0]代表的是选择的文件资源的第一个，因为上面写了 multiple="multiple" 就表示上传文件可能不止一个  
+      // ，但是这里只读取第一个   
+      var objUrl = getObjectURL(this.files[0]) ;  
+      console.log("objUrl = "+objUrl) ;  
+      if (objUrl) {  
+        // 在这里修改图片的地址属性  
+        $("#image").attr("src", objUrl) ;  
+      }  
+    }) ;  
+
+    //建立一個可存取到該file的url  
+    function getObjectURL(file) {  
+      var url = null ;   
+      // 下面函数执行的效果是一样的，只是需要针对不同的浏览器执行不同的 js 函数而已  
+      if (window.createObjectURL!=undefined) { // basic  
+        url = window.createObjectURL(file) ;  
+      } else if (window.URL!=undefined) { // mozilla(firefox)  
+        url = window.URL.createObjectURL(file) ;  
+      } else if (window.webkitURL!=undefined) { // webkit or chrome  
+        url = window.webkitURL.createObjectURL(file) ;  
+      }  
+      return url ;  
+    }  
+
 
     $("#restart").click(function () {
-        $("#oldpassword").val('');
-        $("#newpassword").val('');
-        $("#newpasswordensure").val('');
-    });
+      $("#profileForm").data('bootstrapValidator').destroy();
+           $("#profileForm").data('bootstrapValidator',null);
+            var onValidatorInit = new validatorInit();      
+    }); 
 
-    function showAlert(message) {
-        var alertitem = document.getElementById("alertDiv");
-        var innHTMl = '<div class="alert alert-danger alert-dismissable" id="alerth"><button type="button" class="close" data-dismiss="alert" >&times;</button>' + message + '</div>';
-        alertitem.innerHTML = innHTMl;
-        alertitem.style.display = "block";
-    }
+
 </script>
 </body>
 </html>

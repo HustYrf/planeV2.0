@@ -13,7 +13,7 @@ public interface TaskMapper {
 
     int deleteByExample(TaskExample example);
 
-    int deleteByPrimaryKey(String taskid);
+    int deleteByPrimaryKey(int id);
 
     int insert(Task record);
 
@@ -40,4 +40,6 @@ public interface TaskMapper {
 	List<Task> getTasklistByUserCreator(int userCreator);
 
     List<Task> queryPageWithTime(Task task, TailPage<TaskPojo> page);
+
+	int updateStatusByTask(Task task);
 }

@@ -50,6 +50,8 @@ public class IndexController {
     public String loginView() {
         return "login";
     }
+    
+    
 
     /**
      * 登陆
@@ -163,12 +165,20 @@ public class IndexController {
      * @param mv
      * @return
      */
-    @RequestMapping(value = "/profile")
-    public String doEditPwd(Model mv) {
+    @RequestMapping(value = "/passwordEdit")
+    public String editPwd(Model mv) {
 
-        mv.addAttribute("curNav", "editInfo");
-        return "profileEdit";
+        mv.addAttribute("curNav", "passwordEdit");
+        return "passwordEdit";
     }
+    
+  
+   @RequestMapping(value = "/profileEdit")
+   public String profileEdit(Model mv) {
+
+       mv.addAttribute("curNav", "profileEdit");
+       return "profileEdit";
+   }
 
     @RequestMapping(value = "/profile", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody

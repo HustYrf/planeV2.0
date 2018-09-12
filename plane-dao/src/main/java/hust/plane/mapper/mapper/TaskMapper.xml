@@ -429,4 +429,9 @@
     </if>
     LIMIT #{param2.startIndex, jdbcType=INTEGER} , #{param2.pageSize, jdbcType=INTEGER}
   </select>
+  <update id="updateStatusByTask" parameterType="hust.plane.mapper.pojo.Task">
+        update K_Task
+        set Status = #{status,jdbcType=INTEGER}
+        where id=#{id, jdbcType=INTEGER}
+    </update>
 </mapper>

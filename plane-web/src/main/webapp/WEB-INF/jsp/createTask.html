@@ -94,7 +94,7 @@
                     <div class="form-group">
                         <label class="control-label">任务名称：</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="taskname" placeholder="请输入任务名称">
+                            <input type="text" class="form-control" id="taskname" value="${taskvo.name!}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -107,7 +107,7 @@
                     <div class="form-group">
                         <label class="control-label">放飞员：</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="userA" placeholder="输入此次任务的放飞员">                          
+                            <input type="text" class="form-control" id="userA" placeholder="${taskvo.userAName!}">                          
                             <div class="search-div" id="search-div1">
                                <ul id="search-result" ></ul>                              
                             </div>                                                  
@@ -117,9 +117,10 @@
                     <div class="form-group">
                         <label class="control-label">接收员：</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control"  id="userZ" placeholder="输入此次任务的接受员">
+                            <input type="text" class="form-control"  id="userZ" placeholder="${taskvo.userZName!}">
                             <div class="search-div" id="search-div2">
-                                <ul id="search-result2" ></ul>
+                                <ul id="search-result2" >  
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -127,10 +128,14 @@
                         <label class="control-label">无人机编号：</label>
                         <div class="col-sm-5">
                             <select id="uavId" class="form-control" type="select">
-									<#if uavs?? && uavs?size gt 0>
-									<#list uavs as uav>
-										<option value="${uav.id!}">${uav.id!}</option>
-									</#list>								
+                            		<#if taskvo.uavId??>
+                            		    <option value="${taskvo.uavId!}">${ taskvo.uavId!}</option>
+                            		<#else>                           		
+										<#if uavs?? && uavs?size gt 0>
+										  <#list uavs as uav>
+											<option value="${uav.id!}">${uav.id!}</option>
+										</#list>								
+										</#if>
 									</#if>									
 				            </select>
                         </div>
@@ -139,8 +144,8 @@
                         <label class="control-label">选择飞行路径：</label>
                         <div class="col-sm-5">
                               <select  id="flyingpathid" class="form-control" type="select">
-                              		<#if task.planepathid??>
-                              		<option value="${task.id!}">${task.id!}:${task.name}</option>
+                              		<#if taskvo.planepathid??>
+                              		<option value="${taskvo.planepathid!}">${taskvo.planepathid!}</option>
                               		<#else>
 	                              		<#if planePaths?? && planePaths?size gt 0>
 										<#list planePaths as planePath>
@@ -155,7 +160,7 @@
                         <label class="control-label">计划起飞时间：</label>
                         <div class="col-sm-5">
                             <!--<input type="datetime-local" class="form-control"  name="plantime" >-->
-                            <input type="text" class="form-control" id="planstarttime" value="${task.planstarttime?datetime!}">
+                            <input type="text" class="form-control" id="planstarttime" value="${taskvo.planstarttime?datetime!}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -173,12 +178,13 @@
 
 <script type="application/javascript">
 
+     //提交任务
 	function submitTask(){
 		
 		var taskname = $("#taskname").val();
-		var usercreator = $("#usercreator").val().split(":")[1];		
-		var userA = $("#userA").val().split(":")[1];
-		var userZ = $("#userZ").val().split(":")[1];
+		var usercreator = $("#usercreator").val();		
+		var userA = $("#userA").val();
+		var userZ = $("#userZ").val();
 		var uavId = $("#uavId").val();
 		
 		var flyingpathid = $("#flyingpathid").val();

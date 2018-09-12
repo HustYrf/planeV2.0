@@ -40,4 +40,6 @@ public interface UserService {
 	int modifyUserRoleAndDes(int userid, String descripte);
 
     int modifyUpdateTimeWithUserName(String name);
+
+	String getNameByUserId(Integer id);
 }

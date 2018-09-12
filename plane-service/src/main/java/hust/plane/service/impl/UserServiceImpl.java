@@ -1,6 +1,5 @@
 package hust.plane.service.impl;
 
-import hust.plane.constant.WebConst;
 import hust.plane.mapper.mapper.UserMapper;
 import hust.plane.mapper.pojo.User;
 import hust.plane.mapper.pojo.UserExample;
@@ -274,4 +273,10 @@ public class UserServiceImpl implements UserService {
     public int modifyUpdateTimeWithUserName(String name) {
        return userDao.updateLastTime(name);
     }
+
+	@Override
+	public String getNameByUserId(Integer id) {
+		
+		return userDao.getNameByUserId(id);
+	}
 }

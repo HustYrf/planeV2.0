@@ -135,7 +135,7 @@
             	'id':$('#planepathid').val(),
             },
             success: function (result) {
-            	console.log(result);
+            	
                 if (result.errcode == 0 && result.message == "SUCCESS") {
                 	Modal.show('_ocDialogModal');
                 	document.getElementById("msg").innerHTML=result.data;
