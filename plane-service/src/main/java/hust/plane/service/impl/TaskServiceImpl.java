@@ -141,7 +141,6 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public Task getTaskByTask(Task task) {
-		// TODO Auto-generated method stub
 		return taskMapper.selectByPrimaryKey(task.getId());
 	}
 
