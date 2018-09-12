@@ -228,6 +228,105 @@
         insert into K_User(name,password, createtime) values (#{name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP})
     </insert>
 
+    <insert id="insertSelectiveIdInc" parameterType="hust.plane.mapper.pojo.User" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into K_User
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                Name,
+            </if>
+            <if test="password != null">
+                PassWord,
+            </if>
+            <if test="nickname != null">
+                NickName,
+            </if>
+            <if test="worknumber != null">
+                WorkNumber,
+            </if>
+            <if test="email != null">
+                Email,
+            </if>
+            <if test="createtime != null">
+                CreateTime,
+            </if>
+            <if test="updatetime != null">
+                UpdateTime,
+            </if>
+            <if test="departmentId != null">
+                Department_id,
+            </if>
+            <if test="phoneone != null">
+                PhoneOne,
+            </if>
+            <if test="phonetwo != null">
+                PhoneTwo,
+            </if>
+            <if test="icon != null">
+                Icon,
+            </if>
+            <if test="tasknum != null">
+                TaskNum,
+            </if>
+            <if test="description != null">
+                Description,
+            </if>
+            <if test="historypoint != null">
+                HistoryPoint,
+            </if>
+            <if test="historyzoom != null">
+                HistoryZoom,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null">
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="worknumber != null">
+                #{worknumber,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="phoneone != null">
+                #{phoneone,jdbcType=VARCHAR},
+            </if>
+            <if test="phonetwo != null">
+                #{phonetwo,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="tasknum != null">
+                #{tasknum,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="historypoint != null">
+                #{historypoint,jdbcType=OTHER},
+            </if>
+            <if test="historyzoom != null">
+                #{historyzoom,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
     <select id="selectByUserName" parameterType="java.lang.String" resultType="java.lang.Integer">
     select count(*) from K_User
     where name=#{name,jdbcType=VARCHAR}

@@ -124,10 +124,11 @@ public class UserController {
 
     @RequestMapping(value = "addUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String doAddUser(@RequestParam Integer addUserId, @RequestParam String addUsername, @RequestParam String addUserPaw,
-                            @RequestParam String addUserRole, @RequestParam String addUserDescripte) {
+    public String doAddUser(@RequestParam String addUsername, @RequestParam String addUserPaw,
+                            @RequestParam String addUserWorkNumber, @RequestParam(required = false) String addUserNickname,
+                            @RequestParam(required = false ) String addUserEmail,@RequestParam(required = false) String addUserPhone) {
         try {
-            userService.addUserWithInfo(addUserId, addUsername, addUserPaw, addUserRole, addUserDescripte);
+            userService.addUserWithInfo(addUsername,addUserPaw, addUserWorkNumber, addUserNickname,addUserEmail,addUserPhone);
         } catch (Exception e) {
             String msg = "添加失败";
             if (e instanceof TipException) {

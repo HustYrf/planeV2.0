@@ -25,7 +25,7 @@ public interface UserService {
 
 //    int modifyUserRoleAndDes(Integer userid, String role, String descripte);
 
-    int addUserWithInfo(Integer addUserId, String addUsername, String addUserPaw, String addUserRole, String addUserDescripte);
+ 
 
 //    TailPage<User> getUserByRoleOrIdWithPage(String searchUserStatus, String searchUserId, TailPage<User> page);
 
@@ -40,4 +40,6 @@ public interface UserService {
     int modifyUpdateTimeWithUserName(String name);
 
     int updateSelectiveWithUserId(Integer id, String nickName, String email, String phoneNumber);
+
+    int addUserWithInfo(String addUsername, String addUserPaw, String addUserWorkNumber, String addUserNickname, String addUserEmail, String addUserPhone);
 }

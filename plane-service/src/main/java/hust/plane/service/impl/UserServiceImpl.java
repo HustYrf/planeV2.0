@@ -181,27 +181,38 @@ public class UserServiceImpl implements UserService {
         return count;
     }
 
-
     @Override
-    public int addUserWithInfo(Integer addUserId, String addUsername, String addUserPaw, String addUserRole,
-                               String addUserDescripte) {
-        if (addUserId == null || StringUtils.isBlank(addUsername) || StringUtils.isBlank(addUserPaw)
-                || StringUtils.isBlank(addUserRole) || StringUtils.isBlank(addUserDescripte)) {
-            throw new TipException("填写的信息不完整,请填写完整");
-        }
+    public int addUserWithInfo(String addUsername, String addUserPaw, String addUserWorkNumber, String addUserNickname, String addUserEmail, String addUserPhone) {
         User user = new User();
-        user.setId(addUserId);
-        user.setName(addUsername);
-        user.setPassword(PlaneUtils.MD5encode(addUsername + addUserPaw));
-        // user.setRole(addUserRole);
-        user.setDescription(addUserDescripte);
-        user.setCreatetime(new Date());
-        int count = userDao.insertSelective(user);
-        if (count != 1) {
-            throw new TipException("新增用户操作异常");
+        if(StringUtils.isBlank(addUsername)){
+            throw new TipException("新增用户名获取失败");
+        }else{
+            user.setName(addUsername);
         }
-        return count;
+        if(StringUtils.isBlank(addUserPaw)){
+            throw new TipException("新增用户密码获取失败");
+        }else{
+            user.setPassword(PlaneUtils.MD5encode(addUsername + addUserPaw));
+        }
+        if(StringUtils.isBlank(addUserWorkNumber)){
+            throw new TipException("新增用户工号获取失败");
+        }else{
+            user.setWorknumber(addUserWorkNumber);
+        }
+        if(StringUtils.isNotBlank(addUserNickname)){
+            user.setNickname(addUserNickname);
+        }
+        if(StringUtils.isNotBlank(addUserEmail)){
+            user.setEmail(addUserEmail);
+        }
+        if(StringUtils.isNotBlank(addUserPhone)){
+            user.setPhoneone(addUserPhone);
+        }
+        user.setCreatetime(DateKit.getNowTime());
+        user.setUpdatetime(DateKit.getNowTime());
+        return userDao.insertSelectiveIdInc(user)==1?1:0;
     }
+
 
     // @Override
     // public TailPage<User> getUserByRoleOrIdWithPage(String searchUserStatus,
