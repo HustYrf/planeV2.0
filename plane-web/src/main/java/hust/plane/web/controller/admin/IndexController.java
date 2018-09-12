@@ -71,12 +71,15 @@ public class IndexController {
 
         try {
             User user = userService.login(name, password);
-
+            int count = userService.modifyUpdateTimeWithUserName(name);
+            if (count != 1) {
+                throw new TipException("用户登录时间修改异常");
+            }
             //把用户保存在session中
             request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
             List<Integer> groupIdList = userGroupService.selectGroupIdWithUserId(user.getId());
-            if(groupIdList.contains(Integer.valueOf(1))){
-                request.getSession().setAttribute(WebConst.SUPER_ADMINISTRATOR_VIEW,user);
+            if (groupIdList.contains(Integer.valueOf(1))) {
+                request.getSession().setAttribute(WebConst.SUPER_ADMINISTRATOR_VIEW, user);
             }
             if (StringUtils.isNotBlank(remeber_me)) {
                 PlaneUtils.setCookie(response, user.getId());
@@ -140,6 +143,7 @@ public class IndexController {
     @RequestMapping(value = "/logout")
     public void doLogout(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         session.removeAttribute(WebConst.LOGIN_SESSION_KEY);
+        session.removeAttribute(WebConst.SUPER_ADMINISTRATOR_VIEW);
         Cookie cookie = new Cookie(WebConst.USER_IN_COOKIE, "");
         cookie.setValue(null);
         cookie.setMaxAge(0);

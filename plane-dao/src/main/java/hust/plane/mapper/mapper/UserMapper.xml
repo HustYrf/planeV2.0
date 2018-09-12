@@ -242,7 +242,7 @@
     select count(1) from K_User
     </select>
 
-    <select id="selectAllUser" resultMap="BaseResultMap">
+    <select id="selectAllUser" resultMap="BaseResultMap" >
         select
         <include refid="Base_Column_List"/>
         from K_User
@@ -440,4 +440,10 @@
     set TaskNum = TaskNum - 1
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+    <update id="updateLastTime" parameterType="java.lang.String">
+        update K_User
+        set UpdateTime = NOW()
+        where Name=#{param1}
+    </update>
 </mapper>

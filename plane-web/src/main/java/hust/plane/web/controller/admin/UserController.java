@@ -2,11 +2,13 @@ package hust.plane.web.controller.admin;
 
 import hust.plane.constant.WebConst;
 import hust.plane.mapper.pojo.User;
+import hust.plane.service.interFace.DepartmentService;
+import hust.plane.service.interFace.UserGroupService;
 import hust.plane.service.interFace.UserService;
 import hust.plane.utils.page.TailPage;
+import hust.plane.utils.page.UserPojo;
 import hust.plane.utils.pojo.JsonView;
 import hust.plane.utils.pojo.TipException;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Iterator;
+import java.util.List;
 
 
 @Controller
@@ -24,6 +28,10 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     @Resource
     private UserService userService;
+    @Resource
+    private UserGroupService userGroupService;
+    @Resource
+    private DepartmentService departmentService;
 
 //    @RequestMapping(value = "searchUser", method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
 //    @ResponseBody
@@ -38,8 +46,8 @@ public class UserController {
 //    }
 
 
-//    @RequestMapping(value = "toUserCreate", method = RequestMethod.GET)
-//    public String userModify(TailPage<User> page, Model model, User user) {
+    @RequestMapping(value = "toUserCreate", method = RequestMethod.GET)
+    public String userModify(TailPage<UserPojo> page, Model model, User user) {
 //        if("-1".equals(user.getRole()))
 //        {
 //            user.setRole(null);
@@ -52,13 +60,29 @@ public class UserController {
 //            }
 //            page = userService.getUserByRoleOrIdWithPage(searchUserStatus, searchUserId, page);
 //        } else {
-//            page = userService.getAllUserWithPage(page);
-//        }
+        page = userService.getAllUserWithPage(page);
+        List<UserPojo> pojoList = page.getItems();
+        Iterator<UserPojo> iterator = pojoList.iterator();
+        while (iterator.hasNext()) {
+            UserPojo userPojo = iterator.next();
+            List<Integer> userGroupList = userGroupService.selectGroupIdWithUserId(userPojo.getId());
+            if (userGroupList.size() > 0 && userGroupList.contains(Integer.valueOf(1))) {
+                userPojo.setPosition("浏览者");
+            } else if (userGroupList.size() > 0 && userGroupList.contains(Integer.valueOf(2))) {
+                userPojo.setPosition("任务管理员");
+            } else {
+                userPojo.setPosition("巡检员");
+            }
+            if (userPojo.getDepartmentId() != null) {
+                userPojo.setDepartmentName(departmentService.getUserDepartmentNameWithPartId(userPojo.getDepartmentId()));
+            }
+        }
+        page.setItems(pojoList);
 //        model.addAttribute("selectStatus", user.getRole());
-//        model.addAttribute("page", page);
-//        model.addAttribute("curNav", "usersEdit");
-//        return "userModify";
-//    }
+        model.addAttribute("page", page);
+        model.addAttribute("curNav", "usersEdit");
+        return "userModify";
+    }
 
     @RequestMapping(value = "deleteUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
