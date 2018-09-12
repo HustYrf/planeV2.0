@@ -39,6 +39,8 @@ public interface UserService {
     
     int modifyUpdateTimeWithUserName(String name);
 
+    String getNameByUserId(Integer id);
+
     int updateSelectiveWithUserId(Integer id, String nickName, String email, String phoneNumber);
 
     int addUserWithInfo(String addUsername, String addUserPaw, String addUserWorkNumber, String addUserNickname, String addUserEmail, String addUserPhone);

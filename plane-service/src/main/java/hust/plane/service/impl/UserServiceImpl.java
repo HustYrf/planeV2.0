@@ -1,6 +1,5 @@
 package hust.plane.service.impl;
 
-import hust.plane.constant.WebConst;
 import hust.plane.mapper.mapper.UserMapper;
 import hust.plane.mapper.pojo.User;
 import hust.plane.mapper.pojo.UserExample;
@@ -297,4 +296,10 @@ public class UserServiceImpl implements UserService {
         }
         return userDao.updateByPrimaryKeySelective(user)==1?1:0;
     }
+
+	@Override
+	public String getNameByUserId(Integer id) {
+		
+		return userDao.getNameByUserId(id);
+	}
 }

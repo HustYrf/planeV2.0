@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <title>用户修改密码设置</title>
    
-   <link href="${s.base}/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="${s.base}/css/bootstrapValidator.min.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="${s.base}/js/jquery-3.3.1.js"></script>
-    <script type="text/javascript" src="${s.base}/js/jquery.form.js"></script>
-    <script type="text/javascript" src="${s.base}/js/oc.min.js"></script> 
-    <script type="text/javascript" src="${s.base}/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="${s.base}/js/bootstrapValidator.min.js"></script>
-    <link rel="icon" type="image/png" href="${s.base}/i/ico.png" sizes="16x16">
+    <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="./css/bootstrapValidator.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="./js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="./js/jquery.form.js"></script>
+    <script type="text/javascript" src="./js/oc.min.js"></script> 
+    <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrapValidator.min.js"></script>
+    <link rel="icon" type="image/png" href="./i/ico.png" sizes="16x16">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link href="${s.base}/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="./css/style.css" rel="stylesheet" type="text/css"/>
 
     <style>
         .main {
@@ -57,7 +57,6 @@
         }
         .mgt20px{
             margin-top:20px!important;
-            padding-right:80px;
         }
         .inputfile {
             width: 0.1px;
@@ -86,10 +85,14 @@
 </head>
 
 <body>
-<#include "common/header.html" />
-<#include "./nav.html" />
+
+
+
+<div class="navbar"></div>
+
+
 <div class="content">
-        <div class="col-sm-offset-2 col-sm-6" style="padding-top:40px">
+        <div class="col-sm-offset-2 col-sm-6">
             <form class="form-horizontal" method="post" id="profileForm" role="form">
                 <div style="border-bottom: 1px solid #ccc;">
                 <h1 style="text-align: center;color:#999;font-family:'microsoft yahei';">个人信息修改</h1>
@@ -99,7 +102,7 @@
                     <div style="width:100%;height:150px;background-color:blue; border-radius:75px;overflow: hidden;">
                         <img src="https://avatars1.githubusercontent.com/u/30889038?s=40&v=4" id="image" style="height: 100%;width: 100%;"alt="">
                     </div>
-                    <center style="margin-top:20px;">
+                    <center class="mgt20px">
                     <input type="file" name="file" id="file" class="inputfile" 
                     accept="image/gif, image/jpeg"/>
                     <label for="file" class="btn btn-default btn-xs">上传头像</label>
@@ -158,17 +161,22 @@
                 
 
                 <div class="form-group">
-	                <label for="description" class="col-sm-2 control-label" >用户描述</label>
-	                <div class="col-sm-10">
-	                <!-- 此处只能存放45(varchar)/2个汉字。 -->
-	                <input type="textarea"class="form-control pl30px" rows="4" maxlength="20" id="description" name="description" ></input>
-	                 <span class="glyphicon glyphicon-pencil form-control-feedback lf15px" ></span>
-	                </div>
+                <label for="description" class="col-sm-2 control-label" >用户描述</label>
+                <div class="col-sm-10">
+                <!-- 此处只能存放45(varchar)/2个汉字。 -->
+                <input type="textarea"class="form-control pl30px" rows="4" maxlength="20" id="description" name="description" ></input>
+                 <span class="glyphicon glyphicon-pencil form-control-feedback lf15px" ></span>
+
+                </div>
                 </div>
 
-                <div class="form-group mgt20px pull-right">
+
+                <div class="form-group mg20px pull-right">
+                  
                     <button type="reset" class="btn btn-default" id="restart" >重置</button>
-                    <button type="button" class="btn btn-default btn-primary" id="modify" style="margin-left:20px">修改</button>
+                    <button type="button" class="btn btn-default btn-primary" id="modify" style="margin-right:20px">修改</button>
+                    
+                 
                 </div>
                 
          

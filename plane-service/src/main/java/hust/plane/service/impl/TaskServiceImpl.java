@@ -110,11 +110,9 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public boolean setStatusTaskByTask(Task task, int status) {
-		// TODO Auto-generated method stub
-		Task task2 = taskMapper.selectByPrimaryKey(task.getId());
-		task2.setStatus(status);
-
-		if (taskMapper.updateByPrimaryKey(task2) == 1)
+		
+		task.setStatus(status);
+		if (taskMapper.updateStatusByTask(task)==1)
 			return true;
 		else
 			return false;
@@ -186,5 +184,16 @@ public class TaskServiceImpl implements TaskService {
 		page.setItemsTotalCount(itemsTotalCount);
 		page.setItems(items);
 		return page;
+	}
+
+	@Override
+	public boolean deleteByTask(Task task) {
+		
+		if(taskMapper.deleteByPrimaryKey(task.getId())==1) {
+			return true;
+		}else {
+			return false;
+		}
+		
 	}
 }

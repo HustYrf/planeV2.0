@@ -55,4 +55,6 @@ public interface UserMapper {
     int updateLastTime(String name);
 
     int insertSelectiveIdInc(User user);
+
+	String getNameByUserId(Integer id);
 }

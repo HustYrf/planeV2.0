@@ -73,7 +73,7 @@
 	                                	<td>${taskpojo.task.userA!}</td>
 	                                	<td>${taskpojo.userZName!}</td>
 	                                	<td>${taskpojo.task.userZ!}</td>
-	                                	<td>${taskpojo.task.uavId!}</td>
+	                                	<td><a target="_blank" href="${s.base}/getTaskPlane" style="cursor:pointer;">${taskpojo.task.uavId!}</a></td>
 	                                	<td>${(taskpojo.task.planstarttime?datetime)!}</td>
 	                                	<td>${(taskpojo.task.flyingpathId)!}</td>
 	                                	<td>
@@ -98,12 +98,31 @@
 	                               	    </#if>
 	                                	</td>
 	                                	<td>
-	                                		<#if taskpojo.task.status==6>
-											<#if !Session["super_administrator"]?exists>
-	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureFly('${taskpojo.task.taskid!}')">允许放飞</button>
-                                            <#else>
-                                            <span class="label label-warning">无操作权限</span>
+	                                	   <#if taskpojo.task.status==-1 || taskpojo.task.status==1>
+												<#if !Session["super_administrator"]?exists>
+		                                		<button type="button" class="btn btn-info btn-xs" onclick="assignTask(${taskpojo.task.id!})">分派</button>
+	                                            <#else>
+                                                 <span class="label label-warning">无操作权限</span>
+										        </#if>
+										   </#if>
+										    
+										    <#if taskpojo.task.status==0>
+												<#if !Session["super_administrator"]?exists>
+		                                		<a class="btn btn-info btn-xs" href="${s.base}/toTaskCreate.action?id=${taskpojo.task.id!}">编辑</a>
+		                                		<button type="button" class="btn btn-info btn-xs" onclick="deleteTask(${taskpojo.task.id!})">删除</button>
+	                                            <#else>
+                                                 <span class="label label-warning">无操作权限</span>
+										         </#if>
 										    </#if>
+										    
+										    
+	                                		<#if taskpojo.task.status==7>
+											    <#if !Session["super_administrator"]?exists>
+	                                		    <button type="button" class="btn btn-info btn-xs" onclick="onsureFly('${taskpojo.task.id!}')">批准</button>
+	                                		    <button type="button" class="btn btn-info btn-xs" onclick="rejectFly('${taskpojo.task.id!}')">驳回</button>
+                                                <#else>
+                                                <span class="label label-warning">无操作权限</span>
+										        </#if>
 	                                		<#elseif taskpojo.task.status==9>
 							             	<#if !Session["super_administrator"]?exists>
 	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureTaskOver(${taskpojo.task.id!})">巡视完成确认</button>
@@ -119,7 +138,7 @@
                                             <span class="label label-warning">无操作权限</span>
 							                </#if>
                                             <#else>
-                                             <span class="label label-warning">无操作</span>
+                                             
 	                                		</#if>
 	                                	</td>
 	                                	</tr>
@@ -148,7 +167,34 @@
 	        </div>
 	    </div>
 	</div>
+	
+	<!-- 信息删除确认 -->  
+		<div class="modal" id="deleltconfirmModel" tabindex="-1" aria-hidden="true" style="left: 50%;top:50%;transform:translate(-50%,-50%);">  
+		  <div class="modal_wapper">
+		  <div class="modal-dialog w-6">  
+		    <div class="modal-content message_align">  
+		      <div class="modal-header">  
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
+		        <h4 class="modal-title">提示信息</h4>  
+		      </div>  
+		      <div class="modal-body">  
+		        <p>您确认要删除该任务吗？</p>  
+		      </div>  
+		      <div class="modal-footer">  
+		         <input type="hidden" id="url"/>  
+		         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>  
+		         <a  onclick="urlSubmit()" class="btn btn-success" data-dismiss="modal">确定</a>  
+		      </div>  
+		    </div>
+		  </div>
+		  </div>
+		</div>
+		<input type="text" id="taskid" style="display:none" />
+	<!-- 信息删除确认 -->  
+	
+	
 <script type="text/javascript">
+   
 	//显示任务告警
 	function showAlarm(taskid) {
 		$.ajax({
@@ -158,19 +204,56 @@
 			    'id':taskid
 			},
 			success:function (result) {
-
             }
 		});
     }
 
-
+	function assignTask(taskid){
+		$.ajax({
+            type: "post",
+            url: "${s.base}/assignTask.action",
+            data: {
+                'id': taskid,
+            },
+            success: function (result) {
+            	
+            	 if (result.errcode == 1 ){
+            		 $("#resText").text(result.message);
+                  	Modal.show('_ocDialogModal');
+                  	setTimeout("document.location.reload();",1000);
+            	 }
+            }
+        });
+		
+	}
+	function urlSubmit(){ 
+ 		
+ 		$.ajax({
+            type: "post",
+            url: "${s.base}/deleteTask.action",
+            data: {
+            	'id':$('#taskid').val(),
+            },
+            success: function (result) {
+                if (result.errcode == 0 && result.message == "SUCCESS") {
+                	Modal.show('_ocDialogModal');
+                	document.getElementById("resText").innerHTML=result.data;
+                	setTimeout("window.location.reload()",2000);
+        			
+                } 
+            },error:function(){
+	            	Modal.show('_ocDialogModal');
+	            	document.getElementById("resText").innerHTML="删除出错，请刷新重试!";
+            }
+        });				
+ 	}  
     //允许放飞
 	function onsureFly(taskid){
 		$.ajax({
             type: "post",
             url: "${s.base}/onsureFly.action",
             data: {
-                'id': id,
+                'id': taskid,
             },
             success: function (result) {
             	
@@ -183,8 +266,32 @@
             	
             }
         });
-		
 	}
+    //驳回放飞
+    function rejectFly(taskid){
+		$.ajax({
+            type: "post",
+            url: "${s.base}/rejectFly.action",
+            data: {
+                'id': taskid,
+            },
+            success: function (result) {
+            	
+            	 if (result.errcode == 1 ){
+            		 $("#resText").text(result.message);
+                  	Modal.show('_ocDialogModal');
+                  	setTimeout("document.location.reload();",1000);                	
+            	 }           	
+            }
+        });
+    }
+    
+	function deleteTask(taskid){
+		
+		$('#taskid').val(taskid);
+ 		$('#deleltconfirmModel').modal();
+	}
+	
     function onsureTaskOver(taskid){
     	$.ajax({
             type: "post",
@@ -204,7 +311,7 @@
 
     $("#timeReverseView").click(function(){
         $(location).attr('href', '${s.base}/timeReverseView.action');
-	})
+	});
   
 </script>
 </body>
