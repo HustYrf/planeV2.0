@@ -83,40 +83,53 @@
                 <div class="modal-body">
                     <form role="form" id="userModify" method="post">
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">编号：</label>
-                            <div class="col-sm-11">
-                                <input type="text" id="modifyUserId" name="modify_userid" class="form-control" readonly="readonly">
+                            <label class="control-label" style="white-space:nowrap">用户编号：</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="modifyUserId" name="modify_userid" class="form-control"
+                                       readonly="readonly">
                             </div>
                         </div>
-
 
                         <div class="form-group clearfix">
-                            <label class="control-label"  style="white-space:nowrap">名称：</label>
-                            <div class="col-sm-11">
-                                <input type="text" id="modifyUsername" name="modify_username" class="form-control"  readonly="readonly">
+                            <label class="control-label" style="white-space:nowrap">用户工号：</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="modifyUserNumber" name="modify_userNumber" class="form-control"
+                                       readonly="readonly">
                             </div>
                         </div>
-
 
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">角色：</label>
-                            <div class="col-sm-11">
-                                <select id="userType" name="userType" class="form-control" type="select">
-                                    <option value="0" selected="selected">管理员</option>
-                                    <option value="1">巡检员</option>
-                                    <option value="2">巡检员</option>
-                                </select>
+                            <label class="control-label" style="white-space:nowrap">用户名：</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="modifyUsername" name="modify_username" class="form-control"
+                                       readonly="readonly">
                             </div>
                         </div>
-
 
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">描述：</label>
-                            <div class="col-sm-11">
-                                <input type="text" id="description" name="description" class="form-control"
-                                       placeholder="请输入对用户的描述">
+                            <label class="control-label" style="white-space:nowrap">用户昵称：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="Nickname" name="Nickname"
+                                       placeholder="输入用户昵称">
                             </div>
                         </div>
+
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">邮箱：</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="Email" name="Email"
+                                       aria-describedby="emailHelp" placeholder="abc@qq.com">
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">电话号码：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="phone"
+                                       placeholder="131 XXXX 9506" maxlength="13"/>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
                 <div id="alertDiv"></div>
@@ -129,6 +142,60 @@
     </div>
 </div>
 <!-- 用户信息修改弹出层 -end -->
+<!-- 用户用户组绑定弹出层 -start -->
+<div class="modal" id="userAuthorityModal" tabindex="-1" aria-hidden="true">
+    <div class="modal_wapper">
+        <div class="modal-dialog w-6">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">用户组绑定</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="userAuthorityModify" method="post">
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">用户编号：</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="authorityUserId" name="authority_userid" class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="control-label"  style="white-space:nowrap">用户名称：</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="authorityUsername" name="authority_username" class="form-control"  readonly="readonly">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">用户组：</label>
+                            <div class="col-sm-9">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="authority" id="inlineCheckbox1" value="viewer">浏览者
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="authority" id="inlineCheckbox2" value="admin">管理员
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"  name="authority" id="inlineCheckbox3" value="ipqc">巡检员
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="alertAuthorityDiv"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" name="userAuth" id="modifyAuthority">修改</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 用户用户组绑定弹出层 -end -->
 <!-- 新增用户弹出层 -start -->
 <div class="modal" id="addUserModal" tabindex="-1"  aria-hidden="true">
     <div class="modal_wapper">
@@ -191,9 +258,7 @@
         </div>
     </div>
 </div>
-
 <!-- 新增用户弹出层 -end -->
-
 <div class="content">
     <div class="container-fluid">
         <form id="queryPageForm" class="mt-15">
@@ -205,7 +270,7 @@
                             <option value="-1">全部</option>
                             <option value="0" <#if (selectStatus)?? && selectStatus =="0">selected="selected"</#if>>管理员</option>
                             <option value="1"<#if (selectStatus)?? && selectStatus =="1">selected="selected"</#if>>巡检员</option>
-                           
+
                         </select>
                     </p>
                     <p>
@@ -215,7 +280,7 @@
                         <input type="submit" class="search-btn"  value="搜索">
                         <button type="button" class="search-btn" onclick="addUser()">新增</button>
                     </p>
-                   
+
                 </div>
 
                 <div class="row-fluid">
@@ -248,8 +313,9 @@
                                     <td><#if user.email??>${user.email}</#if></td>
                                     <td><#if user.updatetime??>${user.updatetime}</#if></td>
                                     <td>
-                                        <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser(${user.id},'${user.name}')">修改</button>
+                                        <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser(${user.id},'${user.worknumber}','${user.name}')">修改</button>
                                         <button type="button" class="btn btn-danger"  style="background-color:#d9534f" onclick="delUser(${user.id})">删除</button>
+                                        <button type="button" class="btn btn-info" style="width: 55px" onclick="userAuthority(${user.id},'${user.name}')">权限</button>
                                     </td>
                                 </tr>
                                 </#list>
@@ -280,60 +346,104 @@
         alertitem1.style.display = "block";
     }
 
-    function showUserList()
-    {
+    function showAlert2(message) {
+        var authorityItem = document.getElementById('alertAuthorityDiv');
+        var innHTML = '<div class="alert alert-success alert-dismissable" id="alerth2">' + message + '</div>';
+        authorityItem.innerHTML = innHTML;
+        authorityItem.style.display = "block";
+    }
+
+    function showUserList() {
         window.location.reload();
     }
+
     var userID = null;
-    function delUser(uid){
-        userID=uid;
+
+    function delUser(uid) {
+        userID = uid;
         Modal.show('deleteUserModal');
     }
 
-    function modUser(uid,uname){
-        $("#modifyUserId").attr("placeholder",uid);
-        $("#modifyUsername").attr("placeholder",uname);
+    function modUser(uid, workNumber,uname) {
+        $("#modifyUserId").attr("placeholder", uid);
+        $("#modifyUserNumber").attr("placeholder",workNumber);
+        $("#modifyUsername").attr("placeholder", uname);
         Modal.show('modifyUserModal');
+    }
+
+    function userAuthority(uid, uname) {
+        $("#authorityUserId").attr("placeholder", uid);
+        $("#authorityUsername").attr("placeholder", uname);
+        Modal.show('userAuthorityModal');
     }
 
     $("#ensureDelUser").click(function () {
         $.ajax({
-            type:"POST",
-            url:"${s.base}/deleteUser.action",
-            data:{
-                "userid":userID
+            type: "POST",
+            url: "${s.base}/deleteUser.action",
+            data: {
+                "userid": userID
             },
-            success:function(result){
+            success: function (result) {
                 if (result.errcode == 0 && result.message == "SUCCESS") {
-                        Modal.show('successDelModal');
-                        setTimeout(showUserList,2000);
-                }else{
-                       $("#failMsg").html(result.message);
-                       Modal.show('failDelModal');
-                       setTimeout(showUserList,2000);
+                    Modal.show('successDelModal');
+                    setTimeout(showUserList, 2000);
+                } else {
+                    $("#failMsg").html(result.message);
+                    Modal.show('failDelModal');
+                    setTimeout(showUserList, 2000);
                 }
             }
         });
     })
 
+    $("#modifyAuthority").click(function () {
+        var id = $("#authorityUserId").attr('placeholder');
+        var authorityArray = new Array();
+        var i = 0;
+        $("input[name='authority']:checked").each(function () {
+            if (this.value != null) {
+                authorityArray[i++] = this.value;
+            }
+        });
+        $.ajax({
+            url: "${s.base}/userAuthority",
+            type: "POST",
+            data: {
+                id: id,
+                authorityArrays: authorityArray
+            },
+            traditional: true,
+            success: function (result) {
+                if (result.errcode == 0 && result.message == "SUCCESS") {
+                    showAlert2("用户组绑定成功!");
+                    setTimeout(showUserList, 2000);
+                } else {
+                    showAlert2(result.message);
+                }
+            }
+        })
+    })
 
     $("#modify").click(function () {
         var id = $("#modifyUserId").attr('placeholder');
-        var type = $("#userType").val();
-        var text = $("#description").val();
+        var nickName = $("#Nickname").val();
+        var email = $("#Email").val();
+        var phone = $('#phone').val();
         $.ajax({
             url: "${s.base}/modifyUser.action",
             type: "POST",
             data: {
-                userid:id,
-                role: type,
-                descripte: text
+                id: id,
+                nickName: nickName,
+                email: email,
+                phone:phone
             },
             async: true,
             success: function (result) {
                 if (result.errcode == 0 && result.message == "SUCCESS") {
                     showAlert("用户信息修改成功!");
-                    setTimeout(showUserList,2000);
+                    setTimeout(showUserList, 2000);
                 } else {
                     showAlert(result.message);
                 }
@@ -350,17 +460,24 @@
             url: "${s.base}/addUser.action",
             type: "POST",
             data: $("#addUserForm").serialize(),
-            async:true,
-            success:function(result){
+            async: true,
+            success: function (result) {
                 if (result.errcode == 0 && result.message == "SUCCESS") {
                     showAlert1("添加用户成功!");
-                    setTimeout(showUserList,2000);
+                    setTimeout(showUserList, 2000);
                 } else {
                     showAlert1(result.message);
                 }
             }
         });
     })
+
+    document.getElementById("phone").onkeyup = function() {
+        var text_len = this.value.length;
+        if (text_len === 3 || text_len === 8) {
+            this.value += " ";
+        }
+    };
 </script>
 </body>
 </html>

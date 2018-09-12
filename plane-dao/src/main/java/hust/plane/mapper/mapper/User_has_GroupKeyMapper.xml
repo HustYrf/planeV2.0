@@ -18,5 +18,14 @@
     <select id="getGroupIdByUserId"  parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select Group_id from K_User_has_Group where User_id = #{param1}
     </select>
- 
+
+    <delete id="deleteGroupByUserId" parameterType="java.lang.Integer">
+        delete from K_User_has_Group where User_id = #{param1}
+    </delete>
+
+    <insert id="insertGroupByUserIdWithAuthority">
+        insert into K_User_has_Group(User_id,Group_id)
+        values
+        (#{param1},#{param2})
+    </insert>
 </mapper>

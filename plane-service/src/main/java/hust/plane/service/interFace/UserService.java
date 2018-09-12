@@ -36,10 +36,10 @@ public interface UserService {
 	User getUserById(Integer userbid);
 
     List<User> fuzzySearchWithUser(String queryString);
-
-	int modifyUserRoleAndDes(int userid, String descripte);
-
+    
     int modifyUpdateTimeWithUserName(String name);
 
-	String getNameByUserId(Integer id);
+    String getNameByUserId(Integer id);
+
+    int updateSelectiveWithUserId(Integer id, String nickName, String email, String phoneNumber);
 }

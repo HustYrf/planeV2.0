@@ -10,4 +10,8 @@ public interface User_has_GroupKeyMapper {
     List<User_has_GroupKey> getAllGroupByUserId(int UserId);
 
     List<Integer> getGroupIdByUserId(int id);
+
+    int deleteGroupByUserId(Integer id);
+
+    int insertGroupByUserIdWithAuthority(Integer id, Integer groupId);
 }
