@@ -83,40 +83,53 @@
                 <div class="modal-body">
                     <form role="form" id="userModify" method="post">
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">编号：</label>
-                            <div class="col-sm-11">
-                                <input type="text" id="modifyUserId" name="modify_userid" class="form-control" readonly="readonly">
+                            <label class="control-label" style="white-space:nowrap">用户编号：</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="modifyUserId" name="modify_userid" class="form-control"
+                                       readonly="readonly">
                             </div>
                         </div>
-
 
                         <div class="form-group clearfix">
-                            <label class="control-label"  style="white-space:nowrap">名称：</label>
-                            <div class="col-sm-11">
-                                <input type="text" id="modifyUsername" name="modify_username" class="form-control"  readonly="readonly">
+                            <label class="control-label" style="white-space:nowrap">用户工号：</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="modifyUserNumber" name="modify_userNumber" class="form-control"
+                                       readonly="readonly">
                             </div>
                         </div>
-
 
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">角色：</label>
-                            <div class="col-sm-11">
-                                <select id="userType" name="userType" class="form-control" type="select">
-                                    <option value="0" selected="selected">管理员</option>
-                                    <option value="1">巡检员</option>
-                                    <option value="2">巡检员</option>
-                                </select>
+                            <label class="control-label" style="white-space:nowrap">用户名：</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="modifyUsername" name="modify_username" class="form-control"
+                                       readonly="readonly">
                             </div>
                         </div>
-
 
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">描述：</label>
-                            <div class="col-sm-11">
-                                <input type="text" id="description" name="description" class="form-control"
-                                       placeholder="请输入对用户的描述">
+                            <label class="control-label" style="white-space:nowrap">用户昵称：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="Nickname" name="Nickname"
+                                       placeholder="输入用户昵称">
                             </div>
                         </div>
+
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">邮箱：</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="Email" name="Email"
+                                       aria-describedby="emailHelp" placeholder="abc@qq.com">
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">电话号码：</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="phone"
+                                       placeholder="131 XXXX 9506" maxlength="13"/>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
                 <div id="alertDiv"></div>
@@ -300,7 +313,7 @@
                                     <td><#if user.email??>${user.email}</#if></td>
                                     <td><#if user.updatetime??>${user.updatetime}</#if></td>
                                     <td>
-                                        <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser(${user.id},'${user.name}')">修改</button>
+                                        <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser(${user.id},'${user.worknumber}','${user.name}')">修改</button>
                                         <button type="button" class="btn btn-danger"  style="background-color:#d9534f" onclick="delUser(${user.id})">删除</button>
                                         <button type="button" class="btn btn-info" style="width: 55px" onclick="userAuthority(${user.id},'${user.name}')">权限</button>
                                     </td>
@@ -351,8 +364,9 @@
         Modal.show('deleteUserModal');
     }
 
-    function modUser(uid, uname) {
+    function modUser(uid, workNumber,uname) {
         $("#modifyUserId").attr("placeholder", uid);
+        $("#modifyUserNumber").attr("placeholder",workNumber);
         $("#modifyUsername").attr("placeholder", uname);
         Modal.show('modifyUserModal');
     }
@@ -413,15 +427,17 @@
 
     $("#modify").click(function () {
         var id = $("#modifyUserId").attr('placeholder');
-        var type = $("#userType").val();
-        var text = $("#description").val();
+        var nickName = $("#Nickname").val();
+        var email = $("#Email").val();
+        var phone = $('#phone').val();
         $.ajax({
             url: "${s.base}/modifyUser.action",
             type: "POST",
             data: {
-                userid: id,
-                role: type,
-                descripte: text
+                id: id,
+                nickName: nickName,
+                email: email,
+                phone:phone
             },
             async: true,
             success: function (result) {
@@ -455,6 +471,13 @@
             }
         });
     })
+
+    document.getElementById("phone").onkeyup = function() {
+        var text_len = this.value.length;
+        if (text_len === 3 || text_len === 8) {
+            this.value += " ";
+        }
+    };
 </script>
 </body>
 </html>

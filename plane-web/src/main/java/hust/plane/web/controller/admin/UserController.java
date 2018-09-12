@@ -101,22 +101,26 @@ public class UserController {
         return JsonView.render(0, WebConst.SUCCESS_RESULT);
     }
 
-//    @RequestMapping(value = "modifyUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-//    @ResponseBody
-//    public String deModifyUser(@RequestParam Integer userid, @RequestParam String role, @RequestParam String descripte) {
-//        try {
-//            userService.modifyUserRoleAndDes(userid, role, descripte);
-//        } catch (Exception e) {
-//            String msg = "修改失败";
-//            if (e instanceof TipException) {
-//                msg = e.getMessage();
-//            } else {
-//                LOGGER.error(msg, e);
-//            }
-//            return JsonView.render(1, msg);
-//        }
-//        return JsonView.render(0, WebConst.SUCCESS_RESULT);
-//    }
+    @RequestMapping(value = "modifyUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String deModifyUser(@RequestParam(value = "id") Integer id, @RequestParam(value = "nickName") String nickName,
+                               @RequestParam(value = "email") String email, @RequestParam(value = "phone") String phoneNumber) {
+        try {
+            int updateCount = userService.updateSelectiveWithUserId(id, nickName, email, phoneNumber);
+            if(updateCount == 0){
+                throw new TipException("用户修改异常");
+            }
+        } catch (Exception e) {
+            String msg = "修改失败";
+            if (e instanceof TipException) {
+                msg = e.getMessage();
+            } else {
+                LOGGER.error(msg, e);
+            }
+            return JsonView.render(1, msg);
+        }
+        return JsonView.render(0, WebConst.SUCCESS_RESULT);
+    }
 
     @RequestMapping(value = "addUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -136,12 +140,12 @@ public class UserController {
         return JsonView.render(0, WebConst.SUCCESS_RESULT);
     }
 
-    @RequestMapping(value = "userAuthority",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "userAuthority", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     @ResponseBody
-    public String userAuthority(@RequestParam(value = "id") Integer id,@RequestParam(value = "authorityArrays") List<String> authorityList){
-        try{
-           userGroupService.updateAuthorityWithUserId(id,authorityList);
-        }catch (Exception e){
+    public String userAuthority(@RequestParam(value = "id") Integer id, @RequestParam(value = "authorityArrays") List<String> authorityList) {
+        try {
+            userGroupService.updateAuthorityWithUserId(id, authorityList);
+        } catch (Exception e) {
             String msg = "用户组添加失败";
             if (e instanceof TipException) {
                 msg = e.getMessage();
@@ -150,7 +154,7 @@ public class UserController {
             }
             return JsonView.render(1, msg);
         }
-        return JsonView.render(0,WebConst.SUCCESS_RESULT);
+        return JsonView.render(0, WebConst.SUCCESS_RESULT);
     }
 
 

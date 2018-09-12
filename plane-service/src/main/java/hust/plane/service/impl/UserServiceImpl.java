@@ -181,20 +181,6 @@ public class UserServiceImpl implements UserService {
         return count;
     }
 
-    @Override
-    public int modifyUserRoleAndDes(int userid, String description) {
-        if (userid == 0 || StringUtils.isBlank(description)) {
-            throw new TipException("角色和描述的填写不能为空！");
-        }
-        User user = userDao.selectByPrimaryKey(userid);
-        user.setDescription(description);
-        user.setUpdatetime(new Date());
-        int count = userDao.updateByPrimaryKeySelective(user);
-        if (count != 1) {
-            throw new TipException("修改用户异常");
-        }
-        return count;
-    }
 
     @Override
     public int addUserWithInfo(Integer addUserId, String addUsername, String addUserPaw, String addUserRole,
@@ -272,6 +258,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int modifyUpdateTimeWithUserName(String name) {
-       return userDao.updateLastTime(name);
+        return userDao.updateLastTime(name);
+    }
+
+    @Override
+    public int updateSelectiveWithUserId(Integer id, String nickName, String email, String phoneNumber) {
+        User user = new User();
+        if (id == null) {
+            throw new TipException("修改用户id为空");
+        }else{
+            user.setId(id);
+        }
+        if (StringUtils.isBlank(nickName)) {
+            throw new TipException("修改用户昵称获取失败");
+        }else{
+            user.setNickname(nickName);
+        }
+        if (StringUtils.isBlank(email)) {
+            throw new TipException("修改用户邮箱获取失败");
+        }else{
+            user.setEmail(email);
+        }
+        if (StringUtils.isBlank(phoneNumber)) {
+            throw new TipException("修改用户电话号码获取失败");
+        }else{
+            user.setPhoneone(phoneNumber);
+        }
+        return userDao.updateByPrimaryKeySelective(user)==1?1:0;
     }
 }
