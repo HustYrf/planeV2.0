@@ -81,7 +81,7 @@ public class IndexController {
             if (groupIdList.contains(Integer.valueOf(1))) {
                 request.getSession().setAttribute(WebConst.SUPER_ADMINISTRATOR_VIEW, user);
             }
-            if(!groupIdList.contains(Integer.valueOf(1))||!groupIdList.contains(Integer.valueOf(2))){
+            if(!groupIdList.contains(Integer.valueOf(1))&&!groupIdList.contains(Integer.valueOf(2))){
                 throw new TipException("您无权进入该系统");
             }
             if (StringUtils.isNotBlank(remeber_me)) {
