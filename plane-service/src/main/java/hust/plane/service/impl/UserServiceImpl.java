@@ -370,4 +370,12 @@ public class UserServiceImpl implements UserService {
         }
         return page;
     }
+
+	@Override
+	public boolean updateByUser(User user) {
+		if(userDao.updateByPrimaryKeySelective(user)==1) {
+			return true;
+		}
+		return false;
+	}
 }
