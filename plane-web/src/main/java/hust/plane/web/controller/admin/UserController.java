@@ -77,6 +77,9 @@ public class UserController {
             }
         }
         page.setItems(pojoList);
+        if (StringUtils.isNotBlank(userName)) {
+            model.addAttribute("userName", userName.substring(0, 1));
+        }
         model.addAttribute("selectStatus", GroupId);
         model.addAttribute("page", page);
         model.addAttribute("curNav", "usersEdit");

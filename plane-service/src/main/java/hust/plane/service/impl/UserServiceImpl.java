@@ -306,7 +306,7 @@ public class UserServiceImpl implements UserService {
                 userIdList = user_has_groupKeyMapper.getAllGroup();
             } else {
                 int count = user_has_groupKeyMapper.selectCountWithGroupId(groupId);
-                userIdList = user_has_groupKeyMapper.getUserIdByGroupId(groupId,page);
+                userIdList = user_has_groupKeyMapper.getUserIdByGroupId(groupId, page);
                 page.setItemsTotalCount(count);
             }
             List<User> userList = new ArrayList<>();
@@ -329,24 +329,43 @@ public class UserServiceImpl implements UserService {
             }
             page.setItems(userVoList);
         } else {
-            User userByName = userDao.selectUserByUserName(userName);
             List<User> userList = new ArrayList<>();
-            if (userByName != null){
-                userList.add(userByName);
-                List<UserPojo> userVoList = new ArrayList<>();
-                if (userList.size() > 0) {
-                    Iterator<User> iterable = userList.iterator();
-                    while (iterable.hasNext()) {
-                        User user = iterable.next();
-                        UserPojo userPojo = new UserPojo(user);
-                        userVoList.add(userPojo);
-                    }
+            if (userName.length() == 3) {
+                User userByName = userDao.selectUserByUserName(userName);
+                if (userByName == null) {
+                    userName = userName.substring(0, 2);
+                } else {
+                    userList.add(userByName);
+                    page.setItemsTotalCount(1);
                 }
-                page.setItemsTotalCount(1);
-                page.setItems(userVoList);
-            }else{
-                throw new TipException("无用户名匹配用户");
             }
+            if (userName.length() == 2) {
+                User userByName = userDao.selectUserByUserName(userName);
+                if (userByName == null) {
+                    userName = userName.substring(0, 1);
+                } else {
+                    userList.add(userByName);
+                    page.setItemsTotalCount(1);
+                }
+            }
+            if (userName.length() == 1) {
+                UserExample example = new UserExample();
+                UserExample.Criteria criteria = example.createCriteria();
+                criteria.andNameLike("%" + userName + "%");
+                int count = userDao.selectCountByFuzzyName(userName);
+                page.setItemsTotalCount(count);
+                userList = userDao.selectByFuzzyNameWithPage(userName, page);
+            }
+            List<UserPojo> userVoList = new ArrayList<>();
+            if (userList.size() > 0) {
+                Iterator<User> iterable = userList.iterator();
+                while (iterable.hasNext()) {
+                    User user = iterable.next();
+                    UserPojo userPojo = new UserPojo(user);
+                    userVoList.add(userPojo);
+                }
+            }
+            page.setItems(userVoList);
         }
         return page;
     }

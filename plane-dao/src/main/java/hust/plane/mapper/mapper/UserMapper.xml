@@ -557,4 +557,17 @@
         from K_User
         where Name=#{param1}
     </select>
+
+    <select id="selectCountByFuzzyName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1) from K_User
+        where Name LIKE concat('%',#{Name},'%')
+    </select>
+
+    <select id="selectByFuzzyNameWithPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from K_User
+        where NAME LIKE concat('%',#{Name},'%')
+        LIMIT #{param2.startIndex, jdbcType=INTEGER} , #{param2.pageSize, jdbcType=INTEGER}
+    </select>
 </mapper>
