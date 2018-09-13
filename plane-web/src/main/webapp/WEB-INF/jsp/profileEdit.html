@@ -175,8 +175,8 @@
                 </div>
 
                 <div class="form-group mgt20px pull-right">
-                    <button type="reset" class="btn btn-default" id="restart" >重置</button>
                     <button type="button" class="btn btn-default btn-primary" id="modify" style="margin-left:20px">修改</button>
+                    <button type="reset" class="btn btn-default" id="restart" >重置</button>
                 </div>                      
             </form>
     </div>
@@ -225,6 +225,10 @@
     //         });
     //     }
     // });
+    function showUserList() {
+        window.location.reload();
+    }
+
     //初始化验证规则函数
      $("#modify").on("click", function(){
          //获取表单对象
@@ -251,6 +255,8 @@
            		 success: function(result) {	                    
                   	     $("#resText").text(result.message);
                      	 Modal.show('_ocDialogModal');
+                         setTimeout(showUserList, 1000);
+
                   },error:function(){
                 	  $("#resText").text("出错了，请重试!");
 	                	Modal.show('_ocDialogModal');
