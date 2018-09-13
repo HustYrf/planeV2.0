@@ -93,7 +93,7 @@
             <li <#if curNav?? && curNav =="alarmImport" > class="active"</#if>><a href="${s.base}/alarmImport.action">告警导入</a></li>
             </#if>
         </ul>
-        <#if !Session["super_administrator"]?exists>
+
         <a href="#accounts-menu5" class="nav-header" data-toggle="collapse">
             <span style="font-weight: bold;font-size: 16px;">用户管理</span>
         </a>
@@ -107,9 +107,8 @@
             <li <#if curNav?? && curNav =="usersEdit"> class="active" </#if>><a href="${s.base}/toUserCreate.action">用户列表</a></li>
             <!--<li <#if curNav?? && curNav =="usersBind"> class="active" </#if>><a href="#">用户组绑定</a></li>-->
         </ul>
-        
-    
-        
+
+        <#if !Session["super_administrator"]?exists>
         <a href="#accounts-menu6" class="nav-header" data-toggle="collapse">
             <span style="font-weight: bold;font-size: 16px;">我的账号</span>
         </a>
