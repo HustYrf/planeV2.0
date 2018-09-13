@@ -57,4 +57,6 @@ public interface UserMapper {
     int insertSelectiveIdInc(User user);
 
 	String getNameByUserId(Integer id);
+
+    User selectUserByUserName(String userName);
 }

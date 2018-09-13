@@ -174,13 +174,13 @@
                             <label class="control-label" style="white-space:nowrap">用户组：</label>
                             <div class="col-sm-9">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" name="authority" id="inlineCheckbox1" value="viewer">浏览者
+                                    <input type="checkbox" name="authority" id="inlineCheckbox1" value="viewer">浏览组
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" name="authority" id="inlineCheckbox2" value="admin">管理员
+                                    <input type="checkbox" name="authority" id="inlineCheckbox2" value="admin">管理组
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox"  name="authority" id="inlineCheckbox3" value="ipqc">巡检员
+                                    <input type="checkbox"  name="authority" id="inlineCheckbox3" value="ipqc">巡检组
                                 </label>
                             </div>
                         </div>
@@ -275,15 +275,15 @@
                 <a class="block-heading f-14" data-toggle="collapse">用户列表</a>
                 <div class="block-body collapse in">
                     <p>
-                        <select name="role" class="search-select">
-                            <option value="-1">全部</option>
-                            <option value="0" <#if (selectStatus)?? && selectStatus =="0">selected="selected"</#if>>管理员</option>
-                            <option value="1"<#if (selectStatus)?? && selectStatus =="1">selected="selected"</#if>>巡检员</option>
-
+                        <select name="GroupId" class="search-select">
+                            <option value=0>全部</option>
+                            <option value=1 <#if (selectStatus)?? && selectStatus ==1>selected="selected"</#if>>浏览组</option>
+                            <option value=2 <#if (selectStatus)?? && selectStatus ==2>selected="selected"</#if>>管理组</option>
+                            <option value=3 <#if (selectStatus)?? && selectStatus ==3>selected="selected"</#if>>巡检组</option>
                         </select>
                     </p>
                     <p>
-                        <input name="userid" type="text" class="search-text" value="" placeholder="请输入用户序号">
+                        <input name="userName" type="text" class="search-text" value="" placeholder="请输入姓名">
                     </p>
                     <p>
                         <input type="submit" class="search-btn" value="搜索">

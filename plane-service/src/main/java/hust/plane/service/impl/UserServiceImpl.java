@@ -1,6 +1,9 @@
 package hust.plane.service.impl;
 
+import hust.plane.constant.WebConst;
+import hust.plane.mapper.mapper.GroupMapper;
 import hust.plane.mapper.mapper.UserMapper;
+import hust.plane.mapper.mapper.User_has_GroupKeyMapper;
 import hust.plane.mapper.pojo.User;
 import hust.plane.mapper.pojo.UserExample;
 import hust.plane.service.interFace.UserService;
@@ -15,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +31,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userDao;
+    @Resource
+    private GroupMapper groupMapper;
+    @Resource
+    private User_has_GroupKeyMapper user_has_groupKeyMapper;
 
     /**
      * 登陆
@@ -183,52 +191,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addUserWithInfo(String addUsername, String addUserPaw, String addUserWorkNumber, String addUserNickname, String addUserEmail, String addUserPhone) {
         User user = new User();
-        if(StringUtils.isBlank(addUsername)){
+        if (StringUtils.isBlank(addUsername)) {
             throw new TipException("新增用户名获取失败");
-        }else{
+        } else {
             user.setName(addUsername);
         }
-        if(StringUtils.isBlank(addUserPaw)){
+        if (StringUtils.isBlank(addUserPaw)) {
             throw new TipException("新增用户密码获取失败");
-        }else{
+        } else {
             user.setPassword(PlaneUtils.MD5encode(addUsername + addUserPaw));
         }
-        if(StringUtils.isBlank(addUserWorkNumber)){
+        if (StringUtils.isBlank(addUserWorkNumber)) {
             throw new TipException("新增用户工号获取失败");
-        }else{
+        } else {
             user.setWorknumber(addUserWorkNumber);
         }
-        if(StringUtils.isNotBlank(addUserNickname)){
+        if (StringUtils.isNotBlank(addUserNickname)) {
             user.setNickname(addUserNickname);
         }
-        if(StringUtils.isNotBlank(addUserEmail)){
+        if (StringUtils.isNotBlank(addUserEmail)) {
             user.setEmail(addUserEmail);
         }
-        if(StringUtils.isNotBlank(addUserPhone)){
+        if (StringUtils.isNotBlank(addUserPhone)) {
             user.setPhoneone(addUserPhone);
         }
         user.setCreatetime(DateKit.getNowTime());
         user.setUpdatetime(DateKit.getNowTime());
-        return userDao.insertSelectiveIdInc(user)==1?1:0;
+        return userDao.insertSelectiveIdInc(user) == 1 ? 1 : 0;
     }
-
-
-    // @Override
-    // public TailPage<User> getUserByRoleOrIdWithPage(String searchUserStatus,
-    // String searchUserId, TailPage<User> page) {
-    // if (searchUserId.equals(WebConst.SEARCH_NO_USERID)) {
-    // int count = userDao.selectCountWithRole(searchUserStatus);
-    // page.setItemsTotalCount(count);
-    // List<User> userList = userDao.selectUserByRole(page, searchUserStatus);
-    // page.setItems(userList);
-    // } else {
-    // page.setItemsTotalCount(1);
-    // List<User> userList = new ArrayList<>(1);
-    // userList.add(userDao.selectByPrimaryKey(searchUserId));
-    // page.setItems(userList);
-    // }
-    // return page;
-    // }
 
     @Override
     public boolean updataTasknumByUser(User user) {
@@ -276,30 +266,88 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         if (id == null) {
             throw new TipException("修改用户id为空");
-        }else{
+        } else {
             user.setId(id);
         }
         if (StringUtils.isBlank(nickName)) {
             throw new TipException("修改用户昵称获取失败");
-        }else{
+        } else {
             user.setNickname(nickName);
         }
         if (StringUtils.isBlank(email)) {
             throw new TipException("修改用户邮箱获取失败");
-        }else{
+        } else {
             user.setEmail(email);
         }
         if (StringUtils.isBlank(phoneNumber)) {
             throw new TipException("修改用户电话号码获取失败");
-        }else{
+        } else {
             user.setPhoneone(phoneNumber);
         }
-        return userDao.updateByPrimaryKeySelective(user)==1?1:0;
+        return userDao.updateByPrimaryKeySelective(user) == 1 ? 1 : 0;
     }
 
-	@Override
-	public String getNameByUserId(Integer id) {
-		
-		return userDao.getNameByUserId(id);
-	}
+    @Override
+    public String getNameByUserId(Integer id) {
+
+        return userDao.getNameByUserId(id);
+    }
+
+
+    @Override
+    public TailPage<UserPojo> getUserByGroupIdOruserNameWithPage(Integer groupId, String userName, TailPage<UserPojo> page) {
+        if (groupId == null && StringUtils.isBlank(userName)) {
+            LOGGER.error("查询条件有误");
+            throw new TipException("查询条件有误");
+        }
+        if (userName.equals(WebConst.SEARCH_NO_USERNAME)) {
+            List<Integer> userIdList = new ArrayList<>();
+            if (groupId == 0) {
+                userIdList = user_has_groupKeyMapper.getAllGroup();
+            } else {
+                int count = user_has_groupKeyMapper.selectCountWithGroupId(groupId);
+                userIdList = user_has_groupKeyMapper.getUserIdByGroupId(groupId,page);
+                page.setItemsTotalCount(count);
+            }
+            List<User> userList = new ArrayList<>();
+            if (userIdList != null && userIdList.size() != 0) {
+                for (Integer userId : userIdList) {
+                    User user = userDao.selectByPrimaryKey(userId);
+                    userList.add(user);
+                }
+            } else {
+                throw new TipException("该用户组没有用户");
+            }
+            List<UserPojo> userVoList = new ArrayList<>();
+            if (userList.size() > 0) {
+                Iterator<User> iterable = userList.iterator();
+                while (iterable.hasNext()) {
+                    User user = iterable.next();
+                    UserPojo userPojo = new UserPojo(user);
+                    userVoList.add(userPojo);
+                }
+            }
+            page.setItems(userVoList);
+        } else {
+            User userByName = userDao.selectUserByUserName(userName);
+            List<User> userList = new ArrayList<>();
+            if (userByName != null){
+                userList.add(userByName);
+                List<UserPojo> userVoList = new ArrayList<>();
+                if (userList.size() > 0) {
+                    Iterator<User> iterable = userList.iterator();
+                    while (iterable.hasNext()) {
+                        User user = iterable.next();
+                        UserPojo userPojo = new UserPojo(user);
+                        userVoList.add(userPojo);
+                    }
+                }
+                page.setItemsTotalCount(1);
+                page.setItems(userVoList);
+            }else{
+                throw new TipException("无用户名匹配用户");
+            }
+        }
+        return page;
+    }
 }
