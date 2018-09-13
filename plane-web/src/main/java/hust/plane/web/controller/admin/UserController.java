@@ -9,6 +9,7 @@ import hust.plane.utils.page.TailPage;
 import hust.plane.utils.page.UserPojo;
 import hust.plane.utils.pojo.JsonView;
 import hust.plane.utils.pojo.TipException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -35,32 +36,30 @@ public class UserController {
 
 //    @RequestMapping(value = "searchUser", method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
 //    @ResponseBody
-//    public String doSearchUser(@RequestParam String searchUserStatus, @RequestParam(required = false) String searchUserId,
+//    public String doSearchUser(@RequestParam Integer GroupId, @RequestParam(required = false) String userName,
 //                               TailPage<User> page) {
-//        if (StringUtils.isBlank(searchUserId)) {
-//            searchUserId = WebConst.SEARCH_NO_USERID;
+//        if (StringUtils.isBlank(userName)) {
+//            userName = WebConst.SEARCH_NO_USERNAME;
 //        }
-//        page = userService.getUserByRoleOrIdWithPage(searchUserStatus, searchUserId, page);
-//        pageList.add(page);
+//        page = userService.getUserByGroupIdOruserNameWithPage(GroupId, userName, page);
+//         pageList.add(page);
 //        return JsonView.render(0,WebConst.SUCCESS_RESULT);
 //    }
 
 
     @RequestMapping(value = "toUserCreate", method = RequestMethod.GET)
-    public String userModify(TailPage<UserPojo> page, Model model, User user) {
-//        if("-1".equals(user.getRole()))
-//        {
-//            user.setRole(null);
-//        }
-//        if (user.getId()==null || StringUtils.isNotBlank(user.getRole())) {
-//            String searchUserStatus = user.getRole();
-//            String searchUserId = user.getUserid();
-//            if (StringUtils.isBlank(searchUserId)) {
-//                searchUserId = WebConst.SEARCH_NO_USERID;
-//            }
-//            page = userService.getUserByRoleOrIdWithPage(searchUserStatus, searchUserId, page);
-//        } else {
-        page = userService.getAllUserWithPage(page);
+    public String userModify(TailPage<UserPojo> page, Model model, @RequestParam(required = false) Integer GroupId, @RequestParam(required = false) String userName) {
+        if (GroupId == null || GroupId == 0) {
+            GroupId = null;
+        }
+        if (GroupId != null || StringUtils.isNotBlank(userName)) {
+            if (StringUtils.isBlank(userName)) {
+                userName = WebConst.SEARCH_NO_USERNAME;
+            }
+            page = userService.getUserByGroupIdOruserNameWithPage(GroupId, userName, page);
+        } else {
+            page = userService.getAllUserWithPage(page);
+        }
         List<UserPojo> pojoList = page.getItems();
         Iterator<UserPojo> iterator = pojoList.iterator();
         while (iterator.hasNext()) {
@@ -78,7 +77,10 @@ public class UserController {
             }
         }
         page.setItems(pojoList);
-//        model.addAttribute("selectStatus", user.getRole());
+        if (StringUtils.isNotBlank(userName)) {
+            model.addAttribute("userName", userName.substring(0, 1));
+        }
+        model.addAttribute("selectStatus", GroupId);
         model.addAttribute("page", page);
         model.addAttribute("curNav", "usersEdit");
         return "userModify";
@@ -107,7 +109,7 @@ public class UserController {
                                @RequestParam(value = "email") String email, @RequestParam(value = "phone") String phoneNumber) {
         try {
             int updateCount = userService.updateSelectiveWithUserId(id, nickName, email, phoneNumber);
-            if(updateCount == 0){
+            if (updateCount == 0) {
                 throw new TipException("用户修改异常");
             }
         } catch (Exception e) {
@@ -124,10 +126,11 @@ public class UserController {
 
     @RequestMapping(value = "addUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String doAddUser(@RequestParam Integer addUserId, @RequestParam String addUsername, @RequestParam String addUserPaw,
-                            @RequestParam String addUserRole, @RequestParam String addUserDescripte) {
+    public String doAddUser(@RequestParam String addUsername, @RequestParam String addUserPaw,
+                            @RequestParam String addUserWorkNumber, @RequestParam(required = false) String addUserNickname,
+                            @RequestParam(required = false) String addUserEmail, @RequestParam(required = false) String addUserPhone) {
         try {
-            userService.addUserWithInfo(addUserId, addUsername, addUserPaw, addUserRole, addUserDescripte);
+            userService.addUserWithInfo(addUsername, addUserPaw, addUserWorkNumber, addUserNickname, addUserEmail, addUserPhone);
         } catch (Exception e) {
             String msg = "添加失败";
             if (e instanceof TipException) {

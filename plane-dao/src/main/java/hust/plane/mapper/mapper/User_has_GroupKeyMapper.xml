@@ -28,4 +28,22 @@
         values
         (#{param1},#{param2})
     </insert>
+
+    <select id="getUserIdByGroupId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select User_id from K_User_has_Group
+        where Group_id = #{param1}
+         LIMIT #{param2.startIndex, jdbcType=INTEGER} , #{param2.pageSize, jdbcType=INTEGER}
+    </select>
+
+    <select id="getAllGroup" parameterType="java.lang.Integer">
+        select User_id from K_User_has_Group
+    </select>
+
+    <select id="selectCountWithGroupId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from K_User_has_Group
+        where 1=1
+        <if test="Group_id != null">
+            and Group_id = #{param1}
+        </if>
+    </select>
 </mapper>

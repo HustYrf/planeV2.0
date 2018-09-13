@@ -174,13 +174,13 @@
                             <label class="control-label" style="white-space:nowrap">用户组：</label>
                             <div class="col-sm-9">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" name="authority" id="inlineCheckbox1" value="viewer">浏览者
+                                    <input type="checkbox" name="authority" id="inlineCheckbox1" value="viewer">浏览组
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" name="authority" id="inlineCheckbox2" value="admin">管理员
+                                    <input type="checkbox" name="authority" id="inlineCheckbox2" value="admin">管理组
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox"  name="authority" id="inlineCheckbox3" value="ipqc">巡检员
+                                    <input type="checkbox"  name="authority" id="inlineCheckbox3" value="ipqc">巡检组
                                 </label>
                             </div>
                         </div>
@@ -210,43 +210,52 @@
                 <div class="modal-body">
                     <form role="form" id="addUserForm" method="post" enctype="multipart/form-data">
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">编号：</label>
+                            <label class="control-label" style="white-space:nowrap">用户名：</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="addUserId" id="addUserId"
-                                       placeholder="请输入用户编号">
+                                <input type="text" class="form-control" name="addUsername" id="addUsername"
+                                       placeholder="请输入用户名" required/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">名称：</label>
+                            <label class="control-label" style="white-space:nowrap">用户密码：</label>
                             <div class="col-sm-8">
-                                <input type="text clearfix" class="form-control" name="addUsername" id="addUsername"
-                                       placeholder="请输入用户名">
+                                <input type="password" class="form-control" name="addUserPaw" id="addUserPaw"
+                                       placeholder="请输入用户密码" required/>
                             </div>
                         </div>
+
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">密码：</label>
+                            <label class="control-label" style="white-space:nowrap">用户工号：</label>
                             <div class="col-sm-8">
-                                <input type="text clearfix" class="form-control" name="addUserPaw" id="addUserPaw"
-                                       placeholder="请输入用户密码">
+                                <input type="text" class="form-control" name="addUserWorkNumber" id="addUserWorkNumber"
+                                       placeholder="请输入用户工号" required/>
                             </div>
                         </div>
+
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">角色：</label>
+                            <label class="control-label" style="white-space:nowrap">用户昵称：</label>
                             <div class="col-sm-8">
-                                <select id="addUserRole" name="addUserRole" class="form-control" type="select">
-                                    <option value="0" selected="selected">管理员</option>
-                                    <option value="1">巡检员</option>
-                                    <option value="2">巡检员</option>
-                                </select>
+                                <input type="text" class="form-control" name="addUserNickname" id="addUserNickname"
+                                       placeholder="请输入用户昵称" >
                             </div>
                         </div>
+
                         <div class="form-group clearfix">
-                            <label class="control-label" style="white-space:nowrap">描述：</label>
+                            <label class="control-label" style="white-space:nowrap">用户邮箱：</label>
                             <div class="col-sm-8">
-                                <input type="text clearfix" class="form-control" name="addUserDescripte"
-                                       id="addUserDescripte" placeholder="请输入对该用户的描述">
+                                <input type="Email" class="form-control" name="addUserEmail" id="addUserEmail"
+                                       placeholder="请输入用户邮箱">
                             </div>
                         </div>
+
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">电话号码：</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="addUserPhone" name="addUserPhone"
+                                       placeholder="请输入用户号码" maxlength="13"/>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
                 <div id="alertDiv1"></div>
@@ -266,19 +275,23 @@
                 <a class="block-heading f-14" data-toggle="collapse">用户列表</a>
                 <div class="block-body collapse in">
                     <p>
-                        <select name="role" class="search-select">
-                            <option value="-1">全部</option>
-                            <option value="0" <#if (selectStatus)?? && selectStatus =="0">selected="selected"</#if>>管理员</option>
-                            <option value="1"<#if (selectStatus)?? && selectStatus =="1">selected="selected"</#if>>巡检员</option>
-
+                        <select name="GroupId" class="search-select">
+                            <option value=0>全部</option>
+                            <option value=1 <#if (selectStatus)?? && selectStatus ==1>selected="selected"</#if>>浏览组</option>
+                            <option value=2 <#if (selectStatus)?? && selectStatus ==2>selected="selected"</#if>>管理组</option>
+                            <option value=3 <#if (selectStatus)?? && selectStatus ==3>selected="selected"</#if>>巡检组</option>
                         </select>
                     </p>
                     <p>
-                        <input name="userid" type="text" class="search-text" value="" placeholder="请输入用户序号">
+                        <input  name="userName" type="text" class="search-text"  placeholder="请输入姓名" >
                     </p>
-                    <p>
-                        <input type="submit" class="search-btn"  value="搜索">
-                        <button type="button" class="search-btn" onclick="addUser()">新增</button>
+
+                        <input type="submit" class="search-btn" value="搜索">
+                        <#if !Session["super_administrator"]?exists>
+                        <button type="button" class="btn btn-success" onclick="addUser()"
+                                style="float: right">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增</button>
+                        </#if>
                     </p>
 
                 </div>
@@ -297,7 +310,9 @@
                                     <th>电话号码</th>
                                     <th>电子邮箱</th>
                                     <th>最后登陆时间</th>
+                                    <#if !Session["super_administrator"]?exists>
                                     <th>编辑</th>
+                                    </#if>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -312,11 +327,17 @@
                                     <td><#if user.phoneone??>${user.phoneone}</#if></td>
                                     <td><#if user.email??>${user.email}</#if></td>
                                     <td><#if user.updatetime??>${user.updatetime}</#if></td>
+                                    <#if !Session["super_administrator"]?exists>
                                     <td>
+<<<<<<< HEAD
                                         <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser(${user.id},'${user.worknumber!}','${user.name}')">修改</button>
+=======
+                                        <button type="button" class="btn btn-warning"  onclick="modUser(${user.id},'${user.worknumber}','${user.name}')">修改</button>
+>>>>>>> branch 'master' of https://github.com/HustYrf/planeV2.0.git
                                         <button type="button" class="btn btn-danger"  style="background-color:#d9534f" onclick="delUser(${user.id})">删除</button>
                                         <button type="button" class="btn btn-info" style="width: 55px" onclick="userAuthority(${user.id},'${user.name}')">权限</button>
                                     </td>
+                                   </#if>
                                 </tr>
                                 </#list>
                             </#if>
@@ -478,6 +499,13 @@
             this.value += " ";
         }
     };
+    document.getElementById("addUserPhone").onkeyup = function() {
+        var text_len = this.value.length;
+        if (text_len === 3 || text_len === 8) {
+            this.value += " ";
+        }
+    };
+    $('input[required]').before('<span style="color:red;position: absolute;margin-left: -18px; margin-top: 4px; font-size: 22px;">*</span>');
 </script>
 </body>
 </html>

@@ -54,5 +54,13 @@ public interface UserMapper {
 
     int updateLastTime(String name);
 
+    int insertSelectiveIdInc(User user);
+
 	String getNameByUserId(Integer id);
+
+    User selectUserByUserName(String userName);
+
+    int selectCountByFuzzyName(@Param("Name") String userName);
+
+    List<User> selectByFuzzyNameWithPage(@Param("Name")String userName, TailPage<UserPojo> page);
 }

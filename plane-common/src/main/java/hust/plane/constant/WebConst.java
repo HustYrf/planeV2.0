@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class WebConst {
     public static final String SUPER_ADMINISTRATOR_VIEW = "super_administrator";
+    public static final String SEARCH_NO_USERNAME ="S_N_NAME" ;
 
     public static String LOGIN_SESSION_KEY = "login_user";
 
