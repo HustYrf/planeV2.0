@@ -42,4 +42,6 @@ public interface UserService {
     String getNameByUserId(Integer id);
 
     int updateSelectiveWithUserId(Integer id, String nickName, String email, String phoneNumber);
+
+	boolean updateByUser(User user);
 }

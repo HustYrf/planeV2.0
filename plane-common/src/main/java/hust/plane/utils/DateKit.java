@@ -701,5 +701,15 @@ public class DateKit {
             tomorrow.set(13, 0);
             return Long.valueOf(String.valueOf(tomorrow.getTimeInMillis()).substring(0, 10));
         }
+        public static void main(String[] args) {
+        	
+        	Date date = new Date();
+        	Date date2;
+        	System.out.println(date.toString());
+        	date2 = date;
+        	System.out.println(date2.toString());
+        	
+			
+		}
 
     }

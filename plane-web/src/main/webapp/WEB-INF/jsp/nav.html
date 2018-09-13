@@ -40,9 +40,9 @@
            	<li <#if curNav?? && curNav =="flyPathList"> class="active" </#if>><a href="${s.base}/doGetFlyPathList.action">飞行路径列表</a></li>
             <#if !Session["super_administrator"]?exists>
             <li <#if curNav?? && curNav =="setFlyPath"> class="active" </#if>><a href="${s.base}/setFlyPath.action">飞行路径设定</a></li>
-            <li <#if curNav?? && curNav =="#"> class="active" </#if>><a href="#">飞行路径导入</a></li>
+            <!-- <li <#if curNav?? && curNav =="#"> class="active" </#if>><a href="#">飞行路径导入</a></li>
             <li <#if curNav?? && curNav =="importPlanePath"> class="active" </#if>><a href="${s.base}/toImportPlanePath.action">飞行路径导出</a></li>
-            <li <#if curNav?? && curNav =="#"> class="active" </#if>><a href="#">飞行路径下发</a></li>
+            <li <#if curNav?? && curNav =="#"> class="active" </#if>><a href="#">飞行路径下发</a></li> -->
             </#if>
         </ul>
         <a href="#accounts-menu4" class="nav-header" data-toggle="collapse">

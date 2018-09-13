@@ -291,4 +291,13 @@ public class UserServiceImpl implements UserService {
 		
 		return userDao.getNameByUserId(id);
 	}
+
+	@Override
+	public boolean updateByUser(User user) {
+		
+		if(userDao.updateByPrimaryKeySelective(user)==1) {
+			return true;
+		}
+		return false;
+	}
 }

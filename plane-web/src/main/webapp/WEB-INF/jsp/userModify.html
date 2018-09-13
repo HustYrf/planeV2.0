@@ -313,7 +313,7 @@
                                     <td><#if user.email??>${user.email}</#if></td>
                                     <td><#if user.updatetime??>${user.updatetime}</#if></td>
                                     <td>
-                                        <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser(${user.id},'${user.worknumber}','${user.name}')">修改</button>
+                                        <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser(${user.id},'${user.worknumber!}','${user.name}')">修改</button>
                                         <button type="button" class="btn btn-danger"  style="background-color:#d9534f" onclick="delUser(${user.id})">删除</button>
                                         <button type="button" class="btn btn-info" style="width: 55px" onclick="userAuthority(${user.id},'${user.name}')">权限</button>
                                     </td>

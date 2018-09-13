@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,7 @@ import hust.plane.utils.page.TaskPojo;
 import hust.plane.utils.pojo.JsonView;
 import hust.plane.web.controller.vo.AlarmVO;
 import hust.plane.web.controller.webUtils.WordUtils;
+import net.sf.ehcache.search.expression.And;
 
 @Controller
 public class TaskController {
@@ -52,7 +54,6 @@ public class TaskController {
 	private RouteService routeServiceImpl;
 	@Autowired
 	private UserGroupService userGroupService;
-	
 
 	@RequestMapping("/task")
 	public String gettestTask() {
@@ -79,30 +80,31 @@ public class TaskController {
 		User aUser = PlaneUtils.getLoginUser(request);
 		Task task2 = new Task();
 		TaskVO taskVO = new TaskVO();
-				
-		if (task.getId() != null) {
-			
+		if (task.getId()!=null && task.getId()!=0) {       // 判断对象是否为空
 			task2 = taskServiceImpl.getTaskByTask(task);
-			if (task.getPlanstarttime() == null) {
+			if (task2.getPlanstarttime() == null) {
 				task2.setPlanstarttime(DateKit.get2HoursLater());
 			}
-			if(task2.getUserA()!= null) {
+			if (task2.getUserA() != null) {
 				taskVO.setUserAName(userServiceImpl.getNameByUserId(task2.getUserA()));
 			}
-			if(task2.getUserZ()!=null) {
+			if (task2.getUserZ() != null) {
 				taskVO.setUserZName(userServiceImpl.getNameByUserId(task2.getUserZ()));
 			}
+		}else {
+			taskVO.setPlanstarttime(DateKit.get2HoursLater());
 		}
 		
-		taskVO.setTaskVo(task2);
 		
+		taskVO.setTaskVo(task2);
+
 		List<Uav> uavs = uavServiceImpl.getAllPlane();
 		List<FlyingPath> planePaths = flyingPathServiceImpl.findAllFlyingPath();
 
 		model.addAttribute("usercreator", aUser);
 		model.addAttribute("uavs", uavs);
 		model.addAttribute("planePaths", planePaths);
-	
+
 		model.addAttribute("taskvo", taskVO);
 		model.addAttribute("curNav", "createTask");
 
@@ -177,7 +179,7 @@ public class TaskController {
 
 	}
 
-	//拒绝放飞
+	// 拒绝放飞
 	@RequestMapping(value = "rejectFly", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String rejectFly(Task task) {
@@ -189,25 +191,25 @@ public class TaskController {
 		}
 	}
 
-	//任务分派
+	// 任务分派
 	@RequestMapping(value = "assignTask", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String assignTask(Task task) {
-		
+
 		Task task2 = taskServiceImpl.getTaskByTask(task);
 
 		User userA = userServiceImpl.getUserById(task2.getUserA());
 		User userZ = userServiceImpl.getUserById(task2.getUserZ());
-		if(taskServiceImpl.setStatusTaskByTask(task2, 2)==true) {// 设置任务分派
+		if (taskServiceImpl.setStatusTaskByTask(task2, 2) == true) {// 设置任务分派
 			userServiceImpl.updataTasknumByUser(userA); // 增加az任务数目
 			userServiceImpl.updataTasknumByUser(userZ);
-			return JsonView.render(1, "任务分派成功!");		
-		}else {
+			return JsonView.render(1, "任务分派成功!");
+		} else {
 			return JsonView.render(1, "任务分派失败!");
 		}
-		
+
 	}
-	
+
 	@RequestMapping(value = "onsureTaskOver", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String onsureTaskOver(Task task, HttpServletRequest request) {
@@ -231,22 +233,22 @@ public class TaskController {
 			return JsonView.render(1, "巡视任务确认失败!");
 		}
 	}
-	
-	//删除处于创建状态的任务
+
+	// 删除处于创建状态的任务
 	@RequestMapping(value = "deleteTask", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String deleteTask(Task task) {
-		
-		if(task.getId()!=null) {
-			if(taskServiceImpl.deleteByTask(task) == true) {
-				return new JsonView(0,"SUCCESS","删除成功").toString();
+
+		if (task.getId() != null) {
+			if (taskServiceImpl.deleteByTask(task) == true) {
+				return new JsonView(0, "SUCCESS", "删除成功").toString();
 			}
-			return new JsonView(0,"SUCCESS","删除失败").toString();
+			return new JsonView(0, "SUCCESS", "删除失败").toString();
 		}
-			
-		  return new JsonView(0,"SUCCESS","未传入飞行路径编号,删除失败").toString();		
+
+		return new JsonView(0, "SUCCESS", "未传入飞行路径编号,删除失败").toString();
 	}
-	
+
 	// 打印任务报告
 	@RequestMapping("taskReport")
 	public void taskReport(Task task, HttpServletRequest request, HttpServletResponse response) {

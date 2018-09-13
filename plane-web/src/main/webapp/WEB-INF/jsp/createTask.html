@@ -14,7 +14,6 @@
             text-align: right;
             width: 100px;
         }
-
         .suggest{
             border-top: 0;
             width: 384px;
@@ -101,13 +100,13 @@
                         <label class="control-label">操作员：</label>
                         <div class="col-sm-5">
 				          <input type="text" class="form-control" 
-				          id="usercreator" value="${usercreator.name!}:${usercreator.id!}" disabled>
+				          id="usercreator" value="${usercreator.name!}" disabled>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label">放飞员：</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="userA" placeholder="${taskvo.userAName!}">                          
+                            <input type="text" class="form-control" id="userA" placeholder="请输入放飞员" value="${taskvo.userAName!}">                          
                             <div class="search-div" id="search-div1">
                                <ul id="search-result" ></ul>                              
                             </div>                                                  
@@ -117,7 +116,7 @@
                     <div class="form-group">
                         <label class="control-label">接收员：</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control"  id="userZ" placeholder="${taskvo.userZName!}">
+                            <input type="text" class="form-control"  id="userZ" placeholder="请输入接机员" value="${taskvo.userZName!}">
                             <div class="search-div" id="search-div2">
                                 <ul id="search-result2" >  
                                 </ul>

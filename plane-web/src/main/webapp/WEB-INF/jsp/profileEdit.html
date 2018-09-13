@@ -90,60 +90,69 @@
 <#include "./nav.html" />
 <div class="content">
         <div class="col-sm-offset-2 col-sm-6" style="padding-top:40px">
-            <form class="form-horizontal" method="post" id="profileForm" role="form">
+            <form class="form-horizontal" method="post" id="profileForm" role="form" enctype="multipart/form-data">
                 <div style="border-bottom: 1px solid #ccc;">
                 <h1 style="text-align: center;color:#999;font-family:'microsoft yahei';">个人信息修改</h1>
                 </div>
-
+              
                 <div  style="width:150px;margin:10px auto;">
                     <div style="width:100%;height:150px;background-color:blue; border-radius:75px;overflow: hidden;">
-                        <img src="https://avatars1.githubusercontent.com/u/30889038?s=40&v=4" id="image" style="height: 100%;width: 100%;"alt="">
+                        <img src='${Session["login_user"].icon}' id="image" style="height: 100%;width: 100%;" alt="">
                     </div>
                     <center style="margin-top:20px;">
                     <input type="file" name="file" id="file" class="inputfile" 
-                    accept="image/gif, image/jpeg"/>
+                    accept="image/jpeg,image/jpg,image/png"/>
                     <label for="file" class="btn btn-default btn-xs">上传头像</label>
                     </center>
                 </div>
 
-
                 <fieldset disabled>
-                    <div class="form-group has-feedback " style="margin-top: 50px;">
-                        <label for="username" class="col-sm-1 control-label">账户名</label>
+                    <div class="form-group has-feedback " style="margin-top: 30px;">
+                        <label for="username" class="col-sm-1 control-label">账号</label>
                        <div class="col-sm-10">
-                        <input type="text " class="form-control disabled pl30px" name="username" id="username" placeholder="黄攀" />
+                        <input type="text " class="form-control disabled pl30px" name="name" id="username" value="${user.name!}" />
                         <span class="glyphicon glyphicon-user form-control-feedback lf15px" ></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="role" class="col-sm-2 control-label">角色</label>
                         <div class="col-sm-10">
-                        <input type="option" class="form-control disabled pl30px" value="管理员" id="role">
+                        <input type="option" class="form-control disabled pl30px" value="任务管理员" id="role">
                          <span class="glyphicon glyphicon-user form-control-feedback lf15px"></span>
                         </div>
                     </div>
-                </fieldset>                    
+                </fieldset> 
+                                   
                 <div class="form-group">
                      <label for="nickname" class="col-sm-2 control-label">昵称</label>
                     <div class="col-sm-10">
                     <!-- 此处只能存放45(varchar)/2个汉字。 -->
-                    <input type="text" class="form-control pl30px" name="nickname" id="nickname" placeholder="Nickname" maxlength="20">
+                    <input type="text" class="form-control pl30px" name="nickname" id="nickname" value="${user.nickname!}" maxlength="20">
                     <span class="glyphicon glyphicon-user form-control-feedback lf15px" ></span>
                     </div>
                 </div>
+                
+                <div class="form-group">
+                     <label for="worknumber" class="col-sm-2 control-label">工号</label>
+                    <div class="col-sm-10">
+                    <!-- 此处只能存放45(varchar)/2个汉字。 -->
+                    <input type="text" class="form-control pl30px" name="worknumber" id="worknumber" value="${user.worknumber!}" maxlength="20">
+                    <span class="glyphicon glyphicon-user form-control-feedback lf15px" ></span>
+                    </div>
+                </div>
+                
                 <div class="form-group">
                      <label for="email" class="col-sm-2 control-label">邮箱</label>
                     <div class="col-sm-10 ">
-                    <input type="email" class="form-control pl30px" id="email" name="email" placeholder="Email">
+                    <input type="email" class="form-control pl30px" id="email" name="email" value="${user.email!}">
                     <span class="glyphicon glyphicon-envelope form-control-feedback lf15px"></span>
                     </div>
                 </div>
 
-                
                 <div class="form-group">
                      <label for="phone1" class="col-sm-2 control-label">电话1</label>
                     <div class="col-sm-10">
-                    <input type="text" class="form-control pl30px" id="phonenumber1" name="phonenumber1" placeholder="phonenumber1">
+                    <input type="text" class="form-control pl30px" id="phonenumber1" name="phoneone" value="${user.phoneone!}">
                      <span class="glyphicon glyphicon-phone form-control-feedback lf15px" ></span>
                     </div>
                 </div>
@@ -151,17 +160,16 @@
                 <div class="form-group">
                      <label for="phone2" class="col-sm-2 control-label">电话2</label>
                     <div class="col-sm-10">   
-                    <input type="text" class="form-control pl30px" id="phonenumber2" name="phonenumber2" placeholder="phonenumber2">
+                    <input type="text" class="form-control pl30px" id="phonenumber2" name="phonetwo" value="${user.phonetwo!}">
                      <span class="glyphicon glyphicon-phone-alt form-control-feedback lf15px" ></span>
                     </div>
                 </div>
-                
 
                 <div class="form-group">
-	                <label for="description" class="col-sm-2 control-label" >用户描述</label>
+	                <label for="description" class="col-sm-2 control-label" >个人简介</label>
 	                <div class="col-sm-10">
 	                <!-- 此处只能存放45(varchar)/2个汉字。 -->
-	                <input type="textarea"class="form-control pl30px" rows="4" maxlength="20" id="description" name="description" ></input>
+	                <input type="textarea"class="form-control pl30px" rows="4" maxlength="20" id="description" name="description" value="${user.description!}"></input>
 	                 <span class="glyphicon glyphicon-pencil form-control-feedback lf15px" ></span>
 	                </div>
                 </div>
@@ -169,13 +177,25 @@
                 <div class="form-group mgt20px pull-right">
                     <button type="reset" class="btn btn-default" id="restart" >重置</button>
                     <button type="button" class="btn btn-default btn-primary" id="modify" style="margin-left:20px">修改</button>
-                </div>
-                
-         
+                </div>                      
             </form>
     </div>
 
 </div>
+<div class="modal" id="_ocDialogModal" tabindex="-1" aria-hidden="true">
+	    <div class="modal_wapper small">
+	        <div class="modal-dialog w-4" >
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <div class="modal-title f-16" >提示信息</div>
+	                </div>
+	                <div class="modal-body">
+	                    <div><span class="color-oc f-16 oc-content" id="resText">修改成功！</span></div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 <script type="text/javascript">
 
     // $("#modify").click(function() {
@@ -186,7 +206,7 @@
     //         showAlert('新密码和确认新密码不一致！');
     //     } else {
     //         $.ajax({
-    //             url: '../admin/profile.action',
+    //             url: '../admin/profileEdit.action',
     //             type: 'POST',
     //             async: true,
     //             data:$("#profileForm").serialize(),
@@ -207,16 +227,40 @@
     // });
     //初始化验证规则函数
      $("#modify").on("click", function(){
-     //获取表单对象
-    var bootstrapValidator = $('#profileForm').data('bootstrapValidator');
+         //获取表单对象
+        var bootstrapValidator = $('#profileForm').data('bootstrapValidator');
         //手动触发验证
         bootstrapValidator.validate();
         if(bootstrapValidator.isValid()){
             // 验证成功可以直接提交ajax请求
-           console.log($('#profileForm').serialize());
-           console.log("success");
-           return false;
-        }
+          /*   $.ajax({
+                   url: '${s.base}/admin/profileEdit.action',
+                   type: 'POST',
+                   data:$("#profileForm").serialize(),
+                   dataType: 'json',
+                   success: function(result) {	                    
+                   	     $("#resText").text(result.message);
+                      	 Modal.show('_ocDialogModal');
+                   }
+            }); */
+        	var option={
+           		 type: 'POST',
+           		 url: '${s.base}/admin/doprofileEdit.action',
+           		 dataType: 'json',
+           		 data:$("#profileForm").serialize(),
+           		 success: function(result) {	                    
+                  	     $("#resText").text(result.message);
+                     	 Modal.show('_ocDialogModal');
+                  },error:function(){
+                	  $("#resText").text("出错了，请重试!");
+	                	Modal.show('_ocDialogModal');
+                  }
+           };
+           $("#profileForm").ajaxSubmit(option);
+            
+           
+        }          
+                   
     });
    var validatorInit = function() {
         $("#profileForm").bootstrapValidator({
@@ -232,19 +276,17 @@
                 },
                 fields: {
                     nickname: {
-                        validators: {
-                            notEmpty: {//检测非空,radio也可用
-                                message: '昵称必须输入'
-                            },
+                            validators: {
+                            //notEmpty: {//检测非空,radio也可用
+                              //  message: '昵称必须输入'
+                            //}, 
                             stringLength: {//检测长度
                                 max:10,
                                 message: '长度过长'
                             }
-
                         }
-
                     },
-                    phonenumber1:{
+                    phoneone:{
                          validators: {
                          stringLength: {
                          min: 11,
@@ -257,7 +299,7 @@
                          }
                     }
                     },
-                    phonenumber2:{
+                    phonetwo:{
                          validators: {
                          stringLength: {
                          min: 11,
@@ -277,7 +319,8 @@
                          message: '描述长度限制'}
                      }},
                     }
-                });}
+                });
+        }
    
 
      $(function () {
@@ -290,12 +333,12 @@
             // });
         });
    
-    $("#file").change(function(){  
+    $("#file").change(function(){     //头像部分 
       // getObjectURL是自定义的函数，见下面  
       // this.files[0]代表的是选择的文件资源的第一个，因为上面写了 multiple="multiple" 就表示上传文件可能不止一个  
       // ，但是这里只读取第一个   
       var objUrl = getObjectURL(this.files[0]) ;  
-      console.log("objUrl = "+objUrl) ;  
+     // console.log("objUrl = "+objUrl) ;  
       if (objUrl) {  
         // 在这里修改图片的地址属性  
         $("#image").attr("src", objUrl) ;  
@@ -316,14 +359,12 @@
       return url ;  
     }  
 
-
-    $("#restart").click(function () {
+    $("#restart").click(function () {            //重置表单
       $("#profileForm").data('bootstrapValidator').destroy();
            $("#profileForm").data('bootstrapValidator',null);
             var onValidatorInit = new validatorInit();      
     }); 
-
-
+	     
 </script>
 </body>
 </html>

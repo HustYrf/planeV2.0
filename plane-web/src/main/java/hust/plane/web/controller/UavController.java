@@ -51,6 +51,16 @@ public class UavController {
 		return "planeList";
 	}
 	
+	@RequestMapping("getTaskPlaneLocation")
+	public String getTaskPlaneLocation(Uav uav,Model model){
+		
+		Uav uav2 = planeServiceimpl.getPlaneByPlane(uav);
+		UavVO uavVO= new UavVO(uav2);
+		
+		model.addAttribute("uav",JsonUtils.objectToJson(uavVO));
+		return "plane";
+	}	
+	
 	//多条件查询无人机：根据负责人id查询 或者 登记起始时间到登记终止时间段内查询
 	@RequestMapping("doFindPlane")
 	public String doFindPlane(Model model,@RequestParam("userid")int owner,@RequestParam("starttime")Date starttime,@RequestParam("endtime")Date endtime) {

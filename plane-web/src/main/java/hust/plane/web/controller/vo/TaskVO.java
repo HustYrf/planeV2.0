@@ -6,11 +6,10 @@ import hust.plane.mapper.pojo.Task;
 
 public class TaskVO {
 
-	
 	private String userAName;
 	private String userZName;
 	private String userCreatorName;
-	
+
 	private Integer id;
 	private String name;
 	private Integer usercreator;
@@ -27,44 +26,42 @@ public class TaskVO {
 	private Integer finishstatus;
 	private String imgfolder;
 	private String reporturl;
-	
+
 	public void setTaskVo(Task task) {
-		
+
 		this.id = task.getId();
-		if(task.getName()!= null) {
+		if (task.getName() != null) {
 			this.name = task.getName();
 		}
-		if(task.getUsercreator()!=null) {
+		if (task.getUsercreator() != null) {
 			this.usercreator = task.getUsercreator();
 		}
-		if(task.getUserA()!=null) {
+		if (task.getUserA() != null) {
 			this.userA = task.getUserA();
 		}
-		if(task.getUserZ()!=null) {
+		if (task.getUserZ() != null) {
 			this.userZ = task.getUserZ();
 		}
-		if(task.getFlyingpathId()!=null) {
+		if (task.getFlyingpathId() != null) {
 			this.flyingpathId = task.getFlyingpathId();
 		}
-		if(task.getUavId()!=null) {
+		if (task.getUavId() != null) {
 			this.uavId = task.getUavId();
 		}
-		if(task.getPlanstarttime()!=null) {
+		if (task.getPlanstarttime() != null) {
 			this.planstarttime = task.getPlanstarttime();
 		}
-		if(task.getPlanendtime()!=null) {
+		if (task.getPlanendtime() != null) {
 			this.planendtime = task.getPlanendtime();
 		}
-		if(task.getExecutestarttime()!=null) {
+		if (task.getExecutestarttime() != null) {
 			this.executestarttime = task.getExecutestarttime();
 		}
-		if(task.getExecuteendtime()!=null) {
+		if (task.getExecuteendtime() != null) {
 			this.executeendtime = task.getExecuteendtime();
 		}
-			
+
 	}
-	
-	
 
 	public String getUserAName() {
 		return userAName;
@@ -89,6 +86,7 @@ public class TaskVO {
 	public void setUserCreatorName(String userCreatorName) {
 		this.userCreatorName = userCreatorName;
 	}
+
 	public Integer getId() {
 		return id;
 	}
