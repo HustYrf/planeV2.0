@@ -93,7 +93,7 @@
                     <div class="form-group">
                         <label class="control-label">任务名称：</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="taskname" value="${taskvo.name!}">
+                            <input type="text" class="form-control" id="taskname" value="${taskvo.name!}" required="required">
                         </div>
                     </div>
                     <div class="form-group">
@@ -132,7 +132,7 @@
                             		<#else>                           		
 										<#if uavs?? && uavs?size gt 0>
 										  <#list uavs as uav>
-											<option value="${uav.id!}">${uav.id!}</option>
+											<option value="${uav.id!}">${uav.name!}</option>
 										</#list>								
 										</#if>
 									</#if>									
@@ -148,7 +148,7 @@
                               		<#else>
 	                              		<#if planePaths?? && planePaths?size gt 0>
 										<#list planePaths as planePath>
-											<option value="${planePath.id!}">${planePath.id!}</option>
+											<option value="${planePath.id!}">${planePath.name!}</option>
 										</#list>								
 										</#if>	
                               		</#if>                           
@@ -173,6 +173,21 @@
             </div>
         </div>
     </div>
+    
+        <div class="modal" id="_ocDialogModal" tabindex="-1" aria-hidden="true">
+	    <div class="modal_wapper small">
+	        <div class="modal-dialog w-4" >
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <div class="modal-title f-16" >提示信息</div>
+	                </div>
+	                <div class="modal-body">
+	                    <div><span class="color-oc f-16 oc-content" id="resText">创建成功</span></div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	  </div>
 </body>
 
 <script type="application/javascript">
@@ -181,7 +196,10 @@
 	function submitTask(){
 		
 		var taskname = $("#taskname").val();
-		var usercreator = $("#usercreator").val();		
+		if(taskname==null || taskname==""){
+			 Modal.tipFailure("任务名不能为空");	   
+			 return;
+		}
 		var userA = $("#userA").val();
 		var userZ = $("#userZ").val();
 		var uavId = $("#uavId").val();
@@ -195,19 +213,16 @@
 		    dataType: 'json',
 		    data: {
 		        "name":taskname,
-		        "usercreator":usercreator,
-		        "userA":userA,
-		        "userZ":userZ,
+		        "userAName":userA,
+		        "userZName":userZ,
 		        "uavId":uavId,
 		        "flyingpathId":flyingpathid,
 		        "planstarttime":planstarttime,
 		    },
 		    success: function (result) {
-		        if (result.errcode == 0 && result.message == "SUCCESS") {
-		        	 Modal.tipFailure('创建任务成功！');	          
-		        }
-		        if (result.errcode == 1 ) {
-		        	 Modal.tipFailure('创建任务失败！');	          
+		        if (result.errcode == 1) {
+		        	Modal.show('_ocDialogModal');
+                	document.getElementById("resText").innerHTML=result.message;        
 		        }
 		    },
 		    error: function () {

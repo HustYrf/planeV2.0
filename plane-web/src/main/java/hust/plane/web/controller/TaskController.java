@@ -16,6 +16,7 @@ import hust.plane.utils.pojo.TipException;
 import hust.plane.web.controller.vo.RouteVO;
 import hust.plane.web.controller.vo.TaskVO;
 
+import org.apache.poi.hssf.record.TableStylesRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,7 @@ public class TaskController {
 		User aUser = PlaneUtils.getLoginUser(request);
 		Task task2 = new Task();
 		TaskVO taskVO = new TaskVO();
-		if (task.getId()!=null && task.getId()!=0) {       // 判断对象是否为空
+		if (task.getId() != null && task.getId() != 0) { // 判断对象是否为空
 			task2 = taskServiceImpl.getTaskByTask(task);
 			if (task2.getPlanstarttime() == null) {
 				task2.setPlanstarttime(DateKit.get2HoursLater());
@@ -89,11 +90,10 @@ public class TaskController {
 			if (task2.getUserZ() != null) {
 				taskVO.setUserZName(userServiceImpl.getNameByUserId(task2.getUserZ()));
 			}
-		}else {
+		} else {
 			taskVO.setPlanstarttime(DateKit.get2HoursLater());
 		}
-		
-		
+
 		taskVO.setTaskVo(task2);
 
 		List<Uav> uavs = uavServiceImpl.getAllPlane();
@@ -112,20 +112,47 @@ public class TaskController {
 	// 创建任务
 	@RequestMapping(value = "taskCreate", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String createTask(Task task, HttpServletRequest request) {
-
-		// 保存新建的任务
-		if (taskServiceImpl.saveTask(task)) {
-			User userA = new User();
-			User userZ = new User();
-			userA.setId(task.getUserA());
-			userZ.setId(task.getUserZ());
-			userServiceImpl.updataTasknumByUser(userA);
-			userServiceImpl.updataTasknumByUser(userZ); // 并且把操作员的任务数量+1
-			return JsonView.render(0, WebConst.SUCCESS_RESULT);
+	public String createTask(HttpServletRequest request,TaskVO taskVO) {
+		
+		User createUser = PlaneUtils.getLoginUser(request);
+		Task task = new Task();
+		User userA = null;
+		User userZ = null;
+		
+		if (taskVO.getUserAName()!= null && taskVO.getUserAName() != "") {
+			userA = userServiceImpl.getUserByName(taskVO.getUserAName());
+			if (userA == null) {
+				return JsonView.render(1, "任务创建失败，该起飞员不存在！");
+			} else {
+				task.setUserA(userA.getId());
+			}
 		}
+		if (taskVO.getUserZName() != null && taskVO.getUserZName() != "") {
 
-		return JsonView.render(1, WebConst.SUCCESS_RESULT);
+			userZ = userServiceImpl.getUserByName(taskVO.getUserZName());
+			if (userZ == null) {
+				return JsonView.render(1, "任务创建失败，该降落员不存在！");
+			} else {
+				task.setUserZ(userZ.getId());
+			}
+		}
+		if (taskVO.getUavId() != null && taskVO.getUavId()!= 0) {
+			task.setUavId(taskVO.getUavId());
+		}
+		if (taskVO.getFlyingpathId() != null && taskVO.getFlyingpathId() != 0) {
+			task.setFlyingpathId(taskVO.getFlyingpathId());
+		}
+		if (taskVO.getPlanstarttime() != null) {
+			task.setPlanstarttime(taskVO.getPlanstarttime());
+		}
+		task.setName(taskVO.getName());
+		task.setCreatetime(new Date());
+		task.setUsercreator(createUser.getId());
+		// 保存新建的任务
+		if (taskServiceImpl.saveTask(task) == true) {
+			return JsonView.render(1, "任务创建成功");
+		}
+		return JsonView.render(1, "任务创建失败");
 	}
 
 	// 分页查询
@@ -165,6 +192,7 @@ public class TaskController {
 		return "taskList";
 	}
 
+	// 确认放飞
 	@RequestMapping(value = "onsureFly", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String onsureFly(Task task) {
@@ -195,6 +223,18 @@ public class TaskController {
 	public String assignTask(Task task) {
 
 		Task task2 = taskServiceImpl.getTaskByTask(task);
+		if (task2.getUserA() == null || task2.getUserA() == 0) {
+			return JsonView.render(1, "放飞员为空,任务分派失败!");
+		}
+		if (task.getUserZ() == null || task.getUserZ() == 0) {
+			return JsonView.render(1, "接机员为空,任务分派失败!");
+		}
+		if (task.getFlyingpathId() == null || task.getFlyingpathId() == 0) {
+			return JsonView.render(1, "未指定飞行路径,任务分派失败!");
+		}
+		if (task.getUavId() == null || task.getUavId() == 0) {
+			return JsonView.render(1, "未指定无人机,任务分派失败!");
+		}
 
 		User userA = userServiceImpl.getUserById(task2.getUserA());
 		User userZ = userServiceImpl.getUserById(task2.getUserZ());
@@ -208,7 +248,7 @@ public class TaskController {
 
 	}
 
-	//确认任务完成，这个暂时不用
+	// 确认任务完成，这个暂时不用
 	@RequestMapping(value = "onsureTaskOver", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String onsureTaskOver(Task task, HttpServletRequest request) {

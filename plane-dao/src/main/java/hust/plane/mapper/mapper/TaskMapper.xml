@@ -200,7 +200,7 @@
         #{uavId,jdbcType=INTEGER},
       </if>
       <if test="createtime != null" >
-        #{CreateTime,jdbcType=TIMESTAMP},
+        #{createtime,jdbcType=TIMESTAMP},
       </if>
       <if test="planstarttime != null" >
         #{planstarttime,jdbcType=TIMESTAMP},

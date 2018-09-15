@@ -2,23 +2,27 @@ package hust.plane.web.controller.vo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import hust.plane.mapper.pojo.Task;
 
 public class TaskVO {
 
+	private String name;
 	private String userAName;
 	private String userZName;
-	private String userCreatorName;
-
-	private Integer id;
-	private String name;
+	private Integer uavId;
+	private Integer flyingpathId;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")	
+	private Date planstarttime;
+	
+	private Integer id;	
 	private Integer usercreator;
 	private Integer userA;
 	private Integer userZ;
-	private Integer flyingpathId;
-	private Integer uavId;
+	private String userCreatorName;
+	
 	private Date createtime;
-	private Date planstarttime;
 	private Date planendtime;
 	private Date executestarttime;
 	private Date executeendtime;

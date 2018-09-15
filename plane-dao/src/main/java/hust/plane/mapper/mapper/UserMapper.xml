@@ -562,7 +562,11 @@
         select count(1) from K_User
         where Name LIKE concat('%',#{Name},'%')
     </select>
-
+   <select id="getUserByName" parameterType="java.lang.String" resultType="hust.plane.mapper.pojo.User">
+        select id
+        from K_User
+        where Name = #{name,jdbcType=VARCHAR}
+    </select>
     <select id="selectByFuzzyNameWithPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

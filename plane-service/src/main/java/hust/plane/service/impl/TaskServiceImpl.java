@@ -94,10 +94,8 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public boolean saveTask(Task task) {
-		Date date = new Date();
 		// 初始状态为1归档
-        task.setStatus(1);
-		task.setCreatetime(date);
+        task.setStatus(0);
 		task.setFinishstatus(0);
 		// 设置状态未完成
 

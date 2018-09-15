@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.thoughtworks.xstream.mapper.Mapper.Null;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -387,5 +389,13 @@ public class UserServiceImpl implements UserService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public User getUserByName(String name) {
+		User user = userDao.getUserByName(name);
+		if(user.getId() != null && user.getId()!=0)
+			return user;
+		return null;
 	}
 }

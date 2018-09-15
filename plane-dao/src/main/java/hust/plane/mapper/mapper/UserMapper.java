@@ -63,4 +63,6 @@ public interface UserMapper {
     int selectCountByFuzzyName(@Param("Name") String userName);
 
     List<User> selectByFuzzyNameWithPage(@Param("Name")String userName, TailPage<UserPojo> page);
+
+	User getUserByName(String name);
 }
