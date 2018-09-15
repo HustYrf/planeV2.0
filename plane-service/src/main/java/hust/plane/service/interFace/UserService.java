@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface UserService {
     User login(String username, String password);
 
-    int register(String username, String password);
+    int register(String username, String password, String worknumber);
 
     User queryUserById(int id);
 

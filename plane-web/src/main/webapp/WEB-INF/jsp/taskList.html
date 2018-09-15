@@ -123,7 +123,7 @@
                                                 <#else>
                                                 <span class="label label-warning">无操作权限</span>
 										        </#if>
-	                                		<#elseif taskpojo.task.status==9>
+	                                		<#elseif taskpojo.task.status==999><!-- 9状态没有确认操纵 -->
 							             	<#if !Session["super_administrator"]?exists>
 	                                		<button type="button" class="btn btn-info btn-xs" onclick="onsureTaskOver(${taskpojo.task.id!})">巡视完成确认</button>
                                             <#else>

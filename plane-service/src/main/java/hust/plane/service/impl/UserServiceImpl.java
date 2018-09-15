@@ -73,9 +73,9 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public int register(String username, String password) {
-        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
-            throw new TipException("用户名和密码不能为空");
+    public int register(String username, String password,String worknumber) {
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)||StringUtils.isBlank(worknumber)) {
+            throw new TipException("用户名、密码和工号均不能为空");
         }
         int usernameCount = userDao.selectByUserName(username);
         if (usernameCount == 1) {
@@ -89,9 +89,10 @@ public class UserServiceImpl implements UserService {
         Date date = new Date();
         user.setCreatetime(date);
         user.setUpdatetime(date);
+        user.setWorknumber(worknumber);
         user.setTasknum(0);
 
-        int count = userDao.insertSelectiveWithIdInc(user);// 主键不是int类型的值，无法自增
+        int count = userDao.insertSelectiveIdInc(user);// 主键是int类型的值，无法自增
         // int count = userDao.insertSelective(user);
         return count;
     }
@@ -331,6 +332,15 @@ public class UserServiceImpl implements UserService {
             page.setItems(userVoList);
         } else {
             List<User> userList = new ArrayList<>();
+            if (userName.length() == 4) {
+                User userByName = userDao.selectUserByUserName(userName);
+                if (userByName == null) {
+                    userName = userName.substring(0, 3);
+                } else {
+                    userList.add(userByName);
+                    page.setItemsTotalCount(1);
+                }
+            }
             if (userName.length() == 3) {
                 User userByName = userDao.selectUserByUserName(userName);
                 if (userByName == null) {

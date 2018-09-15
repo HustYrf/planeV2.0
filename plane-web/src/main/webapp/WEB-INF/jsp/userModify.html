@@ -283,7 +283,7 @@
                         </select>
                     </p>
                     <p>
-                        <input  name="userName" type="text" class="search-text"  placeholder="请输入姓名" >
+                    <input name="userName" type="text" class="search-text"  placeholder=" 请输入姓名" value="${inputname!}" maxlength="4">
                     </p>
 
                         <input type="submit" class="search-btn" value="搜索">
@@ -329,11 +329,7 @@
                                     <td><#if user.updatetime??>${user.updatetime}</#if></td>
                                     <#if !Session["super_administrator"]?exists>
                                     <td>
-<<<<<<< HEAD
-                                        <button type="button" class="btn btn-primary" style="background-color:#5cb85c" onclick="modUser(${user.id},'${user.worknumber!}','${user.name}')">修改</button>
-=======
                                         <button type="button" class="btn btn-warning"  onclick="modUser(${user.id},'${user.worknumber}','${user.name}')">修改</button>
->>>>>>> branch 'master' of https://github.com/HustYrf/planeV2.0.git
                                         <button type="button" class="btn btn-danger"  style="background-color:#d9534f" onclick="delUser(${user.id})">删除</button>
                                         <button type="button" class="btn btn-info" style="width: 55px" onclick="userAuthority(${user.id},'${user.name}')">权限</button>
                                     </td>

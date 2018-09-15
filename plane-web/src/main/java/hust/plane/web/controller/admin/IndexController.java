@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -32,10 +31,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -96,7 +93,7 @@ public class IndexController {
 			// 把用户保存在session中
 
 			user.setIcon(BASE_IMAGE_URL + "/" + USER_DIR + "/" + user.getIcon()); // 添加图片服务器位置
-			
+
 			request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
 			List<Integer> groupIdList = userGroupService.selectGroupIdWithUserId(user.getId());
 			if (groupIdList.contains(Integer.valueOf(1))) {
@@ -138,10 +135,10 @@ public class IndexController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String doRegister(@RequestParam String name, @RequestParam String password, HttpServletRequest request,
-			HttpSession session) {
+	public String doRegister(@RequestParam String name, @RequestParam String password, @RequestParam String worknumber,
+			HttpServletRequest request, HttpSession session) {
 		try {
-			int count = userService.register(name, password);
+			int count = userService.register(name, password, worknumber);
 			if (count < 0) {
 				return JsonView.render(1, "注册失败，请重新注册");
 			}
@@ -222,7 +219,7 @@ public class IndexController {
 				// 根据input name名称获取文件对象
 				CommonsMultipartFile cm = (CommonsMultipartFile) req.getFile("file");
 				if (!cm.isEmpty()) {
-					
+
 					byte[] fbytes = cm.getBytes();
 					String newFileName = "";
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");

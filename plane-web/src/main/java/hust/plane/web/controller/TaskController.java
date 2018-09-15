@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +32,6 @@ import hust.plane.utils.page.TaskPojo;
 import hust.plane.utils.pojo.JsonView;
 import hust.plane.web.controller.vo.AlarmVO;
 import hust.plane.web.controller.webUtils.WordUtils;
-import net.sf.ehcache.search.expression.And;
 
 @Controller
 public class TaskController {
@@ -174,7 +172,7 @@ public class TaskController {
 		if (taskServiceImpl.setStatusTaskByTask(task, 8) == true) {
 			return JsonView.render(1, "已确认，可以放飞");
 		} else {
-			return JsonView.render(1, "确认失败！");
+			return JsonView.render(1, "确认失败,请重试！");
 		}
 
 	}
@@ -187,7 +185,7 @@ public class TaskController {
 		if (taskServiceImpl.setStatusTaskByTask(task, 4) == true) {
 			return JsonView.render(1, "已驳回，不可放飞");
 		} else {
-			return JsonView.render(1, "驳回失败！");
+			return JsonView.render(1, "驳回失败,请重试!");
 		}
 	}
 
@@ -210,6 +208,7 @@ public class TaskController {
 
 	}
 
+	//确认任务完成，这个暂时不用
 	@RequestMapping(value = "onsureTaskOver", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String onsureTaskOver(Task task, HttpServletRequest request) {
