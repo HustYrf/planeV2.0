@@ -20,6 +20,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import hust.plane.mapper.pojo.Route;
 import hust.plane.utils.pojo.RouteExcel;
 
 public class ExcelUtil {
@@ -113,10 +114,8 @@ public class ExcelUtil {
 	}
 
 	// 读取内容
-	public static List<RouteExcel> readExcel(File file) {
+	public static boolean readExcel(File file, Route route) {
 
-		//File file = new File(path);
-		List<RouteExcel> list = new ArrayList<RouteExcel>();
 		try {
 			FileInputStream fis = new FileInputStream(file);
 			Workbook workbook = null;
@@ -130,36 +129,83 @@ public class ExcelUtil {
 			// 2.读取工作表
 			Sheet sheet = workbook.getSheetAt(0);
 			// 3.读取行
-			// 判断行数大于二,是因为数据从第三行开始插入
-			if (sheet.getPhysicalNumberOfRows() > 2) {
+			// 判断行数大于4,是因为路由点数据从第4行开始插入
+
+			if (sheet.getPhysicalNumberOfRows() >= 4) {
 				RouteExcel routeExcel = null;
-				for (int k = 2; k < sheet.getPhysicalNumberOfRows(); k++) {
+
+				// 读取第0行0列作为路由名称
+				Row row0 = sheet.getRow(0);
+				String name = row0.getCell(0).toString();
+				if (name == "" || name == null) {
+					return false;
+				}
+				route.setName(name);
+
+				// 读取第1行0列作为路由描述
+				Row row1 = sheet.getRow(1);
+				String description = row1.getCell(0).toString();
+				if (description == "" || description == null) {
+					return false;
+				}
+				route.setDescription(description);
+
+				// 读取第3行6列作为路由类型
+				Row row3 = sheet.getRow(6);
+				String type = row3.getCell(0).toString();
+				if (type == "" || type == null) {
+					return false;
+				}
+				switch (type) {
+				case "一干":
+					route.setType(1);
+					break;
+				case "二干":
+					route.setType(1);
+					break;
+				case "混合":
+					route.setType(0);
+					break;
+				default:
+					route.setType(0);
+					break;
+				}
+
+				// 读取路由点数据及标桩数据
+				List<RouteExcel> list = new ArrayList<RouteExcel>();
+				List<String> flagdata = new ArrayList<String>();
+
+				for (int k = 4; k < sheet.getPhysicalNumberOfRows(); k++) {
 					// 读取单元格
-					Row row0 = sheet.getRow(k);
+					Row row = sheet.getRow(k);
+
 					routeExcel = new RouteExcel();
-					Cell cell0 = row0.getCell(0);
-					Double flag = cell0.getNumericCellValue();
-					if (flag == null || (flag - 0.0) < 0.00001) // 判断序号是否为空或者0
-						break;
-					routeExcel.setId(cell0.getNumericCellValue());
+					String flag = row.getCell(0).toString();
+					flagdata.add(flag);
+
 					// 得到经度
-					Cell cell1 = row0.getCell(1);
-					routeExcel.setLongitude(cell1.getNumericCellValue());
+					Cell cell1 = row.getCell(1);
+					routeExcel.setLongitude(Double.parseDouble(cell1.getStringCellValue()));
 					// 得到维度
-					Cell cell2 = row0.getCell(2);
-					routeExcel.setLatitude(cell2.getNumericCellValue());
+					Cell cell2 = row.getCell(2);
+					routeExcel.setLatitude(Double.parseDouble(cell2.getStringCellValue()));
 					list.add(routeExcel);
 				}
+				route.setRoutepathdata(LineUtil.ListToString(list));
+				route.setFlagdata(flagdata.toString().replace("[", "").replace("]", ""));
+				// 构成经纬度序列
+				// String s = LineUtil.ListToString(readExcel);
+			} else {
+				return false;
 			}
 
 			workbook.close();
 			fis.close();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return list.size() > 0 ? list : null;
+		return true;
 	}
 
 	/*
@@ -175,20 +221,19 @@ public class ExcelUtil {
 	 * List<RouteExcel> readExcellist2 = ExcelUtil.readExcel(path); for(RouteExcel
 	 * r:readExcellist2) { System.out.println(r.getId()); } }
 	 */
-	public static void inputStreamToFile(InputStream ins,File file) {
-		  try {
-		   OutputStream os = new FileOutputStream(file);
-		   int bytesRead = 0;
-		   byte[] buffer = new byte[8192];
-		   while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
-		    os.write(buffer, 0, bytesRead);
-		   }
-		   os.close();
-		   ins.close();
-		  } catch (Exception e) {
-		   e.printStackTrace();
-		  }
+	public static void inputStreamToFile(InputStream ins, File file) {
+		try {
+			OutputStream os = new FileOutputStream(file);
+			int bytesRead = 0;
+			byte[] buffer = new byte[8192];
+			while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
+				os.write(buffer, 0, bytesRead);
+			}
+			os.close();
+			ins.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
 
 }

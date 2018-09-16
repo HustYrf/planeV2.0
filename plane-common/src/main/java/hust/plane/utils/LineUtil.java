@@ -83,10 +83,16 @@ public class LineUtil {
 	    }
 
 	    public static void main(String[] args) {
-	        String s = "LineString(1 1,2 2)";
+	        /*String s = "LineString(1 1,2 2)";
 	        String sub = s.substring(11, s.length() - 1);
 	        String slist[] = sub.split(",");
-	        System.out.println(slist[0].split(" ")[0]);
+	        System.out.println(slist[0].split(" ")[0]);*/
+	    	
+	    	List<String> list =new ArrayList<String>();
+	    	list.add("eee");
+	    	list.add("");
+	    	list.add("www");
+	    	System.out.println(list.toString());
 	    }
 
 //	public static void main(String[] args) {

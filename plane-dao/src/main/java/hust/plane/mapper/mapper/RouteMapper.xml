@@ -19,8 +19,8 @@
 	</select>
 
     <insert id="insert" parameterType="hust.plane.mapper.pojo.Route">
-		insert into K_Route(Name,Type,RoutePathData,Description,CreateTime) values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, GeomFromText(#{routepathdata,jdbcType=VARCHAR}), 
-      #{description,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP})
+		insert into K_Route(Name,Type,RoutePathData,Description,CreateTime,FlagData) values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, GeomFromText(#{routepathdata,jdbcType=VARCHAR}), 
+      #{description,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},#{flagdata,jdbcType=LONGVARCHAR})
 	</insert>
 
     <select id="getRouteByIdAndStatus" parameterType="java.lang.String" resultType="hust.plane.mapper.pojo.Route">

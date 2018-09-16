@@ -20,9 +20,9 @@
          	<li <#if curNav?? && curNav =="routeImport"> class="active" </#if>>
                 <a href="${s.base}/routeImport.action">路由导入</a>
             </li>
-            <li>
+          <!--   <li>
                 <a onclick="findlines();" >路由查询</a>
-            </li>
+            </li> -->
             </#if>
         </ul>
 
@@ -73,7 +73,7 @@
         	</#if>
         </#if>        
             <li <#if curNav?? && curNav =="planeAllList"> class="active" </#if>><a href="${s.base}/planeList.action">无人机显示</a></li>
-            <li <#if curNav?? && curNav =="planeFind"> class="active" </#if>><a onclick="findplane()">过滤查询</a></li>
+           <!--  <li <#if curNav?? && curNav =="planeFind"> class="active" </#if>><a onclick="findplane()">过滤查询</a></li> -->
         </ul>
         </#if>
   <a href="#accounts-menu1" class="nav-header" data-toggle="collapse">
