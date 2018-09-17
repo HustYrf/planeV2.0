@@ -57,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
 		example.setOrderByClause("CreateTime desc");
 		Criteria createCriteria = example.createCriteria();
 
-		if (task.getFinishstatus() == null || task.getFinishstatus()== -1 ) {
+		if (task.getFinishstatus() == null || task.getFinishstatus() == -1) {
 			task.setFinishstatus(null);
 		} else {
 			createCriteria.andFinishstatusEqualTo(task.getFinishstatus());
@@ -93,7 +93,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public boolean saveTask(Task task) {
-		
+
 		if (taskMapper.insertSelective(task) == 1)
 			return true;
 		else
@@ -103,9 +103,9 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public boolean setStatusTaskByTask(Task task, int status) {
-		
+
 		task.setStatus(status);
-		if (taskMapper.updateStatusByTask(task)==1)
+		if (taskMapper.updateStatusByTask(task) == 1)
 			return true;
 		else
 			return false;
@@ -145,7 +145,7 @@ public class TaskServiceImpl implements TaskService {
 	public TailPage<TaskPojo> queryPageWithTime(Task task, TailPage<TaskPojo> page) {
 		TaskExample example = new TaskExample();
 		Criteria createCriteria = example.createCriteria();
-		if (task.getFinishstatus()==null||task.getFinishstatus() == -1) {
+		if (task.getFinishstatus() == null || task.getFinishstatus() == -1) {
 			task.setFinishstatus(null);
 		} else {
 			createCriteria.andFinishstatusEqualTo(task.getFinishstatus());
@@ -181,12 +181,18 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public boolean deleteByTask(Task task) {
-		
-		if(taskMapper.deleteByPrimaryKey(task.getId())==1) {
+
+		if (taskMapper.deleteByPrimaryKey(task.getId()) == 1) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
-		
+
+	}
+
+	@Override
+	public void updataImgFolderByTask(Task task) {
+		taskMapper.updateImgFolderByTask(task);
+
 	}
 }

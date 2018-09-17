@@ -3,7 +3,6 @@ package hust.plane.mapper.mapper;
 import java.util.List;
 
 import hust.plane.mapper.pojo.Route;
-import org.apache.ibatis.annotations.Param;
 
 public interface RouteMapper {
 	List<Route> selectALLRoute();

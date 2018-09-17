@@ -210,9 +210,6 @@ public class TaskController {
 	
 	
 	
-	
-	
-	
 	// 分页查询
 	@RequestMapping("/taskPageList")
 	public String queryPage(Task task, TailPage<TaskPojo> page, Model model, HttpServletRequest request) {
@@ -297,6 +294,10 @@ public class TaskController {
 		User userA = userServiceImpl.getUserById(task2.getUserA());
 		User userZ = userServiceImpl.getUserById(task2.getUserZ());
 		if (taskServiceImpl.setStatusTaskByTask(task2, 2) == true) {// 设置任务分派
+			
+			task2.setImgfolder("taskimg-"+task2.getId());  //图片文件夹命名
+			taskServiceImpl.updataImgFolderByTask(task2);  //写入数据库
+			
 			userServiceImpl.updataTasknumByUser(userA); // 增加az任务数目
 			userServiceImpl.updataTasknumByUser(userZ);
 			return JsonView.render(1, "任务分派成功!");

@@ -29,4 +29,6 @@ public interface TaskService {
     TailPage<TaskPojo> queryPageWithTime(Task task, TailPage<TaskPojo> page);
 
 	boolean deleteByTask(Task task);
+
+	void updataImgFolderByTask(Task task2);
 }

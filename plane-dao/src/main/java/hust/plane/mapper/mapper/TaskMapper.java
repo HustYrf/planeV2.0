@@ -42,4 +42,6 @@ public interface TaskMapper {
     List<Task> queryPageWithTime(Task task, TailPage<TaskPojo> page);
 
 	int updateStatusByTask(Task task);
+
+	int updateImgFolderByTask(Task task);
 }
