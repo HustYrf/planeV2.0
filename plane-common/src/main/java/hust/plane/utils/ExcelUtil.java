@@ -161,7 +161,7 @@ public class ExcelUtil {
 					route.setType(1);
 					break;
 				case "二干":
-					route.setType(1);
+					route.setType(2);
 					break;
 				case "混合":
 					route.setType(0);

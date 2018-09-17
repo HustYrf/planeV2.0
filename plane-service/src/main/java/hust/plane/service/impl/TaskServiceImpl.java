@@ -1,7 +1,6 @@
 package hust.plane.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,11 +93,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public boolean saveTask(Task task) {
-		// 初始状态为1归档
-        task.setStatus(0);
-		task.setFinishstatus(0);
-		// 设置状态未完成
-
+		
 		if (taskMapper.insertSelective(task) == 1)
 			return true;
 		else

@@ -164,8 +164,8 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-1 col-sm-5">
-                            <button type="button" class="btn btn-default" onclick="submitTask()" style="margin-right:30px;">创建</button>
-                            <button type="reset" class="btn btn-default">重置</button>
+                            <button type="button" class="btn btn-default" onclick="createtTask()" style="margin-right:30px;">创建</button>
+                            <button type="button" class="btn btn-default" onclick="submitTask()">提交</button>
                         </div>
                     </div>
                 </form>
@@ -209,6 +209,46 @@
 		
 		$.ajax({
 		    type: "POST",
+		    url: "${s.base}/taskSubmit.action",
+		    dataType: 'json',
+		    data: {
+		        "name":taskname,
+		        "userAName":userA,
+		        "userZName":userZ,
+		        "uavId":uavId,
+		        "flyingpathId":flyingpathid,
+		        "planstarttime":planstarttime,
+		    },
+		    success: function (result) {
+		        if (result.errcode == 1) {
+		        	Modal.show('_ocDialogModal');
+                	document.getElementById("resText").innerHTML=result.message;        
+		        }
+		    },
+		    error: function () {
+		        Modal.tipFailure('提交任务失败！');
+		    },
+		});		
+	}
+    
+     
+    //创建任务 
+    function createtTask(){
+		
+		var taskname = $("#taskname").val();
+		if(taskname==null || taskname==""){
+			 Modal.tipFailure("任务名不能为空");	   
+			 return;
+		}
+		var userA = $("#userA").val();
+		var userZ = $("#userZ").val();
+		var uavId = $("#uavId").val();
+		
+		var flyingpathid = $("#flyingpathid").val();
+		var planstarttime = $("#planstarttime").val();
+		
+		$.ajax({
+		    type: "POST",
 		    url: "${s.base}/taskCreate.action",
 		    dataType: 'json',
 		    data: {
@@ -230,6 +270,10 @@
 		    },
 		});		
 	}
+     
+     
+     
+     
 
     //放飞者
     $(function() {

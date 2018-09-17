@@ -16,7 +16,6 @@ import hust.plane.utils.pojo.TipException;
 import hust.plane.web.controller.vo.RouteVO;
 import hust.plane.web.controller.vo.TaskVO;
 
-import org.apache.poi.hssf.record.TableStylesRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,10 +108,10 @@ public class TaskController {
 		return "createTask";
 	}
 
-	// 创建任务
-	@RequestMapping(value = "taskCreate", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	// 提交任务
+	@RequestMapping(value = "taskSubmit", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String createTask(HttpServletRequest request,TaskVO taskVO) {
+	public String taskSubmit(HttpServletRequest request,TaskVO taskVO) {
 		
 		User createUser = PlaneUtils.getLoginUser(request);
 		Task task = new Task();
@@ -122,7 +121,7 @@ public class TaskController {
 		if (taskVO.getUserAName()!= null && taskVO.getUserAName() != "") {
 			userA = userServiceImpl.getUserByName(taskVO.getUserAName());
 			if (userA == null) {
-				return JsonView.render(1, "任务创建失败，该起飞员不存在！");
+				return JsonView.render(1, "任务提交失败，起飞员不存在！");
 			} else {
 				task.setUserA(userA.getId());
 			}
@@ -131,7 +130,7 @@ public class TaskController {
 
 			userZ = userServiceImpl.getUserByName(taskVO.getUserZName());
 			if (userZ == null) {
-				return JsonView.render(1, "任务创建失败，该降落员不存在！");
+				return JsonView.render(1, "任务提交失败，降落员不存在！");
 			} else {
 				task.setUserZ(userZ.getId());
 			}
@@ -148,13 +147,72 @@ public class TaskController {
 		task.setName(taskVO.getName());
 		task.setCreatetime(new Date());
 		task.setUsercreator(createUser.getId());
-		// 保存新建的任务
+		// 初始状态为1提交
+        task.setStatus(1);
+		task.setFinishstatus(0);
+		// 设置状态未完成
+		// 提交的任务
+		if (taskServiceImpl.saveTask(task) == true) {
+			return JsonView.render(1, "任务提交成功");
+		}
+		return JsonView.render(1, "任务提交失败");
+	}
+
+	
+	// 创建任务
+	@RequestMapping(value = "taskCreate", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String taskCreate(HttpServletRequest request,TaskVO taskVO) {
+		
+		User createUser = PlaneUtils.getLoginUser(request);
+		Task task = new Task();
+		User userA = null;
+		User userZ = null;
+		
+		if (taskVO.getUserAName()!= null && taskVO.getUserAName() != "") {
+			userA = userServiceImpl.getUserByName(taskVO.getUserAName());
+			if (userA == null) {
+				return JsonView.render(1, "任务提交失败，起飞员不存在！");
+			} else {
+				task.setUserA(userA.getId());
+			}
+		}
+		if (taskVO.getUserZName() != null && taskVO.getUserZName() != "") {
+
+			userZ = userServiceImpl.getUserByName(taskVO.getUserZName());
+			if (userZ == null) {
+				return JsonView.render(1, "任务创建失败，降落员不存在！");
+			} else {
+				task.setUserZ(userZ.getId());
+			}
+		}
+		if (taskVO.getUavId() != null && taskVO.getUavId()!= 0) {
+			task.setUavId(taskVO.getUavId());
+		}
+		if (taskVO.getFlyingpathId() != null && taskVO.getFlyingpathId() != 0) {
+			task.setFlyingpathId(taskVO.getFlyingpathId());
+		}
+		if (taskVO.getPlanstarttime() != null) {
+			task.setPlanstarttime(taskVO.getPlanstarttime());
+		}
+		task.setName(taskVO.getName());
+		task.setCreatetime(new Date());
+		task.setUsercreator(createUser.getId());
+		// 初始状态为0创建
+        task.setStatus(0);
+		task.setFinishstatus(0);
+		// 设置状态未完成
 		if (taskServiceImpl.saveTask(task) == true) {
 			return JsonView.render(1, "任务创建成功");
 		}
 		return JsonView.render(1, "任务创建失败");
 	}
-
+	
+	
+	
+	
+	
+	
 	// 分页查询
 	@RequestMapping("/taskPageList")
 	public String queryPage(Task task, TailPage<TaskPojo> page, Model model, HttpServletRequest request) {
@@ -226,13 +284,13 @@ public class TaskController {
 		if (task2.getUserA() == null || task2.getUserA() == 0) {
 			return JsonView.render(1, "放飞员为空,任务分派失败!");
 		}
-		if (task.getUserZ() == null || task.getUserZ() == 0) {
+		if (task2.getUserZ() == null || task2.getUserZ() == 0) {
 			return JsonView.render(1, "接机员为空,任务分派失败!");
 		}
-		if (task.getFlyingpathId() == null || task.getFlyingpathId() == 0) {
+		if (task2.getFlyingpathId() == null || task2.getFlyingpathId() == 0) {
 			return JsonView.render(1, "未指定飞行路径,任务分派失败!");
 		}
-		if (task.getUavId() == null || task.getUavId() == 0) {
+		if (task2.getUavId() == null || task2.getUavId() == 0) {
 			return JsonView.render(1, "未指定无人机,任务分派失败!");
 		}
 

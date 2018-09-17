@@ -30,35 +30,6 @@
 <!-- top 导航 -->
 <#include "common/header.html" />
 <#include "./nav.html" />
-<div id="selectbtns">
-	<form class="form-inline" role="form">	
-			<div class="col-lg-2">
-				<div class="input-group">
-					<div class="input-group-btn">					
-						<div class="form-group">							
-							<select class="form-control" style="width:110px;height:40px;">
-								<option>地理位置</option>
-								<option>路由</option>
-								<option>无人机</option>
-								<option>飞行路径</option>
-								<option>标桩号</option>
-							</select>
-							<span class="caret"></span>
-	                   </div>						
-					</div>
-					<div class="input-icon-group">
-				        <div class="input-group" style="width:100%">
-				               <input type="text" class="form-control" style="width: 520px;height:40px;" id="search" data-clearbtn="true">					                
-				        </div>
-				    </div>
-				    <span class="input-group-btn">
-				         <button class="btn btn-primary" style="width:40px;height:40px;"><i class="fa fa-search"></i></button>
-				    </span>
-				</div>																
-			</div>	
-	</form>
-	</div>
-
 <div class="content">
     <div class="container-fluid">
 
@@ -71,7 +42,7 @@
                     //闪烁点
                     
                     var colors = ['#1ef22a', '#260cff', '#eb0aff'];
-                    var routeStatusCode = ['一干路由', '二干路由', '混合路由'];
+                    var routeStatusCode = ['混合路由', '一干路由', '二干路由'];
                     //var Imgsrc = ['start1-32.png', 'start2-32.png', 'start3-32.png'];
                     /* var routeList = [{
                         routeid: '2',
@@ -148,13 +119,13 @@
                                 var lineColor = null;
                                 var pointFont = null;
                                 if (routeList[i].type == '0') {
-                                    pointFont = '<i>一干</i>';
+                                    pointFont = '<i>混合</i>';
                                     lineColor = 'green';
                                 } else if (routeList[i].type == '1') {
-                                    pointFont = '<i>二干</i>';
+                                    pointFont = '<i>一干</i>';
                                     lineColor = 'darkblue';
                                 } else {
-                                    pointFont = '<i>混合</i>';
+                                    pointFont = '<i>二干</i>';
                                     lineColor = 'purple';
                                 }
                                 var Onestart = new SimpleMarker({
