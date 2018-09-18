@@ -29,7 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/picture")
+//@RequestMapping(value = "/picture")
 public class PictureController {
     private Logger logger = LoggerFactory.getLogger(PictureController.class);
 

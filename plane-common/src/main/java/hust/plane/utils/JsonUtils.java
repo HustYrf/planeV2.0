@@ -1,14 +1,21 @@
 package hust.plane.utils;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.sf.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletResponse;
 
 public class JsonUtils {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtils.class);
     // 定义jackson对象
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -64,6 +71,31 @@ public class JsonUtils {
 		}
     	
     	return null;
+    }
+
+    /**
+     * 以JSON格式输出
+     * @param response
+     */
+    public static void renderJson(HttpServletResponse response,
+                                  JSONObject responseObject) {
+        //将实体对象转换为JSON Object转换
+        JSONObject responseJSONObject = responseObject;
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+            out.append(responseJSONObject.toString());
+            LOGGER.debug("返回是");
+            LOGGER.debug(responseJSONObject.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+        }
     }
     
 }

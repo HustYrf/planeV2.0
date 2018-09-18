@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>图片上传</title>
-    <#include "common/res.html" />
-    <link rel="stylesheet" type="text/css" href="../../res/css/webuploader.css">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../res/webuploader/webuploader.css">
+    <script src="../../res/js/jquery-1.11.3.min.js"></script>
+    <script src="../../res/webuploader/webuploader.js"></script>
     <style>
         .file-item {
             display: inline-block;
@@ -36,154 +37,24 @@
     </style>
 </head>
 <body>
-<!--<div id="uploader" class="wu-example">-->
-    <!--&lt;!&ndash;用来存放文件信息&ndash;&gt;-->
-    <!--<div class="bodyDiv" style="border-left: 100px;border-right: 100px">-->
-        <!--<div class="btns">-->
-            <!--<div id="picker">选择图片</div>-->
-            <!--<button id="ctlBtn" class="btn btn-default" value="${ImgFolder!}">开始上传</button>-->
-        <!--</div>-->
-        <!--<div id="thelist" class="uploader-list"></div>-->
-    <!--</div>-->
-<!--</div>-->
-
-<!--<div id="uploader-demo">-->
-    <!--<h4>上传前缩略图</h4>-->
-    <!--<div id="fileList" class="uploader-list"></div>-->
-    <!--<div id="upInfo"></div>-->
-    <!--&lt;!&ndash;<h4>上传后预览图</h4>&ndash;&gt;-->
-    <!--&lt;!&ndash;<div id="successImgList">&ndash;&gt;-->
-        <!--&lt;!&ndash;&lt;!&ndash;<img class="suc-img-item" src="http://172.16.5.102:8090/upload/4337bd72-57d3-4d26-b94e-61193e9fe440.jpg">&ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;<img class="suc-img-item" src="http://218.65.240.246:18088/ImageTask/1.jpg">&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--<div class="btns">-->
-    <!--<div id="picker">选择图片</div>-->
-    <!--<button id="ctlBtn" class="btn btn-default" value="${ImgFolder!}">开始上传</button>-->
-    <!--</div>-->
-<!--</div>-->
-
-<div id="uploader">
-    <!--<h4>上传前缩略图</h4>-->
+<!--dom结构部分-->
+<div id="uploader-demo">
+    <h4>上传前缩略图</h4>
     <div id="fileList" class="uploader-list"></div>
     <div id="upInfo"></div>
 
-    <!--<h4>上传后预览图</h4>-->
-    <!--<div id="successImgList">-->
-        <!--&lt;!&ndash;<img class="suc-img-item" src="http://172.16.5.102:8090/upload/4337bd72-57d3-4d26-b94e-61193e9fe440.jpg">&ndash;&gt;-->
-        <!--<img class="suc-img-item" src="http://218.65.240.246:18088/ImageTask/1.jpg">-->
-    <!--</div>-->
+    <h4>上传后预览图</h4>
+    <div id="successImgList">
+    </div>
 
-    <div id="filePicker"></div>
+    <div id="filePicker">选择文件</div>
     <button id="btn" class="btn btn-default" value="${ImgFolder!}">开始上传</button>
-
 </div>
-
-<!--引入JS-->
-<script src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-<script src="../../res/js/webuploader.js"></script>
 <script>
     var $btn = $('#btn');
-    // var $thelist = $('#thelist');
-    var chunkSize = 5 * 1024 * 1024;
-
     var imgFolder = $btn.val();
     var uploadAddress = 'fileUpload/'+imgFolder;
-
-    // // HOOK 这个必须要再uploader实例化前面
-    // WebUploader.Uploader.register({
-    //     'before-send-file': 'beforeSendFile',
-    //     'before-send': 'beforeSend'
-    // }, {
-    //     beforeSendFile: function (file) {
-    //         console.log("beforeSendFile");
-    //         // Deferred对象在钩子回掉函数中经常要用到，用来处理需要等待的异步操作。
-    //         var task = new $.Deferred();
-    //         // 根据文件内容来查询MD5
-    //         uploader.md5File(file).progress(function (percentage) {   // 及时显示进度
-    //             console.log('计算md5进度:', percentage);
-    //             // getProgressBar(file, percentage, "MD5", "MD5");
-    //         }).then(function (val) { // 完成
-    //             console.log('md5 result:', val);
-    //             file.md5 = val;
-    //             // 模拟用户id
-    //             // file.uid = new Date().getTime() + "_" + Math.random() * 100;
-    //             file.uid = WebUploader.Base.guid();
-    //             // 进行md5判断
-    //             $.post("checkFileMd5", {uid: file.uid, md5: file.md5},
-    //                 function (data) {
-    //                     console.log(data.status);
-    //                     var status = data.status.value;
-    //                     task.resolve();
-    //                     if (status == 101) {
-    //                         // 文件不存在，那就正常流程
-    //                     } else if (status == 100) {
-    //                         // 忽略上传过程，直接标识上传成功；
-    //                         uploader.skipFile(file);
-    //                         file.pass = true;
-    //                     } else if (status == 102) {
-    //                         // 部分已经上传到服务器了，但是差几个模块。
-    //                         file.missChunks = data.data;
-    //                     }
-    //                 });
-    //         });
-    //         return $.when(task);
-    //     },
-    //     beforeSend: function (block) {
-    //         console.log("block")
-    //         var task = new $.Deferred();
-    //         var file = block.file;
-    //         var missChunks = file.missChunks;
-    //         var blockChunk = block.chunk;
-    //         console.log("当前分块：" + blockChunk);
-    //         console.log("missChunks:" + missChunks);
-    //         if (missChunks !== null && missChunks !== undefined && missChunks !== '') {
-    //             var flag = true;
-    //             for (var i = 0; i < missChunks.length; i++) {
-    //                 if (blockChunk == missChunks[i]) {
-    //                     console.log(file.name + ":" + blockChunk + ":还没上传，现在上传去吧。");
-    //                     flag = false;
-    //                     break;
-    //                 }
-    //             }
-    //             if (flag) {
-    //                 task.reject();
-    //             } else {
-    //                 task.resolve();
-    //             }
-    //         } else {
-    //             task.resolve();
-    //         }
-    //         return $.when(task);
-    //     }
-    // });
-
-    // 实例化
-    var uploader = WebUploader.create({
-        pick: {
-            id: '#filePicker',
-            label: '点击选择图片'
-        },
-        formData: {
-            uid: 0,
-            md5: '',
-            chunkSize: chunkSize
-        },
-        //dnd: '#dndArea',
-        //paste: '#uploader',
-        swf: '../../res/js/Uploader.swf',
-        chunked: true,
-        chunkSize: chunkSize, // 字节 1M分块
-        threads: 10,//10个线程
-        server: uploadAddress,
-        auto: false,
-
-        // 禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。
-        disableGlobalDnd: true,
-        fileNumLimit: 1024,
-        fileSizeLimit: 1024 * 1024 * 1024,    // 200 M
-        fileSingleSizeLimit: 1024 * 1024 * 1024    // 50 M
-    });
-
+    //
     $(function() {
         var $ = jQuery,
             $list = $('#fileList'),
@@ -196,46 +67,48 @@
         // 初始化WebUploader
         uploader = WebUploader.create({
             auto: false,   // 自动上传
-            pick: {
-                id: '#filePicker',
-                label: '点击选择文件'
-            },
-            formData: {
-                uid: 0,
-                md5: '',
-                chunkSize: chunkSize
-            },
-            //dnd: '#dndArea',
-            //paste: '#uploader',
-            swf: '../../res/js/Uploader.swf',
-            chunked: true,
-            chunkSize: chunkSize, // 字节 1M分块
-            threads: 5,
-            server: uploadAddress,
-            auto: false,
+            swf:'../js/Uploader.swf',   // swf文件路径
+            server: uploadAddress,  // 文件接收服务端接口地址
+            threads:'5',        //同时运行5个线程传输
+            fileNumLimit:'500',  //文件总数量只能选择500个
 
-            // 禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。
-            disableGlobalDnd: true,
-            fileNumLimit: 1024,
-            fileSizeLimit: 1024 * 1024 * 1024,    // 200 M
-            fileSingleSizeLimit: 1024 * 1024 * 1024    // 50 M
+            // 选择文件的按钮，可选
+            pick: {
+                id:'#filePicker',  //选择文件的按钮
+                multiple:true      //允许可以同时选择多个图片
+            },
+
+            quality: 90,        // 图片质量，只有type为`image/jpeg`的时候才有效
+            compressSize: 0,     // 单位字节，如果图片大小小于此值，不会采用压缩
+            crop: true,        //是否同意剪切
+
+            //限制传输文件类型，accept可以不写
+            accept: {
+                title: 'Images',    //描述
+                extensions: 'gif,jpg,jpeg,bmp,png,mkv,mp4', //文件类型
+                mimeTypes: '*/*'    //mime类型(*/* 可以上传所有类型)
+            },
+
+            compress: false,    //是否启用压缩
+            resize: false,      //尺寸不改变
+            duplicate: false   //是否允许重复上传
         });
 
 
-    // 当有文件添加进来的时候，创建img显示缩略图使用
+        // 当有文件添加进来的时候，创建img显示缩略图使用
         uploader.on('fileQueued', function(file) {
             var $li = $('<div id="' + file.id + '" class="file-item thumbnail">' +
                 '<img>' +
-                '<div id="'+file.id+'_'+'" class="info">' + file.name + '</div>' +
-                '<div class="progress"></div>' +
+                '<div class="info">' + file.name + '</div>' +
+                '<div class="progress"><span></span></div>' +
                 '</div>'),
                 $img = $li.find('img');
 
             $list.append($li);    // $list为容器jQuery实例
 
-        // 创建缩略图
-        // 如果为非图片文件，可以不用调用此方法。
-        // thumbnailWidth x thumbnailHeight 为 50 x 50
+            // 创建缩略图
+            // 如果为非图片文件，可以不用调用此方法。
+            // thumbnailWidth x thumbnailHeight 为 50 x 50
             uploader.makeThumb(file, function(error, src) {
                 if (error) {
                     $img.replaceWith('<span>不能预览</span>');
@@ -245,64 +118,51 @@
             }, thumbnailWidth, thumbnailHeight);
         });
 
-    // 文件上传过程中创建进度条实时显示。  uploadProgress事件：上传过程中触发，携带上传进度。 file：文件对象；percentage：传输进度 Nuber：类型
-    // uploader.on('uploadProgress', function(file, percentage){
-    //     console.log(file);
-    //     console.log(percentage);
-    //     var $li = $('#'+file.id),
-    //         $percent = $li.find('.progress span');
-    //
-    //     // 避免重复创建
-    //     if (!$percent.length) {
-    //         $percent = $('<p class="progress"><span></span></p>').appendTo($li).find('span');
-    //     }
-    //     $percent.css('width', percentage * 100 + '%');
-    // });
+        // 文件上传过程中创建进度条实时显示。  uploadProgress事件：上传过程中触发，携带上传进度。 file：文件对象；percentage：传输进度 Nuber：类型
+        uploader.on('uploadProgress', function(file, percentage){
+            console.log(file);
+            console.log(percentage);
+            var $li = $('#'+file.id),
+                $percent = $li.find('.progress span');
 
-    // 文件上传成功时候触发，给item添加成功class, 用样式标记上传成功。 file：文件对象，    response：服务器返回数据
-    uploader.on('uploadSuccess', function(file,res) {
-        $('#'+file.id).addClass('upload-state-done');
-        var oDivs = document.getElementById(file.id);
-        var oDiv2 = document.getElementById(file.id+'_');
-        var oDiv3=document.createElement('div');
-        oDiv3.innerHTML='<span class="label label-success">图片上传成功</span>';
-        oDivs.insertBefore(oDiv3,oDiv2);
-        oDivs.insertBefore(oDiv3,oDiv2.nextSibling);
-    });
+            // 避免重复创建
+            if (!$percent.length) {
+                $percent = $('<p class="progress"><span></span></p>').appendTo($li).find('span');
+            }
+            $percent.css('width', percentage * 100 + '%');
+        });
 
-    // 文件上传失败                                file:文件对象 ， code：出错代码
-    uploader.on('uploadError', function(file,code) {
-        var $li = $( '#'+file.id ),
-            $error = $li.find('div.error');
+        // 文件上传成功时候触发，给item添加成功class, 用样式标记上传成功。 file：文件对象，    response：服务器返回数据
+        uploader.on('uploadSuccess', function(file,res) {
+            $('#'+file.id).addClass('upload-state-done');
+            // $("#upInfo").html("<font color='red'>"+res._raw+"</font>");
+            // $successImgList.append('<img class="suc-img-item" src="'+res.realPathList[0]+'">');
+        });
 
-        // 避免重复创建
-        if(!$error.length) {
-            $error = $('<div class="error"></div>').appendTo($li);
-        }
-        $error.text('上传失败!');
-    });
+        // 文件上传失败                                file:文件对象 ， code：出错代码
+        uploader.on('uploadError', function(file,code) {
+            var $li = $( '#'+file.id ),
+                $error = $li.find('div.error');
 
-   // 不管成功或者失败，文件上传完成时触发。 file： 文件对象
-    uploader.on('uploadComplete', function( file ) {
-        $('#'+file.id ).find('.progress').remove();
-        //     var oDiv = document.getElementsByClassName("progress");
-        // oDiv.innerHTML='<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">' +
-        //     '100%' + '</div>';
-        var oDivs = document.getElementById(file.id);
-        var oDiv2 = document.getElementById(file.id+'_');
-        var oDiv3=document.createElement('div');
-        oDiv3.innerHTML='<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">' +
-            '100%' + '</div>';
-        oDivs.insertBefore(oDiv3,oDiv2);
-        oDivs.insertBefore(oDiv3,oDiv2.nextSibling);
-    });
+            // 避免重复创建
+            if(!$error.length) {
+                $error = $('<div class="error"></div>').appendTo($li);
+            }
+            $error.text('上传失败!');
+        });
 
-    //绑定提交事件
-    $("#btn").click(function() {
-        console.log("上传...");
-        uploader.upload();   //执行手动提交
-        console.log("上传成功");
-    });
+        // 不管成功或者失败，文件上传完成时触发。 file： 文件对象
+        uploader.on('uploadComplete', function( file ) {
+            $('#'+file.id ).find('.progress').remove();
+        });
+
+        //绑定提交事件
+        $("#btn").click(function() {
+            console.log("上传...");
+            uploader.upload();   //执行手动提交
+            console.log("上传成功");
+        });
+
     });
 </script>
 </body>
