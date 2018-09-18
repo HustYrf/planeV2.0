@@ -39,17 +39,17 @@
           <![CDATA[  and DATE_FORMAT(CreateTime, '%Y-%m-%d') <= DATE_FORMAT(#{param3}, '%Y-%m-%d')    ]]>
 		</if>
 	</select>
-	<select id="selectByPlaneStatus" resultMap="BaseResultMap">
+	<select id="selectByPlaneStatus" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
 		from K_Uav
-		where Status=#{param1}
+		where Status=#{status,jdbcType=INTEGER}
 	</select>
 	<select id="getPlaneByPlane" parameterType="hust.plane.mapper.pojo.Uav"
 		resultMap="BaseResultMap">
 		select 
 		<include refid="Base_Column_List" />
 		from K_Uav
-		where id=#{param1}
+		where id=#{id,,jdbcType=INTEGER}
 	</select>
 </mapper>
