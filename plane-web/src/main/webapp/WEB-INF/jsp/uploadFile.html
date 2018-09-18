@@ -45,16 +45,16 @@
 
     <h4>上传后预览图</h4>
     <div id="successImgList">
+        <!--<img class="suc-img-item" src="http://172.16.5.102:8090/upload/4337bd72-57d3-4d26-b94e-61193e9fe440.jpg">-->
+        <!--<img class="suc-img-item" src="http://218.65.240.246:18088/ImageTask/1.jpg">-->
     </div>
 
     <div id="filePicker">选择文件</div>
-    <button id="btn" class="btn btn-default" value="${ImgFolder!}">开始上传</button>
 </div>
+<button id="btn" class="btn btn-default" value="${ImgFolder!}">开始上传</button>
 <script>
     var $btn = $('#btn');
     var imgFolder = $btn.val();
-    var uploadAddress = 'fileUpload/'+imgFolder;
-    //
     $(function() {
         var $ = jQuery,
             $list = $('#fileList'),
@@ -68,8 +68,8 @@
         uploader = WebUploader.create({
             auto: false,   // 自动上传
             swf:'../js/Uploader.swf',   // swf文件路径
-            server: uploadAddress,  // 文件接收服务端接口地址
-            threads:'5',        //同时运行5个线程传输
+            server: 'uploadSysHeadImg/'+imgFolder,  // 文件接收服务端接口地址
+            threads:'10',        //同时运行10个线程传输
             fileNumLimit:'500',  //文件总数量只能选择500个
 
             // 选择文件的按钮，可选
@@ -136,7 +136,14 @@
         uploader.on('uploadSuccess', function(file,res) {
             $('#'+file.id).addClass('upload-state-done');
             // $("#upInfo").html("<font color='red'>"+res._raw+"</font>");
-            // $successImgList.append('<img class="suc-img-item" src="'+res.realPathList[0]+'">');
+            $successImgList.append('<img class="suc-img-item" src="'+res.realPathList[0]+'">');
+            // var oDivs = document.getElementById(file.id);
+            // var oDiv2 = document.getElementById(file.id + '_');
+            // var oDiv3 = document.createElement('div');
+            // oDiv3.innerHTML = '<span class="label label-success">图片上传成功</span>';
+            // oDivs.insertBefore(oDiv3, oDiv2);
+            // oDivs.insertBefore(oDiv3, oDiv2.nextSibling);
+
         });
 
         // 文件上传失败                                file:文件对象 ， code：出错代码
@@ -153,7 +160,7 @@
 
         // 不管成功或者失败，文件上传完成时触发。 file： 文件对象
         uploader.on('uploadComplete', function( file ) {
-            $('#'+file.id ).find('.progress').remove();
+            // $('#'+file.id ).find('.progress').remove();
         });
 
         //绑定提交事件

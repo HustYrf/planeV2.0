@@ -65,6 +65,10 @@ public class TaskServiceImpl implements TaskService {
 		if (task.getUsercreator() != null) {
 			createCriteria.andUsercreatorEqualTo(task.getUsercreator());
 		}
+		if(task.getName() !=null)
+		{
+			createCriteria.andNameEqualTo(task.getName());
+		}
 		int itemsTotalCount = taskMapper.countByExample(example);
 
 		// 包装数据

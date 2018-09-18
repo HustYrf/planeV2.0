@@ -222,6 +222,12 @@ public class TaskController {
 		} else {
 			task.setUsercreator(userCreator.getId());
 		}
+		if(task.getName()=="" || task.getName()==null)
+		{
+			task.setName(null);
+		}else {
+			model.addAttribute("inputName",task.getName());
+		}
 		page = taskServiceImpl.queryPage(task, page);
 
 		model.addAttribute("selectStatus", task.getFinishstatus());

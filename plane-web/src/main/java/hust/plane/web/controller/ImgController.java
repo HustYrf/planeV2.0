@@ -42,13 +42,50 @@ public class ImgController {
         return "uploadFile";
     }
 
-    @RequestMapping(value = "/fileUpload/{taskDir}", method = RequestMethod.POST)
+//    @RequestMapping(value = "/fileUpload/{taskDir}", method = RequestMethod.POST)
+//    @ResponseBody
+//    public void uploadSysHeadImg(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "taskDir") String taskDir) {
+//        JSONObject jo = new JSONObject();
+//        try {
+////            imgPath = imgPath + "4taskFolder/";
+//            MultipartHttpServletRequest Murequest = (MultipartHttpServletRequest) request;
+//            Map<String, MultipartFile> files = Murequest.getFileMap();//得到文件map对象
+//            Client client = new Client();//实例化一个jersey
+//            List<String> fileNameList = new ArrayList<>();
+//            List<String> relaPathList = new ArrayList<>();
+//            List<String> realPathList = new ArrayList<>();
+//            for (MultipartFile pic : files.values()) {
+//                String uploadInfo = Upload.upload(client, pic, request, response, uploadHost, imgPath);
+//                if (!"".equals(uploadInfo)) {    //上传成功
+//                    String[] infoList = uploadInfo.split(";");
+//                    fileNameList.add(infoList[0]);    //文件名
+//                    relaPathList.add(infoList[1]);    //相对路径
+//                    realPathList.add(infoList[2]);    //真实完整路径
+//                } else {    //上传失败
+//                    fileNameList.add("");
+//                    relaPathList.add("");
+//                    realPathList.add("");
+//                }
+//            }
+//            jo.put("success", 1);
+//            jo.put("error", null);
+//            jo.put("fileNameList", fileNameList);
+//            jo.put("relaPathList", relaPathList);
+//            jo.put("realPathList", realPathList);
+//        } catch (Exception e) {
+//            jo.put("success", 0);
+//            jo.put("error", "上传失败");
+//        }
+//        JsonUtils.renderJson(response, jo);
+//    }
+
+    @RequestMapping(value = "uploadSysHeadImg/{taskDir}", method = RequestMethod.POST)
     @ResponseBody
     public void uploadSysHeadImg(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "taskDir") String taskDir) {
         JSONObject jo = new JSONObject();
         try {
 //            imgPath = imgPath + "4taskFolder/";
-            MultipartHttpServletRequest Murequest = (MultipartHttpServletRequest) request;
+            MultipartHttpServletRequest Murequest = (MultipartHttpServletRequest)request;
             Map<String, MultipartFile> files = Murequest.getFileMap();//得到文件map对象
             Client client = new Client();//实例化一个jersey
             List<String> fileNameList = new ArrayList<>();
@@ -76,6 +113,6 @@ public class ImgController {
             jo.put("success", 0);
             jo.put("error", "上传失败");
         }
-        JsonUtils.renderJson(response, jo);
+        JsonUtils.renderJson(response,jo);
     }
 }

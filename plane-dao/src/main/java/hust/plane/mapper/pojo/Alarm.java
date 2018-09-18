@@ -26,6 +26,17 @@ public class Alarm {
 	private String infoname;
 
 	private Integer routeId;
+	
+	private String inputId;
+
+
+	public String getInputId() {
+		return inputId;
+	}
+
+	public void setInputId(String inputId) {
+		this.inputId = inputId;
+	}
 
 	public Integer getId() {
 		return id;
