@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>图片上传</title>
+    <#include "common/res.html" />
     <link rel="stylesheet" type="text/css" href="../../res/css/webuploader.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -223,8 +224,8 @@
         uploader.on('fileQueued', function(file) {
             var $li = $('<div id="' + file.id + '" class="file-item thumbnail">' +
                 '<img>' +
-                '<div class="info">' + file.name + '</div>' +
-                '<div class="progress"><span></span></div>' +
+                '<div id="'+file.id+'_'+'" class="info">' + file.name + '</div>' +
+                '<div class="progress"></div>' +
                 '</div>'),
                 $img = $li.find('img');
 
@@ -259,6 +260,13 @@
     // 文件上传成功时候触发，给item添加成功class, 用样式标记上传成功。 file：文件对象，    response：服务器返回数据
     uploader.on('uploadSuccess', function(file,res) {
         $('#'+file.id).addClass('upload-state-done');
+        var oDivs = document.getElementById(file.id);
+        var oDiv2 = document.getElementById(file.id+'_');
+        var oDiv3=document.createElement('div');
+        oDiv3.innerHTML='<span class="label label-success">图片上传成功</span>';
+        oDivs.insertBefore(oDiv3,oDiv2);
+        oDivs.insertBefore(oDiv3,oDiv2.nextSibling);
+        // $('#'+file.id).find('bg-success').text('图片上传成功');
         // $("#upInfo").html("<font color='red'>"+res._raw+"</font>");
         // $successImgList.append('<img class="suc-img-item" src="'+res.realPathList[0]+'">');
     });
@@ -275,7 +283,7 @@
         $error.text('上传失败!');
     });
 
-    // 不管成功或者失败，文件上传完成时触发。 file： 文件对象
+   // 不管成功或者失败，文件上传完成时触发。 file： 文件对象
     uploader.on('uploadComplete', function( file ) {
         $('#'+file.id ).find('.progress').remove();
     });
