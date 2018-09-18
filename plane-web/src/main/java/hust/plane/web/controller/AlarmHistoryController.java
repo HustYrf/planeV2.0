@@ -25,8 +25,12 @@ public class AlarmHistoryController {
         if (alarm.getStatus() == null || alarm.getStatus() == -1) {
             alarm.setStatus(null);
         }
-        if (alarm.getId() != null && alarm.getId() == 0) {
+        if (alarm.getInputId()== null || alarm.getInputId() == "") {
             alarm.setId(null);
+        }else
+        {
+        	int id = Integer.parseInt(alarm.getInputId());
+        	alarm.setId(id);
         }
         page = alarmService.queryAlarmWithPage(alarm, page);
         model.addAttribute("selectStatus", alarm.getStatus());
