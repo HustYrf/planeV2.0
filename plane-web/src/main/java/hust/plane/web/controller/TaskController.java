@@ -117,7 +117,7 @@ public class TaskController {
 		Task task = new Task();
 		User userA = null;
 		User userZ = null;
-		
+			
 		if (taskVO.getUserAName()!= null && taskVO.getUserAName() != "") {
 			userA = userServiceImpl.getUserByName(taskVO.getUserAName());
 			if (userA == null) {
@@ -152,6 +152,7 @@ public class TaskController {
 		task.setFinishstatus(0);
 		// 设置状态未完成
 		// 提交的任务
+		
 		if (taskServiceImpl.saveTask(task) == true) {
 			return JsonView.render(1, "任务提交成功");
 		}
