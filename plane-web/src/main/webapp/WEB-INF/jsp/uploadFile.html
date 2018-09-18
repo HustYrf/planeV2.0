@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>图片上传</title>
+    <#include "common/res.html" />
     <link rel="stylesheet" href="../../res/webuploader/webuploader.css">
     <script src="../../res/js/jquery-1.11.3.min.js"></script>
     <script src="../../res/webuploader/webuploader.js"></script>
@@ -38,14 +39,13 @@
 </head>
 <body>
 <!--dom结构部分-->
-<div id="uploader-demo">
-    <h4>上传前缩略图</h4>
+<div id="uploader">
     <div id="fileList" class="uploader-list"></div>
     <div id="upInfo"></div>
 
-    <h4>上传后预览图</h4>
-    <div id="successImgList">
-    </div>
+    <!--<h4>上传后预览图</h4>-->
+    <!--<div id="successImgList">-->
+    <!--</div>-->
 
     <div id="filePicker">选择文件</div>
     <button id="btn" class="btn btn-default" value="${ImgFolder!}">开始上传</button>
@@ -69,7 +69,7 @@
             auto: false,   // 自动上传
             swf:'../js/Uploader.swf',   // swf文件路径
             server: uploadAddress,  // 文件接收服务端接口地址
-            threads:'5',        //同时运行5个线程传输
+            threads:'2000',
             fileNumLimit:'500',  //文件总数量只能选择500个
 
             // 选择文件的按钮，可选
@@ -133,10 +133,15 @@
         });
 
         // 文件上传成功时候触发，给item添加成功class, 用样式标记上传成功。 file：文件对象，    response：服务器返回数据
+        // 文件上传成功时候触发，给item添加成功class, 用样式标记上传成功。 file：文件对象，    response：服务器返回数据
         uploader.on('uploadSuccess', function(file,res) {
             $('#'+file.id).addClass('upload-state-done');
-            // $("#upInfo").html("<font color='red'>"+res._raw+"</font>");
-            // $successImgList.append('<img class="suc-img-item" src="'+res.realPathList[0]+'">');
+            var oDivs = document.getElementById(file.id);
+            var oDiv2 = document.getElementById(file.id+'_');
+            var oDiv3=document.createElement('div');
+            oDiv3.innerHTML='<span class="label label-success">图片上传成功</span>';
+            oDivs.insertBefore(oDiv3,oDiv2);
+            oDivs.insertBefore(oDiv3,oDiv2.nextSibling);
         });
 
         // 文件上传失败                                file:文件对象 ， code：出错代码
@@ -152,9 +157,19 @@
         });
 
         // 不管成功或者失败，文件上传完成时触发。 file： 文件对象
-        uploader.on('uploadComplete', function( file ) {
-            $('#'+file.id ).find('.progress').remove();
-        });
+         uploader.on('uploadComplete', function( file ) {
+             $('#'+file.id ).find('.progress').remove();
+             //     var oDiv = document.getElementsByClassName("progress");
+             // oDiv.innerHTML='<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">' +
+             //     '100%' + '</div>';
+             var oDivs = document.getElementById(file.id);
+             var oDiv2 = document.getElementById(file.id+'_');
+             var oDiv3=document.createElement('div');
+             oDiv3.innerHTML='<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">' +
+                 '100%' + '</div>';
+             oDivs.insertBefore(oDiv3,oDiv2);
+             oDivs.insertBefore(oDiv3,oDiv2.nextSibling);
+         });
 
         //绑定提交事件
         $("#btn").click(function() {
