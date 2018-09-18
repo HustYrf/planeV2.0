@@ -31,4 +31,6 @@ public interface TaskService {
 	boolean deleteByTask(Task task);
 
 	void updataImgFolderByTask(Task task2);
+
+    String selectImgFolderWithId(Integer taskId);
 }
