@@ -31,10 +31,12 @@ public class FileController {
 	@RequestMapping(value = "routeFileImport", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
 	@ResponseBody
 	public String importOneFile(@RequestParam(value = "routePathExcel", required = true) MultipartFile[] files,
-			HttpServletRequest request) throws IllegalStateException, IOException {
+			HttpServletRequest request){
 
 		// 记录有错误的文件名字，并返回前台
-		List<String> errfile = new ArrayList<String>();		
+		List<String> errfile = new ArrayList<String>();
+		List<String> succfile = new ArrayList<String>();
+		
 		if (files.length > 0) {
 			for (int i = 0; i < files.length; i++) {
 				String fileName = files[i].getOriginalFilename();// 获取到上传文件的名字
@@ -45,10 +47,12 @@ public class FileController {
 					InputStream ins;
 					try {
 						ins = files[i].getInputStream();
-						f = new File(files[i].getOriginalFilename());
+						f = new File(fileName);
 						ExcelUtil.inputStreamToFile(ins, f);
 						if (FileServiceImpl.insertRoute(f) == false) {
-							errfile.add(fileName + "格式错误；");
+							errfile.add(fileName + "格式错误,");
+						}else {
+							succfile.add(fileName);
 						}
 						File del = new File(f.toURI());
 						del.delete(); // 删除临时文件
@@ -57,12 +61,18 @@ public class FileController {
 					}
 				}
 			}
-
+		}else {
+			return JsonView.render(0, "导入文件为空！");
 		}
-		if(errfile.size()==0) {
-			return JsonView.render(0, "导入成功！");
+		String reString="";
+		if(succfile.size()>0) {
+			reString = reString + succfile.toString().replace("[", "").replace("]", "")+"导入成功!";	
 		}
-		return JsonView.render(0, errfile.toString());
+		if(errfile.size()>0) {
+			reString = reString + errfile.toString().replace("[", "").replace("]", "")+"导入失败。";
+		}
+		
+		return JsonView.render(0, reString);
 	}
 
 	// 测试文件上传
@@ -87,7 +97,6 @@ public class FileController {
 					dir.mkdirs();
 				}
 				// 或者处理
-
 				// 保存
 				files[i].transferTo(dir); // MultipartFile自带的解析方法
 			}

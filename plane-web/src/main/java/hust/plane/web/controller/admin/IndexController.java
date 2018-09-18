@@ -235,8 +235,7 @@ public class IndexController {
 					// 创建jesy服务器，进行跨服务器上传
 					Client client = Client.create();
 					// 把文件关联到远程服务器
-					WebResource resource = client
-							.resource(BASE_IMAGE_URL + "/" + USER_DIR + "/" + newFileName + suffix);
+					WebResource resource = client.resource(BASE_IMAGE_URL + "/" + USER_DIR + "/" + newFileName + suffix);
 					// 上传
 					resource.put(String.class, fbytes);
 					user2.setIcon(newFileName + suffix);

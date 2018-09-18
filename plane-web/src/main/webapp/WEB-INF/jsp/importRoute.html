@@ -41,7 +41,7 @@
 												accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 										</div>
 									</div>
-									<div class="progress progress-striped active" id="progressDiv"
+									<div class="progress-bar progress-bar-success" id="progressDiv"
 										style="display: none;">
 										<div class="progress-bar progress-bar-success"
 											role="progressbar" aria-valuenow="60" aria-valuemin="0"
@@ -61,7 +61,7 @@
 								<!-- tip提示-end -->
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-primary"
+								<button type="button" class="btn btn-primary" id="importbtn"
 									onclick="uploadFile();">导入</button>
 								<button type="button" class="btn btn-default"
 									data-dismiss="modal">关闭</button>
@@ -83,6 +83,7 @@
            formData.append("routePathExcel", pic[i]);
         }
 	    $("#progressDiv").css('display','block');
+	    $('#importbtn').attr('disabled',"true");
 	    
 	    $.ajax({
 	        type: "POST",
@@ -100,10 +101,13 @@
 	            }
 	        },
 	        success: function(res) {
+	        	$("#progressDiv").css('display','none');  //取消进度条
+	        	
 	        	$('#al_info').html(res.message);
 				$('#ocAlertTip').css('display','block');
 	        },error:function(){
-	        	alert("错误");
+	        	$('#al_info').html("未知错误！");
+				$('#ocAlertTip').css('display','block');
 	        }
 	    });
        
