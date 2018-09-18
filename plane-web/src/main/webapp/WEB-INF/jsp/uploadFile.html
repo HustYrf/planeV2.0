@@ -62,7 +62,7 @@
     <!--</div>-->
 <!--</div>-->
 
-<div id="uploader-demo">
+<div id="uploader">
     <!--<h4>上传前缩略图</h4>-->
     <div id="fileList" class="uploader-list"></div>
     <div id="upInfo"></div>
@@ -73,9 +73,11 @@
         <!--<img class="suc-img-item" src="http://218.65.240.246:18088/ImageTask/1.jpg">-->
     <!--</div>-->
 
-    <div id="filePicker">选择文件</div>
+    <div id="filePicker"></div>
+    <button id="btn" class="btn btn-default" value="${ImgFolder!}">开始上传</button>
+
 </div>
-<button id="btn" class="btn btn-default" value="${ImgFolder!}">开始上传</button>
+
 <!--引入JS-->
 <script src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script src="../../res/js/webuploader.js"></script>
@@ -171,7 +173,7 @@
         swf: '../../res/js/Uploader.swf',
         chunked: true,
         chunkSize: chunkSize, // 字节 1M分块
-        threads: 3,
+        threads: 10,//10个线程
         server: uploadAddress,
         auto: false,
 
