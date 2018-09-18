@@ -285,7 +285,7 @@
                     <p>
                     <input name="userName" type="text" class="search-text"  placeholder=" 请输入姓名" value="${inputname!}" maxlength="4">
                     </p>
-
+					<p>
                         <input type="submit" class="search-btn" value="搜索">
                         <#if !Session["super_administrator"]?exists>
                         <button type="button" class="btn btn-success" onclick="addUser()"
@@ -293,8 +293,8 @@
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增</button>
                         </#if>
                     </p>
-
                 </div>
+             </div>
 
                 <div class="row-fluid">
                     <div class="block span6">
@@ -342,7 +342,7 @@
                             <p><#include "common/tailPage.html"/></p>
                         </div>
                    </div>
-                </div>
+                
             </div>
         </form>
     </div>
