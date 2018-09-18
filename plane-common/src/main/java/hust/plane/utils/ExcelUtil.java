@@ -132,63 +132,74 @@ public class ExcelUtil {
 			// 判断行数大于4,是因为路由点数据从第4行开始插入
 
 			if (sheet.getPhysicalNumberOfRows() >= 4) {
-				RouteExcel routeExcel = null;
 
+				RouteExcel routeExcel = null;
 				// 读取第0行0列作为路由名称
 				Row row0 = sheet.getRow(0);
-				String name = row0.getCell(0).toString();
-				if (name == "" || name == null) {
+				Object name = row0.getCell(0);
+				if(name==null) {
 					return false;
 				}
-				route.setName(name);
-
+				route.setName(name.toString());
 				// 读取第1行0列作为路由描述
 				Row row1 = sheet.getRow(1);
-				String description = row1.getCell(0).toString();
-				if (description == "" || description == null) {
+				Object description = row1.getCell(0);
+				if(description == null) {
 					return false;
 				}
-				route.setDescription(description);
-
+				route.setDescription(description.toString());
+				
 				// 读取第3行6列作为路由类型
-				Row row3 = sheet.getRow(6);
-				String type = row3.getCell(0).toString();
-				if (type == "" || type == null) {
+				Row row3 = sheet.getRow(3);
+				Object type = row3.getCell(6);
+				String typestr;
+				if (type == null) {
 					return false;
+				} else {
+					typestr = type.toString();
 				}
-				switch (type) {
-				case "一干":
-					route.setType(1);
-					break;
-				case "二干":
-					route.setType(2);
-					break;
-				case "混合":
-					route.setType(0);
-					break;
-				default:
-					route.setType(0);
-					break;
+				switch (typestr) {
+					case "一干":
+						route.setType(1);
+						break;
+					case "二干":
+						route.setType(2);
+						break;
+					case "混合":
+						route.setType(0);
+						break;
+					default:
+						return false;
 				}
-
 				// 读取路由点数据及标桩数据
 				List<RouteExcel> list = new ArrayList<RouteExcel>();
 				List<String> flagdata = new ArrayList<String>();
 
-				for (int k = 4; k < sheet.getPhysicalNumberOfRows(); k++) {
+				for (int k = 3; k < sheet.getPhysicalNumberOfRows(); k++) {
 					// 读取单元格
 					Row row = sheet.getRow(k);
 
 					routeExcel = new RouteExcel();
+
 					String flag = row.getCell(0).toString();
 					flagdata.add(flag);
-
 					// 得到经度
 					Cell cell1 = row.getCell(1);
-					routeExcel.setLongitude(Double.parseDouble(cell1.getStringCellValue()));
+					try {
+						Double Longitude = Double.parseDouble(cell1.getStringCellValue());
+						routeExcel.setLongitude(Longitude);
+					} catch (Exception e) {
+						return false;
+					}
 					// 得到维度
 					Cell cell2 = row.getCell(2);
-					routeExcel.setLatitude(Double.parseDouble(cell2.getStringCellValue()));
+					try {
+						Double Latitude = Double.parseDouble(cell2.getStringCellValue());
+						routeExcel.setLatitude(Latitude);
+					} catch (Exception e) {
+						return false;
+					}
+
 					list.add(routeExcel);
 				}
 				route.setRoutepathdata(LineUtil.ListToString(list));
@@ -234,6 +245,22 @@ public class ExcelUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void main(String[] args) {
+
+		String string = "123.4";
+		String string2 = "ggg";
+
+		Double d1 = Double.parseDouble(string);
+		System.out.println(d1);
+		try {
+			Double d2 = Double.parseDouble(string2);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }
