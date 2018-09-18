@@ -95,14 +95,30 @@ public class TaskServiceImpl implements TaskService {
 		return page;
 	}
 
+	// 保存任务
 	@Override
 	public boolean saveTask(Task task) {
 
-		if (taskMapper.insertSelective(task) == 1)
-			return true;
-		else
+		if (task.getName() == null || task.getName()=="") {
 			return false;
+		}
+		Task task2 = getTaskByName(task.getName());
+		if (task2 == null || task2.getId() == 0) {
 
+			if (taskMapper.insertSelective(task) == 1) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			task.setId(task2.getId());
+			if (taskMapper.updateByPrimaryKeySelective(task) == 1) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
 	}
 
 	@Override
@@ -207,5 +223,11 @@ public class TaskServiceImpl implements TaskService {
 			return task.getImgfolder();
 		}
 		return null;
+	}
+
+	@Override
+	public Task getTaskByName(String name) {
+		Task task = taskMapper.getTaskByName(name);
+		return task;
 	}
 }

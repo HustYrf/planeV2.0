@@ -44,4 +44,6 @@ public interface TaskMapper {
 	int updateStatusByTask(Task task);
 
 	int updateImgFolderByTask(Task task);
+
+	Task getTaskByName(String name);
 }

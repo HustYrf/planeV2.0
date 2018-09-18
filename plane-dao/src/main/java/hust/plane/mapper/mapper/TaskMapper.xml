@@ -134,7 +134,7 @@
 		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
 		#{usercreator,jdbcType=INTEGER},
 		#{userA,jdbcType=INTEGER}, #{userZ,jdbcType=INTEGER}, #{flyingpathId,jdbcType=INTEGER},
-		#{uavId,jdbcType=INTEGER}, #{CreateTime,jdbcType=TIMESTAMP},
+		#{uavId,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP},
 		#{planstarttime,jdbcType=TIMESTAMP},
 		#{planendtime,jdbcType=TIMESTAMP},
 		#{executestarttime,jdbcType=TIMESTAMP},
@@ -276,8 +276,8 @@
 			<if test="record.uavId != null">
 				Uav_id = #{record.uavId,jdbcType=INTEGER},
 			</if>
-			<if test="record.CreateTime != null">
-				CreateTime = #{record.CreateTime,jdbcType=TIMESTAMP},
+			<if test="record.createtime != null">
+				CreateTime = #{record.createtime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="record.planstarttime != null">
 				PlanStartTime = #{record.planstarttime,jdbcType=TIMESTAMP},
@@ -317,7 +317,7 @@
 		User_Z = #{record.userZ,jdbcType=INTEGER},
 		FlyingPath_id = #{record.flyingpathId,jdbcType=INTEGER},
 		Uav_id = #{record.uavId,jdbcType=INTEGER},
-		CreateTime = #{record.CreateTime,jdbcType=TIMESTAMP},
+		CreateTime = #{record.createtime,jdbcType=TIMESTAMP},
 		PlanStartTime = #{record.planstarttime,jdbcType=TIMESTAMP},
 		PlanEndTime = #{record.planendtime,jdbcType=TIMESTAMP},
 		ExecuteStartTime = #{record.executestarttime,jdbcType=TIMESTAMP},
@@ -351,8 +351,8 @@
 			<if test="uavId != null">
 				Uav_id = #{uavId,jdbcType=INTEGER},
 			</if>
-			<if test="CreateTime != null">
-				CreateTime = #{CreateTime,jdbcType=TIMESTAMP},
+			<if test="createtime != null">
+				CreateTime = #{createtime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="planstarttime != null">
 				PlanStartTime = #{planstarttime,jdbcType=TIMESTAMP},
@@ -389,7 +389,7 @@
 		User_Z = #{userZ,jdbcType=INTEGER},
 		FlyingPath_id = #{flyingpathId,jdbcType=INTEGER},
 		Uav_id = #{uavId,jdbcType=INTEGER},
-		CreateTime = #{CreateTime,jdbcType=TIMESTAMP},
+		CreateTime = #{createtime,jdbcType=TIMESTAMP},
 		PlanStartTime = #{planstarttime,jdbcType=TIMESTAMP},
 		PlanEndTime = #{planendtime,jdbcType=TIMESTAMP},
 		ExecuteStartTime = #{executestarttime,jdbcType=TIMESTAMP},
@@ -438,6 +438,14 @@
 		WHERE
 		UserCreator = #{usercreator,jdbcType=INTEGER}
 	</select>
+	<select id="getTaskByName" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM K_Task
+		WHERE
+		Name = #{name,jdbcType=VARCHAR}
+	</select>
 	<select id="queryPageWithTime" resultMap="BaseResultMap">
 		SELECT
 		<include refid="Base_Column_List" />
@@ -462,7 +470,7 @@
 	</update>
 	<update id="updateImgFolderByTask" parameterType="hust.plane.mapper.pojo.Task">
 		update K_Task
-		set ImgFolder = #{imgfolder,jdbcType=INTEGER}
+		set ImgFolder = #{imgfolder,jdbcType=VARCHAR}
 		where id=#{id, jdbcType=INTEGER}
 	</update>
 </mapper>

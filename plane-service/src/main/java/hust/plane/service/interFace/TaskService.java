@@ -33,4 +33,6 @@ public interface TaskService {
 	void updataImgFolderByTask(Task task2);
 
     String selectImgFolderWithId(Integer taskId);
+
+	Task getTaskByName(String name);
 }
