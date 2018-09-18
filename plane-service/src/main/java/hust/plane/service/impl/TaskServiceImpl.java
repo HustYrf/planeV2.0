@@ -195,4 +195,13 @@ public class TaskServiceImpl implements TaskService {
 		taskMapper.updateImgFolderByTask(task);
 
 	}
+
+	@Override
+	public String selectImgFolderWithId(Integer taskId) {
+		Task task = taskMapper.selectByPrimaryKey(taskId.intValue());
+		if (task != null) {
+			return task.getImgfolder();
+		}
+		return null;
+	}
 }

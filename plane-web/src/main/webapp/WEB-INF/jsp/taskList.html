@@ -114,6 +114,19 @@
                                                  <span class="label label-warning">无操作权限</span>
 										         </#if>
 										    </#if>
+
+
+						<#if taskpojo.task.status==10>
+						<#if !Session["super_administrator"]?exists>
+						<button type="button" class="btn btn-info btn-xs" onclick="uploadPic(${taskpojo.task.id!})">
+							<span class="glyphicon glyphicon-upload" aria-hidden="true">传图</span></button>
+
+						<button type="button" class="btn btn-danger btn-xs" onclick="">
+							<span class="glyphicon glyphicon-picture" aria-hidden="true">识别</span></button>
+						<#else>
+						<span class="label label-warning">无操作权限</span>
+					    </#if>
+				        </#if>
 										    
 										    
 	                                		<#if taskpojo.task.status==7>
@@ -194,7 +207,9 @@
 	
 	
 <script type="text/javascript">
-   
+    function uploadPic(taskId) {
+        window.location.href="${s.base}/picture/"+taskId;
+    }
 	//显示任务告警
 	function showAlarm(taskid) {
 		$.ajax({
