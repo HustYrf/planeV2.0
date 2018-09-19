@@ -11,4 +11,5 @@ public interface UavMapper {
 	List<Uav> selectPlaneByOption(int id,Date starttime,Date endtime);
 	List<Uav> selectByPlaneStatus(int status);
 	Uav getPlaneByPlane(Uav uav);
+	String getNameById(Integer id);
 }

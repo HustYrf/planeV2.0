@@ -11,11 +11,11 @@ public interface FlyingPathService {
 
     boolean insertFlyingPath(FlyingPath flyingPath);
 
-    FlyingPath selectByFlyingPathId(FlyingPath flyingPath);
-
     TailPage<FlyingPath> queryFlyingPathWithPage(FlyingPath planePath, TailPage<FlyingPath> page);
 
 	List<FlyingPath> findAllFlyingPath();
 
 	boolean deleteFlyingPath(FlyingPath flyingPath);
+
+	FlyingPath selectByFlyingPathId(Integer id);
 }

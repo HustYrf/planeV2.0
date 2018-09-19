@@ -73,9 +73,9 @@
 	                                	<!-- <td>${taskpojo.task.userA!}</td> -->
 	                                	<td>${taskpojo.userZName!}</td>
 	                                	<!-- <td>${taskpojo.task.userZ!}</td> -->
-	                                	<td><a target="_blank" href="${s.base}/getTaskPlaneLocation?id=${taskpojo.task.uavId!}" style="cursor:pointer;">${taskpojo.task.uavId!}</a></td>
+	                                	<td><a target="_blank" href="${s.base}/getTaskPlaneLocation?uavid=${taskpojo.task.uavId!}&taskid=${taskpojo.task.id!}" style="cursor:pointer;">${taskpojo.uavName!}</a></td>
 	                                	<td>${(taskpojo.task.planstarttime?datetime)!}</td>
-	                                	<td>${(taskpojo.task.flyingpathId)!}</td>
+	                                	<td>${taskpojo.flyingPathName!}</td>
 	                                	<td>
 	                                	<#if taskpojo.task.status??>                               	
 		                               	    <#if  taskpojo.task.status == -1><span class="label label-danger">故障或异常</span>

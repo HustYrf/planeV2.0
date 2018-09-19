@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import hust.plane.mapper.pojo.FlyingPath;
 import hust.plane.mapper.pojo.Route;
-import hust.plane.service.interFace.AirportService;
 import hust.plane.service.interFace.FlyingPathService;
 import hust.plane.service.interFace.RouteService;
 import hust.plane.utils.JsonUtils;
@@ -31,8 +30,8 @@ public class FlyingPathController {
 	@Autowired
 	public RouteService routeServiceImpl;
 
-	@Autowired
-	private AirportService airportServiceImpl;
+	/*@Autowired
+	private AirportService airportServiceImpl;*/
 	
 	@RequestMapping("/toImportPlanePath")
 	public String toImportPlanePath(Model model)
@@ -105,9 +104,7 @@ public class FlyingPathController {
 	@RequestMapping(value="/showPlanePath",method=RequestMethod.GET)
 	public String showPlanePath(@RequestParam("id") int id,Model model) {
 			
-		FlyingPath flyingPath= new FlyingPath();
-		flyingPath.setId(id);
-		flyingPath = flyingPathServiceImpl.selectByFlyingPathId(flyingPath);
+		FlyingPath flyingPath = flyingPathServiceImpl.selectByFlyingPathId(id);
 		FlyingPathVO flyingPathVO = new FlyingPathVO(flyingPath);
 		
 		model.addAttribute("PlanePath",JsonUtils.objectToJson(flyingPathVO));

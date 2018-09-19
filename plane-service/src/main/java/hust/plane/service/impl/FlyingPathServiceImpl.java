@@ -44,9 +44,9 @@ public class FlyingPathServiceImpl implements FlyingPathService {
 	}
 
 	@Override
-	public FlyingPath selectByFlyingPathId(FlyingPath flyingPath) {
+	public FlyingPath selectByFlyingPathId(Integer id) {
 
-		FlyingPath path = flyingPathMapper.selectByFlyingPathId(flyingPath);
+		FlyingPath path = flyingPathMapper.selectByFlyingPathId(id);
 		return path;
 	}
 

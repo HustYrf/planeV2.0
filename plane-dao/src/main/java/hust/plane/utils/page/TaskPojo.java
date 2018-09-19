@@ -11,6 +11,26 @@ public class TaskPojo {
 	private String userAName;
 	
 	private String userZName;
+	
+	private String uavName;
+	
+	private String flyingPathName;
+
+	public String getUavName() {
+		return uavName;
+	}
+
+	public void setUavName(String uavName) {
+		this.uavName = uavName;
+	}
+
+	public String getFlyingPathName() {
+		return flyingPathName;
+	}
+
+	public void setFlyingPathName(String flyingPathName) {
+		this.flyingPathName = flyingPathName;
+	}
 
 	public Task getTask() {
 		return task;

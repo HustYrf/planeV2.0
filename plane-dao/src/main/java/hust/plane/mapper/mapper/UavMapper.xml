@@ -52,4 +52,10 @@
 		from K_Uav
 		where id=#{id,,jdbcType=INTEGER}
 	</select>
+	<select id="getNameById" parameterType="java.lang.Integer"
+		resultType="java.lang.String">
+		select Name
+		from K_Uav
+		where id=#{id,,jdbcType=INTEGER}
+	</select>
 </mapper>

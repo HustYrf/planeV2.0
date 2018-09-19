@@ -15,6 +15,7 @@ import hust.plane.utils.JsonUtils;
 import hust.plane.utils.pojo.TipException;
 import hust.plane.web.controller.vo.RouteVO;
 import hust.plane.web.controller.vo.TaskVO;
+import hust.plane.web.controller.vo.UavVO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ import hust.plane.utils.page.TailPage;
 import hust.plane.utils.page.TaskPojo;
 import hust.plane.utils.pojo.JsonView;
 import hust.plane.web.controller.vo.AlarmVO;
+import hust.plane.web.controller.vo.FlyingPathVO;
 import hust.plane.web.controller.webUtils.WordUtils;
 
 @Controller
@@ -353,6 +355,33 @@ public class TaskController {
 
 		return new JsonView(0, "SUCCESS", "未传入飞行路径编号,删除失败").toString();
 	}
+	
+	
+	//跳转无人机（单个）页面  ，同时显示任务、飞行路径
+	@RequestMapping("getTaskPlaneLocation")
+	public String getTaskPlaneLocation(@RequestParam("uavid")Integer uavid,@RequestParam("taskid")Integer taskid,Model model){
+		
+		Uav uav = new Uav();
+		uav.setId(uavid);
+		Uav uav2 = uavServiceImpl.getPlaneByPlane(uav);
+		UavVO uavVO= new UavVO(uav2);
+		
+	    Task task = new Task();
+	    task.setId(taskid);
+		Task task2 = taskServiceImpl.getTaskByTask(task);
+		
+		FlyingPath flyingPath = flyingPathServiceImpl.selectByFlyingPathId(task2.getFlyingpathId());
+		FlyingPathVO flyingPathVO = new FlyingPathVO(flyingPath);
+		
+		model.addAttribute("uav",JsonUtils.objectToJson(uavVO));
+		model.addAttribute("task",task2);
+		model.addAttribute("flyingpath",JsonUtils.objectToJson(flyingPathVO));
+		
+		return "plane";
+		
+	}
+	
+	
 
 	// 打印任务报告
 	@RequestMapping("taskReport")

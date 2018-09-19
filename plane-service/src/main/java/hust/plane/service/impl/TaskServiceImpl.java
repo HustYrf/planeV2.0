@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hust.plane.mapper.mapper.FlyingPathMapper;
 import hust.plane.mapper.mapper.TaskMapper;
+import hust.plane.mapper.mapper.UavMapper;
 import hust.plane.mapper.mapper.UserMapper;
 import hust.plane.mapper.pojo.Task;
 import hust.plane.mapper.pojo.TaskExample;
@@ -23,6 +25,10 @@ public class TaskServiceImpl implements TaskService {
 	private TaskMapper taskMapper;
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private UavMapper uavMapper;
+	@Autowired
+	private FlyingPathMapper flyingPathMapper;
 
 	@Override
 	public List<TaskPojo> getALLTask() {
@@ -44,6 +50,8 @@ public class TaskServiceImpl implements TaskService {
 				taskPojo.setUserCreatorName(user1.getName());
 				taskPojo.setUserAName(user2.getName());
 				taskPojo.setUserZName(user3.getName());
+				taskPojo.setUavName(uavMapper.getNameById(task.getUavId()));
+				taskPojo.setFlyingPathName(flyingPathMapper.getNameById(task.getId()));
 				list.add(taskPojo);
 			}
 		}
@@ -87,6 +95,8 @@ public class TaskServiceImpl implements TaskService {
 				taskPojo.setUserCreatorName(user1.getName());
 				taskPojo.setUserAName(user2.getName());
 				taskPojo.setUserZName(user3.getName());
+				taskPojo.setUavName(uavMapper.getNameById(task1.getUavId()));
+				taskPojo.setFlyingPathName(flyingPathMapper.getNameById(task1.getFlyingpathId()));
 				items.add(taskPojo);
 			}
 		}
@@ -191,6 +201,8 @@ public class TaskServiceImpl implements TaskService {
 				taskPojo.setUserCreatorName(user1.getName());
 				taskPojo.setUserAName(user2.getName());
 				taskPojo.setUserZName(user3.getName());
+				taskPojo.setUavName(uavMapper.getNameById(task1.getUavId()));
+				taskPojo.setFlyingPathName(flyingPathMapper.getNameById(task1.getFlyingpathId()));
 				items.add(taskPojo);
 			}
 		}

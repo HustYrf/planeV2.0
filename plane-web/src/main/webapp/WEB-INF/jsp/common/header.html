@@ -6,7 +6,7 @@
             <li class="dropdown">
             <a class="dropdown-toggle profile" style="height:60px;width:68px;padding-top:10px;" data-toggle="dropdown" href="${s.base}/home.html">
               <#if Session["login_user"]?exists>
-                <img alt="头像" src='${Session["login_user"].icon}' style="width:40px;height:40px;">
+                <img alt="头像" src=${Session["login_user"].icon} style="width:40px;height:40px;">
               <#else>
                 <img alt="头像" src="${s.base}/res/i/header.jpg" style="width:40px;height:40px;">
               </#if>

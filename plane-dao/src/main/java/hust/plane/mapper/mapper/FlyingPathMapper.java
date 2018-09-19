@@ -14,7 +14,7 @@ public interface FlyingPathMapper {
 
 	int insertFlyingPath(FlyingPath flyingPath);
 
-	FlyingPath selectByFlyingPathId(FlyingPath flyingPath);
+	FlyingPath selectByFlyingPathId(Integer id);
 
 	int flyingPathCount(FlyingPath flyingPath);
 
@@ -22,5 +22,7 @@ public interface FlyingPathMapper {
 
 	List<FlyingPath> findAllFlyingPath();
 
-	int deleteFlyingPath(FlyingPath flyingPath); 
+	int deleteFlyingPath(FlyingPath flyingPath);
+
+	String getNameById(Integer id); 
 }

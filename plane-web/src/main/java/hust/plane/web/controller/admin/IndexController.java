@@ -30,6 +30,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,7 +93,7 @@ public class IndexController {
 			}
 			// 把用户保存在session中
 
-			user.setIcon(BASE_IMAGE_URL + "/" + USER_DIR + "/" + user.getIcon()); // 添加图片服务器位置
+			user.setIcon(BASE_IMAGE_URL + USER_DIR + user.getIcon()); // 添加图片服务器位置
 
 			request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
 			List<Integer> groupIdList = userGroupService.selectGroupIdWithUserId(user.getId());
@@ -235,7 +236,8 @@ public class IndexController {
 					// 创建jesy服务器，进行跨服务器上传
 					Client client = Client.create();
 					// 把文件关联到远程服务器
-					WebResource resource = client.resource(BASE_IMAGE_URL + "/" + USER_DIR + "/" + newFileName + suffix);
+					
+					WebResource resource = client.resource(BASE_IMAGE_URL + USER_DIR + newFileName + suffix);
 					// 上传
 					resource.put(String.class, fbytes);
 					user2.setIcon(newFileName + suffix);
@@ -244,9 +246,17 @@ public class IndexController {
 		}
 
 		user2.setId(user.getId());
+		
 		if (userService.updateByUser(user2) == true)
-
-			return JsonView.render(0, "修改成功");
+			//更新session内容
+			{
+			    User user3 = userService.getUserById(user.getId());
+			    user3.setIcon(BASE_IMAGE_URL + USER_DIR + user3.getIcon());
+			    request.getSession().removeAttribute(WebConst.LOGIN_SESSION_KEY);
+			    request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user3);
+			    
+			    return JsonView.render(0, "修改成功");
+			}
 		else
 			return JsonView.render(0, "修改失败");
 	}

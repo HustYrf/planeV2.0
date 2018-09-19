@@ -5,13 +5,35 @@
 <title>无人机位置</title>
 <link rel="icon" type="image/png" href="i/ico.png" sizes="16x16">
 
-	<link rel="stylesheet"	href="http://cache.amap.com/lbs/static/main1119.css" />
-	<script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
-	<script type="text/javascript"	src='//webapi.amap.com/maps?v=1.4.6&key=82f9e75505b649be9ab81a45ae34aa14'></script>
-	<script type="text/javascript"	src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+	<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
+    <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+    <script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.6&key=82f9e75505b649be9ab81a45ae34aa14'></script>
+     <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
 </head>
+<style>
+.headerUav{
+  position:absolute;
+  z-index:99;
+  width:400px;;
+  height:50px;
+  margin:0 auto;
+  text-align:center;
+  background-color:red;
+  left:50%;
+  line-height:50px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  border-radius:10px;
+  -moz-border-radius:10px; /* 老的 Firefox */
+  opacity:0.7;
+  color:#fff;
+  margin-top:20px;
+}
+</style>
 <body>
-
+<div class="headerUav">
+<font size="4">飞机状态：飞行中</font>
+</div>
 <div id="container"></div>
            
         <!-- UI组件库 1.0 -->
@@ -34,18 +56,6 @@
      	 	});
             
             
-            var flyingpath = ${flyingpath};
-            var polyline = new AMap.Polyline({
-                map: map,
-                path: flyingpath.routepathdata, //设置线覆盖物路径
-                strokeColor: "#eb0aff", //线颜色
-                strokeOpacity: 1, //线透明度
-                strokeWeight: 5, //线宽
-                strokeStyle: "solid", //线样式
-                strokeDasharray: [10, 5] //补充线样式
-            });
-            
-            
 	        var uavMarker = new AMap.Marker({
 	                map: map,
                     position: uavdata.position,
@@ -55,6 +65,8 @@
                         offset: new AMap.Pixel(-16, -16) // 相对于基点的偏移位置
                     }),
              });
+	        
+	        
 	        
 	        //然后在下面进行位置轮询
 	  			  	        
@@ -169,7 +181,7 @@
             function closeInfoWindow() {
                 map.clearInfoWindow();
             } */
-          
+           
         </script>
  		</div>
 	</body>

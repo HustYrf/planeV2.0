@@ -78,4 +78,10 @@
 		delete from K_FlyingPath
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
+	<select id="getNameById" parameterType="java.lang.Integer"
+		resultType="java.lang.String">
+		select Name
+		from K_FlyingPath
+		where id=#{id,,jdbcType=INTEGER}
+	</select>
 </mapper>
