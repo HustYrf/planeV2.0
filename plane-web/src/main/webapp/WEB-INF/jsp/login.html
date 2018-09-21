@@ -16,6 +16,9 @@
  
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <style>
+	    ::-ms-clear,::-ms-reveal{ 
+		    display:none;
+        }
         .main {
             position: absolute;
             z-index: 2;
@@ -216,10 +219,11 @@
 		   margin-left:130px;	   
 		   opacity: 0.8 !important;
 		 }
-		        
+
               
 
     </style>
+         
 </head>
 
 <body><!-- ${s.base}/upload/DJI_0002.JPG -->
@@ -229,7 +233,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-offset-3 col-md-6">
-            <form class="form-horizontal" method="post" id="loginForm">
+            <form class="form-horizontal" method="post" id="loginForm" autocomplete="off">
                 <span class="heading">无人机智能巡视系统</span>
                 <div class="form-group">
                     <input type="text" name="name" class="form-control" id="inputusername" placeholder="请输入账号">

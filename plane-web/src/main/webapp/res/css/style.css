@@ -3,6 +3,9 @@
     padding:0;
     border:0;
 }
+::-ms-clear,::-ms-reveal{   //去除浏览器自带的表单输入控件
+	display:none;
+}
 body {
   background: #eee;
   background-position: initial initial;
