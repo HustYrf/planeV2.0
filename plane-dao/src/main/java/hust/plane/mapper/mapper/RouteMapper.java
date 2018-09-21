@@ -14,4 +14,6 @@ public interface RouteMapper {
 	List<Route> selectRoute(String name, int type);
 
 	List<Route> getRouteByType(int type);
+
+	int countByName(String name);
 }

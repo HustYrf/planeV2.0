@@ -51,4 +51,9 @@
         where 1=1 
         AND Type = #{param1}
     </select>
+     <select id="countByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1) from K_Route
+        where Name  = #{name,jdbcType=VARCHAR}
+    </select>
+    
 </mapper>

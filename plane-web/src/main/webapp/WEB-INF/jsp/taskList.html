@@ -73,7 +73,12 @@
 	                                	<!-- <td>${taskpojo.task.userA!}</td> -->
 	                                	<td>${taskpojo.userZName!}</td>
 	                                	<!-- <td>${taskpojo.task.userZ!}</td> -->
-	                                	<td><a target="_blank" href="${s.base}/getTaskPlaneLocation?uavid=${taskpojo.task.uavId!}&taskid=${taskpojo.task.id!}" style="cursor:pointer;">${taskpojo.uavName!}</a></td>
+	                                	<td>
+	                                	<#if taskpojo.task.status == 9>
+	                                	<a target="_blank" href="${s.base}/getTaskPlaneLocation?uavid=${taskpojo.task.uavId!}&taskid=${taskpojo.task.id!}" style="cursor:pointer;">${taskpojo.uavName!}</a>
+	                                	<#else>${taskpojo.uavName!}
+	                                	</#if>
+	                                	</td>
 	                                	<td>${(taskpojo.task.planstarttime?datetime)!}</td>
 	                                	<td>${taskpojo.flyingPathName!}</td>
 	                                	<td>

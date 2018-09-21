@@ -1,7 +1,16 @@
 package hust.plane.web.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import hust.plane.constant.WebConst;
 import hust.plane.utils.pojo.InfoTplData;
@@ -31,6 +40,44 @@ public class RouteController {
 		model.addAttribute("curNav", "home");
 		return "home";
 	}
+	
+	//提供 模板下载
+	@RequestMapping("routeExcelDownloed")
+	public void routeExcelDownloed(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		//String path = request.getSession().getServletContext().getContextPath()+File.separator+"WEB-INF"+File.separator+"ftl"+File.separator+"路由模板.xlsx";
+			
+		String path =request.getSession().getServletContext().getRealPath("/WEB-INF/ftl/路由模板.xlsx");
+		System.out.println(path);
+		 
+		File file = null;
+        InputStream fin = null;
+        ServletOutputStream out = null;
+        try {
+            // 调用工具类的createDoc方法生成Word文档
+            file = new File(path);
+            fin = new FileInputStream(file);
+ 
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+            // 设置浏览器以下载的方式处理该文件名
+            response.setHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode("路由模板.xlsx", "UTF-8"))));
+ 
+            out = response.getOutputStream();
+            byte[] buffer = new byte[1024];  // 缓冲区
+            int bytesToRead = -1;
+            // 通过循环将读入的Word文件的内容输出到浏览器中
+            while((bytesToRead = fin.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesToRead);
+            }
+        } finally {
+            if(fin != null) fin.close();
+            if(out != null) out.close();
+            if(file != null) file.delete(); // 删除临时文件
+        }
+				
+	}
+	
     // 得到路由分布。解决路径序列
     @RequestMapping("/erouteList")
     public String getAllRoute(Model model) {

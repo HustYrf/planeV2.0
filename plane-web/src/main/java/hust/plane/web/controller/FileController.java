@@ -50,7 +50,7 @@ public class FileController {
 						f = new File(fileName);
 						ExcelUtil.inputStreamToFile(ins, f);
 						if (FileServiceImpl.insertRoute(f) == false) {
-							errfile.add(fileName + "格式错误,");
+							errfile.add(fileName + "的格式错误或路由名称重复");
 						}else {
 							succfile.add(fileName);
 						}
@@ -66,10 +66,10 @@ public class FileController {
 		}
 		String reString="";
 		if(succfile.size()>0) {
-			reString = reString + succfile.toString().replace("[", "").replace("]", "")+"导入成功!";	
+			reString = reString + succfile.toString().replace("[", "").replace("]", "")+"等导入成功!</br>";	
 		}
 		if(errfile.size()>0) {
-			reString = reString + errfile.toString().replace("[", "").replace("]", "")+"导入失败。";
+			reString = reString + errfile.toString().replace("[", "").replace("]", "")+"等导入失败。";
 		}
 		
 		return JsonView.render(0, reString);

@@ -34,6 +34,10 @@ public class FileServiceImpl implements FileService {
 		Date date = new Date();
 		route.setCreatetime(date);
 
+		int count = routeMapper.countByName(route.getName());
+		if(count>0)
+			return false;
+		
 		if (routeMapper.insert(route) == 1)
 			return true;
 		else

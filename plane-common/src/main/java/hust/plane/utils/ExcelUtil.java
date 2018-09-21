@@ -2,7 +2,6 @@ package hust.plane.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -131,27 +130,27 @@ public class ExcelUtil {
 			// 3.读取行
 			// 判断行数大于4,是因为路由点数据从第4行开始插入
 
-			if (sheet.getPhysicalNumberOfRows() >= 4) {
+			if (sheet.getPhysicalNumberOfRows() >= 5) {
 
 				RouteExcel routeExcel = null;
-				// 读取第0行0列作为路由名称
+				// 读取第0行1列作为路由名称
 				Row row0 = sheet.getRow(0);
-				Object name = row0.getCell(0);
+				Object name = row0.getCell(1);
 				if(name==null) {
 					return false;
 				}
 				route.setName(name.toString());
-				// 读取第1行0列作为路由描述
+				// 读取第1行1列作为路由描述
 				Row row1 = sheet.getRow(1);
-				Object description = row1.getCell(0);
+				Object description = row1.getCell(1);
 				if(description == null) {
 					return false;
 				}
 				route.setDescription(description.toString());
 				
-				// 读取第3行6列作为路由类型
-				Row row3 = sheet.getRow(3);
-				Object type = row3.getCell(6);
+				// 读取第2行1列作为路由类型
+				Row row3 = sheet.getRow(2);
+				Object type = row3.getCell(1);
 				String typestr;
 				if (type == null) {
 					return false;
@@ -175,13 +174,17 @@ public class ExcelUtil {
 				List<RouteExcel> list = new ArrayList<RouteExcel>();
 				List<String> flagdata = new ArrayList<String>();
 
-				for (int k = 3; k < sheet.getPhysicalNumberOfRows(); k++) {
+				for (int k = 4; k < sheet.getPhysicalNumberOfRows(); k++) {
 					// 读取单元格
 					Row row = sheet.getRow(k);
 
 					routeExcel = new RouteExcel();
 
 					String flag = row.getCell(0).toString();
+					if(flag == null || flag=="") {
+						break;
+					}
+					
 					flagdata.add(flag);
 					// 得到经度
 					Cell cell1 = row.getCell(1);

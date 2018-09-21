@@ -192,7 +192,9 @@
 </body>
 
 <script type="application/javascript">
-
+	function Redirect() {  
+	    window.location = "${s.base}/taskPageList.action";  
+	}  
      //提交任务
 	function submitTask(){
 		
@@ -223,7 +225,8 @@
 		    success: function (result) {
 		        if (result.errcode == 1) {
 		        	Modal.show('_ocDialogModal');
-                	document.getElementById("resText").innerHTML=result.message;        
+                	document.getElementById("resText").innerHTML=result.message;    
+                	setTimeout('Redirect()', 2000); //跳转  
 		        }
 		    },
 		    error: function () {
@@ -232,7 +235,7 @@
 		});		
 	}
     
-     
+	
     //创建任务 
     function createtTask(){
 		
@@ -263,7 +266,8 @@
 		    success: function (result) {
 		        if (result.errcode == 1) {
 		        	Modal.show('_ocDialogModal');
-                	document.getElementById("resText").innerHTML=result.message;        
+                	document.getElementById("resText").innerHTML=result.message;
+                	setTimeout('Redirect()', 2000); //跳转  
 		        }
 		    },
 		    error: function () {
