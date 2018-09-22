@@ -159,7 +159,7 @@
                         <label class="control-label">计划起飞时间：</label>
                         <div class="col-sm-5">
                             <!--<input type="datetime-local" class="form-control"  name="plantime" >-->
-                            <input type="text" class="form-control" id="planstarttime" value="${taskvo.planstarttime?datetime!}">
+                            <input type="datetime-local" class="form-control" id="planstarttime" value="">
                         </div>
                     </div>
                     <div class="form-group">
@@ -192,6 +192,18 @@
 </body>
 
 <script type="application/javascript">
+
+    window.onload=function(){ 
+    	var settime = '${taskvo.planstarttime?datetime!}';	   
+	    if(settime==null || settime==""){
+	    	//设置当前时间
+	    	//$("#planstarttime").valueAsDate = new Date();
+	    }else{
+	    	realtime = settime.substring(0,16).replace(" ","T");
+	    	$("#planstarttime").val(realtime);		    	
+	    }	
+    }
+
 	function Redirect() {  
 	    window.location = "${s.base}/taskPageList.action";  
 	}  
@@ -208,7 +220,8 @@
 		var uavId = $("#uavId").val();
 		
 		var flyingpathid = $("#flyingpathid").val();
-		var planstarttime = $("#planstarttime").val();
+		var planstarttime = $("#planstarttime").val().toString();
+		planstarttime = planstarttime.replace("T"," ") + ":00";
 		
 		$.ajax({
 		    type: "POST",

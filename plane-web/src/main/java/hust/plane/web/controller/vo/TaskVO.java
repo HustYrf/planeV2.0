@@ -13,6 +13,7 @@ public class TaskVO {
 	private String userZName;
 	private Integer uavId;
 	private Integer flyingpathId;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")	
 	private Date planstarttime;
 	

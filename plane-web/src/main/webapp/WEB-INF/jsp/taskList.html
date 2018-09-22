@@ -54,6 +54,7 @@
 		                            <th>接机员</th>
 		                          <!--   <th>接机员编号</th> -->
 		                            <th>无人机编号</th>
+		                            <th>创建时间</th>
 		                            <th>计划执行时间</th>
 		                            <th>飞行路线</th>
 		                            <th>任务状态</th>
@@ -79,6 +80,7 @@
 	                                	<#else>${taskpojo.uavName!}
 	                                	</#if>
 	                                	</td>
+	                                	<td>${(taskpojo.task.createtime?datetime)!}</td>
 	                                	<td>${(taskpojo.task.planstarttime?datetime)!}</td>
 	                                	<td>${taskpojo.flyingPathName!}</td>
 	                                	<td>

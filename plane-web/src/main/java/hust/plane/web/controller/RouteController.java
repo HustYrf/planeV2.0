@@ -47,8 +47,7 @@ public class RouteController {
 		
 		//String path = request.getSession().getServletContext().getContextPath()+File.separator+"WEB-INF"+File.separator+"ftl"+File.separator+"路由模板.xlsx";
 			
-		String path =request.getSession().getServletContext().getRealPath("/WEB-INF/ftl/路由模板.xlsx");
-		System.out.println(path);
+		String path =request.getSession().getServletContext().getRealPath(File.separator+"WEB-INF"+File.separator+"ftl"+File.separator+"RouteTemplate.xlsx");
 		 
 		File file = null;
         InputStream fin = null;
@@ -61,7 +60,7 @@ public class RouteController {
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/vnd.ms-excel;charset=utf-8");
             // 设置浏览器以下载的方式处理该文件名
-            response.setHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode("路由模板.xlsx", "UTF-8"))));
+            response.setHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode("RouteTemplate.xlsx", "UTF-8"))));
  
             out = response.getOutputStream();
             byte[] buffer = new byte[1024];  // 缓冲区

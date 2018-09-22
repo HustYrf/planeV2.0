@@ -172,6 +172,7 @@ public class TaskController {
 		User userA = null;
 		User userZ = null;
 		
+		System.out.println(taskVO.getPlanstarttime());
 		if (taskVO.getUserAName()!= null && taskVO.getUserAName() != "") {
 			userA = userServiceImpl.getUserByName(taskVO.getUserAName());
 			if (userA == null) {
