@@ -92,7 +92,7 @@ public class ImgController {
             List<String> relaPathList = new ArrayList<>();
             List<String> realPathList = new ArrayList<>();
             for (MultipartFile pic : files.values()) {
-                String uploadInfo = Upload.upload(client, pic, request, response, uploadHost, imgPath);
+                String uploadInfo = Upload.upload(client, pic, request, response, uploadHost, imgPath,taskDir);
                 if (!"".equals(uploadInfo)) {    //上传成功
                     String[] infoList = uploadInfo.split(";");
                     fileNameList.add(infoList[0]);    //文件名

@@ -21,7 +21,7 @@ public class Upload {
      * @param path             文件路径（不包含服务器地址：upload/）
      * @return
      */
-    public static String upload(Client client, MultipartFile file, HttpServletRequest request, HttpServletResponse response, String serverPath, String path){
+    public static String upload(Client client, MultipartFile file, HttpServletRequest request, HttpServletResponse response, String serverPath, String path,String taskDir){
         // 文件名称生成策略（UUID uuid = UUID.randomUUID()）
         Date d = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -38,8 +38,12 @@ public class Upload {
         //相对路径
         String relaPath = path + fileName;
 
-        String a = serverPath + path.substring(0, path.lastIndexOf("/"));
-        File file2 = new File(a);
+//        String a = serverPath + path.substring(0, path.lastIndexOf("/"));
+//         String serverFileAddress = "D:"+File.separator+"Games"+File.separator+taskDir;
+        StringBuilder serverFileAddress = new StringBuilder();
+        serverFileAddress.append(File.separator).append("home").append(File.separator).append("gxdx_ai").append(File.separator).append("file-workspace")
+                .append(File.separator).append("ImageTask").append(File.separator).append(taskDir);//任务文件夹地址
+        File file2 = new File(serverFileAddress.toString());
         if(!file2.exists()){
             boolean mkdirs = file2.mkdirs();
             System.out.println(mkdirs);
