@@ -65,13 +65,20 @@ public class UserController {
         while (iterator.hasNext()) {
             UserPojo userPojo = iterator.next();
             List<Integer> userGroupList = userGroupService.selectGroupIdWithUserId(userPojo.getId());
+            StringBuilder userPosition = new StringBuilder();
             if (userGroupList.size() > 0 && userGroupList.contains(Integer.valueOf(1))) {
-                userPojo.setPosition("浏览者");
-            } else if (userGroupList.size() > 0 && userGroupList.contains(Integer.valueOf(2))) {
-                userPojo.setPosition("任务管理员");
-            } else {
-                userPojo.setPosition("巡检员");
+                userPosition.append("浏览者 ");
+//                userPojo.setPosition(");
             }
+            if (userGroupList.size() > 0 && userGroupList.contains(Integer.valueOf(2))) {
+                userPosition.append("任务管理员 ") ;
+//                userPojo.setPosition("");
+            }
+            if (userGroupList.size() > 0 && userGroupList.contains(Integer.valueOf(3))) {
+                userPosition.append("巡检员");
+//                userPojo.setPosition("巡检员");
+            }
+            userPojo.setPosition(userPosition.toString());
             if (userPojo.getDepartmentId() != null) {
                 userPojo.setDepartmentName(departmentService.getUserDepartmentNameWithPartId(userPojo.getDepartmentId()));
             }
