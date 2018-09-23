@@ -109,7 +109,7 @@ public class IndexController {
 		} catch (Exception e) {
 			error_count = null == error_count ? 1 : error_count + 1;
 			if (error_count > 3) {
-				return JsonView.render(1, "您输入密码已经错误超过3次，请10分钟后尝试");
+				return JsonView.render(1, "您输入密码已经错误超过3次，请3分钟后尝试");
 			}
 			cache.set("login_error_count", error_count, 10 * 60);
 			String msg = "登录失败";

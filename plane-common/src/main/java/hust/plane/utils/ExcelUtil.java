@@ -6,9 +6,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -38,6 +43,12 @@ public class ExcelUtil {
 		}
 		return wb;
 
+	}
+
+	public static String getNumCell(Cell cell) {
+		//对于文本或者数字统一处理
+		
+		return null;
 	}
 
 	// 创建excel样式
@@ -173,7 +184,7 @@ public class ExcelUtil {
 				// 读取路由点数据及标桩数据
 				List<RouteExcel> list = new ArrayList<RouteExcel>();
 				List<String> flagdata = new ArrayList<String>();
-
+				System.err.println("数据读哇！");
 				for (int k = 4; k < sheet.getPhysicalNumberOfRows(); k++) {
 					// 读取单元格
 					Row row = sheet.getRow(k);
@@ -188,25 +199,41 @@ public class ExcelUtil {
 					flagdata.add(flag);
 					// 得到经度
 					Cell cell1 = row.getCell(1);
+					Double Longitude=0.0;;
 					try {
-						Double Longitude = Double.parseDouble(cell1.getStringCellValue());
-						routeExcel.setLongitude(Longitude);
+						Longitude = Double.parseDouble(cell1.getStringCellValue());						
 					} catch (Exception e) {
-						return false;
+						
+						try {
+						Longitude = cell1.getNumericCellValue();
+						}catch (Exception e1) {
+							return false;
+						}												
 					}
+					
+					routeExcel.setLongitude(Longitude);
 					// 得到维度
 					Cell cell2 = row.getCell(2);
+					Double Latitude = 0.0;
 					try {
-						Double Latitude = Double.parseDouble(cell2.getStringCellValue());
-						routeExcel.setLatitude(Latitude);
+						Latitude = Double.parseDouble(cell2.getStringCellValue());
+						
 					} catch (Exception e) {
-						return false;
+						try {
+							Latitude = cell2.getNumericCellValue();
+						}catch (Exception e1) {
+							return false;
+						}
 					}
-
+					routeExcel.setLatitude(Latitude);
+					
 					list.add(routeExcel);
 				}
+				
+				
 				route.setRoutepathdata(LineUtil.ListToString(list));
 				route.setFlagdata(flagdata.toString().replace("[", "").replace("]", ""));
+				
 				// 构成经纬度序列
 				// String s = LineUtil.ListToString(readExcel);
 			} else {

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,18 +44,18 @@ public class RouteController {
 	
 	//提供 模板下载
 	@RequestMapping("routeExcelDownloed")
-	public void routeExcelDownloed(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void routeExcelDownloed(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
-		//String path = request.getSession().getServletContext().getContextPath()+File.separator+"WEB-INF"+File.separator+"ftl"+File.separator+"路由模板.xlsx";
-			
-		String path =request.getSession().getServletContext().getRealPath(File.separator+"WEB-INF"+File.separator+"ftl"+File.separator+"RouteTemplate.xlsx");
-		 
+		String 	basepath = request.getSession().getServletContext().getRealPath("");
+		
+		//String basepath = request.getSession().getServletContext().getRealPath("/WEB-INF/ftl"); 
+
 		File file = null;
         InputStream fin = null;
         ServletOutputStream out = null;
         try {
-            // 调用工具类的createDoc方法生成Word文档
-            file = new File(path);
+            // 调用工具类的createDoc方法生成excel文档
+            file = new File(basepath +file.separator+ "RouteTemplate.xlsx");
             fin = new FileInputStream(file);
  
             response.setCharacterEncoding("utf-8");
@@ -65,14 +66,14 @@ public class RouteController {
             out = response.getOutputStream();
             byte[] buffer = new byte[1024];  // 缓冲区
             int bytesToRead = -1;
-            // 通过循环将读入的Word文件的内容输出到浏览器中
+            // 通过循环将读入的excel文件的内容输出到浏览器中
             while((bytesToRead = fin.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesToRead);
             }
         } finally {
             if(fin != null) fin.close();
             if(out != null) out.close();
-            if(file != null) file.delete(); // 删除临时文件
+           
         }
 				
 	}
