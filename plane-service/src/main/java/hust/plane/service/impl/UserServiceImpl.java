@@ -4,6 +4,7 @@ import hust.plane.constant.WebConst;
 import hust.plane.mapper.mapper.GroupMapper;
 import hust.plane.mapper.mapper.UserMapper;
 import hust.plane.mapper.mapper.User_has_GroupKeyMapper;
+import hust.plane.mapper.pojo.Group;
 import hust.plane.mapper.pojo.User;
 import hust.plane.mapper.pojo.UserExample;
 import hust.plane.service.interFace.UserService;
@@ -254,7 +255,16 @@ public class UserServiceImpl implements UserService {
         UserExample.Criteria criteria = example.createCriteria();
         criteria.andNameLike("%" + queryString + "%");
         List<User> bUserList = userDao.selectByExample(example);
-        return bUserList;
+        List<User> routingInspectionList = new ArrayList<>();
+        Iterator<User> iterator = bUserList.iterator();
+        while(iterator.hasNext()){
+            User user = iterator.next();
+            List<Integer> groupIdByUserId = user_has_groupKeyMapper.getGroupIdByUserId(user.getId());
+            if(groupIdByUserId.contains(Integer.valueOf(3))) {
+                routingInspectionList.add(user);
+            }
+        }
+        return routingInspectionList;
     }
 
     @Override
