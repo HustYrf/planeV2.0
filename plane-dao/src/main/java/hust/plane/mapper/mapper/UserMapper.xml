@@ -574,4 +574,9 @@
         where NAME LIKE concat('%',#{Name},'%')
         LIMIT #{param2.startIndex, jdbcType=INTEGER} , #{param2.pageSize, jdbcType=INTEGER}
     </select>
+
+    <select id="selectUserIdByUserName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select id from K_User
+        where Name = #{param1}
+    </select>
 </mapper>

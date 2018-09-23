@@ -256,6 +256,21 @@
                             </div>
                         </div>
 
+                        <div class="form-group clearfix">
+                            <label class="control-label" style="white-space:nowrap">用户组：</label>
+                            <div class="col-sm-9">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="authority" id="Checkbox1" value="viewer">浏览组
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="authority" id="Checkbox2" value="admin">管理组
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"  name="authority" id="Checkbox3" value="ipqc">巡检组
+                                </label>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
                 <div id="alertDiv1"></div>
@@ -475,6 +490,13 @@
     }
 
     $("#addUserButton").click(function () {
+        var authorityArray = new Array();
+        var i = 0;
+        $("input[name='authority']:checked").each(function () {
+            if (this.value != null) {
+                authorityArray[i++] = this.value;
+            }
+        });
         $("#addUserButton").attr('disabled','true');
         $.ajax({
             url: "${s.base}/addUser.action",

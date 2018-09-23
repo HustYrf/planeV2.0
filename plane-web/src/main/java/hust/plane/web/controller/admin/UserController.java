@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -135,9 +136,13 @@ public class UserController {
     @ResponseBody
     public String doAddUser(@RequestParam String addUsername, @RequestParam String addUserPaw,
                             @RequestParam String addUserWorkNumber, @RequestParam(required = false) String addUserNickname,
-                            @RequestParam(required = false) String addUserEmail, @RequestParam(required = false) String addUserPhone) {
+                            @RequestParam(required = false) String addUserEmail, @RequestParam(required = false) String addUserPhone,
+                            @RequestParam(required = false) String authority) {
         try {
-            userService.addUserWithInfo(addUsername, addUserPaw, addUserWorkNumber, addUserNickname, addUserEmail, addUserPhone);
+            int userCount = userService.addUserWithInfo(addUsername, addUserPaw, addUserWorkNumber, addUserNickname, addUserEmail, addUserPhone);
+            if (userCount==1&&StringUtils.isNotBlank(authority)){
+                userService.addUserAuthorityWithUserName(addUsername,authority);
+            }
         } catch (Exception e) {
             String msg = "添加失败";
             if (e instanceof TipException) {
