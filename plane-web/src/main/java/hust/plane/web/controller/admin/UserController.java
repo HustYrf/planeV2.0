@@ -77,7 +77,7 @@ public class UserController {
             }
         }
         page.setItems(pojoList);
-        if (StringUtils.isNotBlank(userName)) {
+        if (StringUtils.isNotBlank(userName)&&!userName.equals(WebConst.SEARCH_NO_USERNAME)) {
             model.addAttribute("inputname", userName);
         }
         model.addAttribute("selectStatus", GroupId);

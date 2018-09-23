@@ -423,6 +423,7 @@
                 authorityArray[i++] = this.value;
             }
         });
+        $("#modifyAuthority").attr('disabled','true');
         $.ajax({
             url: "${s.base}/userAuthority",
             type: "POST",
@@ -447,6 +448,7 @@
         var nickName = $("#Nickname").val();
         var email = $("#Email").val();
         var phone = $('#phone').val();
+        $("#modify").attr('disabled','true');
         $.ajax({
             url: "${s.base}/modifyUser.action",
             type: "POST",
@@ -473,6 +475,7 @@
     }
 
     $("#addUserButton").click(function () {
+        $("#addUserButton").attr('disabled','true');
         $.ajax({
             url: "${s.base}/addUser.action",
             type: "POST",
