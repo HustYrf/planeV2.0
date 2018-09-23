@@ -211,9 +211,6 @@ public class TaskController {
 		}
 		return JsonView.render(1, "任务创建失败");
 	}
-	
-	
-	
 	// 分页查询
 	@RequestMapping("/taskPageList")
 	public String queryPage(Task task, TailPage<TaskPojo> page, Model model, HttpServletRequest request) {
@@ -360,13 +357,25 @@ public class TaskController {
 	
 	//跳转无人机（单个）页面  ，同时显示任务、飞行路径
 	@RequestMapping("getTaskPlaneLocation")
-	public String getTaskPlaneLocation(@RequestParam("uavid")Integer uavid,@RequestParam("taskid")Integer taskid,Model model){
+	public String getTaskPlaneLocation(@RequestParam("uavid")Integer uavid,@RequestParam("taskid")Integer taskid,Model model,HttpServletRequest request){
 		
+		String role =null;
 		Uav uav = new Uav();
 		uav.setId(uavid);
 		Uav uav2 = uavServiceImpl.getPlaneByPlane(uav);
 		UavVO uavVO= new UavVO(uav2);
-		
+		User user = PlaneUtils.getLoginUser(request);
+		//判别是观察者和浏览者
+		List<Integer> groupIdList = userGroupService.selectGroupIdWithUserId(user.getId());
+		if (groupIdList.contains(Integer.valueOf(1))) {
+			//是浏览者
+			role = "1";
+			
+		}
+		else {
+			//是观察者
+			role ="2";
+		}
 	    Task task = new Task();
 	    task.setId(taskid);
 		Task task2 = taskServiceImpl.getTaskByTask(task);
@@ -377,6 +386,8 @@ public class TaskController {
 		model.addAttribute("uav",JsonUtils.objectToJson(uavVO));
 		model.addAttribute("task",task2);
 		model.addAttribute("flyingpath",JsonUtils.objectToJson(flyingPathVO));
+		model.addAttribute("role",role);
+		model.addAttribute("uav2",uav2);
 		
 		return "plane";
 		
