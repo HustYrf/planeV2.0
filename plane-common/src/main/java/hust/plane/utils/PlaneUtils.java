@@ -134,7 +134,8 @@ public class PlaneUtils {
             boolean isSSL = false;
             Cookie cookie = new Cookie(WebConst.USER_IN_COOKIE, val);
             cookie.setPath("/");
-            cookie.setMaxAge(60 * 30);
+          /*  cookie.setMaxAge(60 * 30);*/
+            cookie.setMaxAge(-1);
             cookie.setSecure(isSSL);
             response.addCookie(cookie);
         } catch (Exception e) {

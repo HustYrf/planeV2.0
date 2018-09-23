@@ -50,4 +50,8 @@ public interface UserService {
     TailPage<UserPojo> getUserByGroupIdOruserNameWithPage(Integer groupId, String userName, TailPage<UserPojo> page);
 
 	User getUserByName(String userAname);
+
+    Integer getUserIdByName(String addUsername);
+
+    void addUserAuthorityWithUserName(String addUsername, String authority);
 }

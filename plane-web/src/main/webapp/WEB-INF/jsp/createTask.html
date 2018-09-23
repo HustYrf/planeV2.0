@@ -390,5 +390,21 @@
          $("#userZ").val($(this).text());
          $('#search-div2').css('display','none');
      });
+
+    $("#userA").bind("input propertychange",function(event){
+        var inputVal = $("#userA").val();
+        var str = inputVal.replace(/(^\s*)|(\s*$)/g, '');//去除空格;
+        if (str == '' || str == undefined || str == null) {
+            $('#search-div1').css('display','none');
+        }
+    });
+
+    $("#userZ").bind("input propertychange",function(event){
+        var inputVal = $("#userZ").val();
+        var str = inputVal.replace(/(^\s*)|(\s*$)/g, '');//去除空格;
+        if (str == '' || str == undefined || str == null) {
+            $('#search-div2').css('display','none');
+        }
+    });
 </script>
 </html>

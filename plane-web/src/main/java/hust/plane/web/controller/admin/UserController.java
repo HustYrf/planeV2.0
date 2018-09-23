@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -65,13 +66,20 @@ public class UserController {
         while (iterator.hasNext()) {
             UserPojo userPojo = iterator.next();
             List<Integer> userGroupList = userGroupService.selectGroupIdWithUserId(userPojo.getId());
+            StringBuilder userPosition = new StringBuilder();
             if (userGroupList.size() > 0 && userGroupList.contains(Integer.valueOf(1))) {
-                userPojo.setPosition("浏览者");
-            } else if (userGroupList.size() > 0 && userGroupList.contains(Integer.valueOf(2))) {
-                userPojo.setPosition("任务管理员");
-            } else {
-                userPojo.setPosition("巡检员");
+                userPosition.append("浏览者 ");
+//                userPojo.setPosition(");
             }
+            if (userGroupList.size() > 0 && userGroupList.contains(Integer.valueOf(2))) {
+                userPosition.append("任务管理员 ") ;
+//                userPojo.setPosition("");
+            }
+            if (userGroupList.size() > 0 && userGroupList.contains(Integer.valueOf(3))) {
+                userPosition.append("巡检员");
+//                userPojo.setPosition("巡检员");
+            }
+            userPojo.setPosition(userPosition.toString());
             if (userPojo.getDepartmentId() != null) {
                 userPojo.setDepartmentName(departmentService.getUserDepartmentNameWithPartId(userPojo.getDepartmentId()));
             }
@@ -128,9 +136,13 @@ public class UserController {
     @ResponseBody
     public String doAddUser(@RequestParam String addUsername, @RequestParam String addUserPaw,
                             @RequestParam String addUserWorkNumber, @RequestParam(required = false) String addUserNickname,
-                            @RequestParam(required = false) String addUserEmail, @RequestParam(required = false) String addUserPhone) {
+                            @RequestParam(required = false) String addUserEmail, @RequestParam(required = false) String addUserPhone,
+                            @RequestParam(required = false) String authority) {
         try {
-            userService.addUserWithInfo(addUsername, addUserPaw, addUserWorkNumber, addUserNickname, addUserEmail, addUserPhone);
+            int userCount = userService.addUserWithInfo(addUsername, addUserPaw, addUserWorkNumber, addUserNickname, addUserEmail, addUserPhone);
+            if (userCount==1&&StringUtils.isNotBlank(authority)){
+                userService.addUserAuthorityWithUserName(addUsername,authority);
+            }
         } catch (Exception e) {
             String msg = "添加失败";
             if (e instanceof TipException) {

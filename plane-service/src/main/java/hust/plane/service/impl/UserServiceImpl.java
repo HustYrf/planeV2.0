@@ -4,6 +4,7 @@ import hust.plane.constant.WebConst;
 import hust.plane.mapper.mapper.GroupMapper;
 import hust.plane.mapper.mapper.UserMapper;
 import hust.plane.mapper.mapper.User_has_GroupKeyMapper;
+import hust.plane.mapper.pojo.Group;
 import hust.plane.mapper.pojo.User;
 import hust.plane.mapper.pojo.UserExample;
 import hust.plane.service.interFace.UserService;
@@ -20,10 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -73,8 +71,8 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public int register(String username, String password,String worknumber) {
-        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)||StringUtils.isBlank(worknumber)) {
+    public int register(String username, String password, String worknumber) {
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(worknumber)) {
             throw new TipException("用户名、密码和工号均不能为空");
         }
         int usernameCount = userDao.selectByUserName(username);
@@ -254,7 +252,16 @@ public class UserServiceImpl implements UserService {
         UserExample.Criteria criteria = example.createCriteria();
         criteria.andNameLike("%" + queryString + "%");
         List<User> bUserList = userDao.selectByExample(example);
-        return bUserList;
+        List<User> routingInspectionList = new ArrayList<>();
+        Iterator<User> iterator = bUserList.iterator();
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            List<Integer> groupIdByUserId = user_has_groupKeyMapper.getGroupIdByUserId(user.getId());
+            if (groupIdByUserId.contains(Integer.valueOf(3))) {
+                routingInspectionList.add(user);
+            }
+        }
+        return routingInspectionList;
     }
 
     @Override
@@ -381,19 +388,51 @@ public class UserServiceImpl implements UserService {
         return page;
     }
 
-	@Override
-	public boolean updateByUser(User user) {
-		if(userDao.updateByPrimaryKeySelective(user)==1) {
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public boolean updateByUser(User user) {
+        if (userDao.updateByPrimaryKeySelective(user) == 1) {
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public User getUserByName(String name) {
-		User user = userDao.getUserByName(name);
-		if(user.getId() != null && user.getId()!=0)
-			return user;
-		return null;
-	}
+    @Override
+    public User getUserByName(String name) {
+        User user = userDao.getUserByName(name);
+        if (user.getId() != null && user.getId() != 0)
+            return user;
+        return null;
+    }
+
+    @Override
+    public Integer getUserIdByName(String addUsername) {
+        if (StringUtils.isNotBlank(addUsername)) {
+            Integer userId = userDao.selectUserIdByUserName(addUsername);
+            return userId == null ? userId : null;
+        } else {
+            throw new TipException("新增用户名为空");
+        }
+    }
+
+    @Override
+    public void addUserAuthorityWithUserName(String addUsername, String authority) {
+        Integer userId = userDao.selectUserIdByUserName(addUsername);
+        if (org.apache.commons.lang.StringUtils.isNotBlank(authority)) {
+            List<String> stringList = Arrays.asList(authority.split(","));
+            for (int i = 0; i < stringList.size(); i++) {
+                Integer GroupId = null;
+                if (stringList.get(i).equals("viewer")) {
+                    GroupId = Integer.valueOf(1);
+                } else if (stringList.get(i).equals("admin")) {
+                    GroupId = Integer.valueOf(2);
+                } else {
+                    GroupId = Integer.valueOf(3);
+                }
+                int insertCount = user_has_groupKeyMapper.insertGroupByUserIdWithAuthority(userId, GroupId);
+                if (insertCount == 0) {
+                    throw new TipException("用户组插入异常");
+                }
+            }
+        }
+    }
 }
